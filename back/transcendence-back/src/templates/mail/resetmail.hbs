@@ -1,0 +1,26 @@
+<!-- templates/resetmail.hbs -->
+<html lang='es'>
+    <head>
+        <meta charset='UTF-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <title>Restablecimiento de Contraseña</title>
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; } p {
+            margin: 10px 0; } strong { font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <p>Hola {{name}}:</p>
+        <p>Hemos recibido una solicitud para reiniciar tu contraseña de
+            {{APP_NAME}}.</p>
+        <p>Puedes acceder al panel de reinicio desde el siguiente enlace:
+            <strong><a
+                    href='{{url}}'
+                    target='_blank'
+                >restablecer</a></strong></p>
+        <p>Si no has solicitado el reinicio de contraseña, puede que alguien
+            esté intentando acceder a tu cuenta. No reenvíes este correo
+            electrónico ni compartas el enlace con nadie.</p>
+        <p>Atentamente,<br />El equipo de {{COMPANY_NAME}}.</p>
+    </body>
+</html>

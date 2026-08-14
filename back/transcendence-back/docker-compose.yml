@@ -1,0 +1,32 @@
+# Es importante lanzar el comando para levantar el docker usando el .env correcto
+# docker compose --env-file .env up -d
+
+# Para eliminar el docker stack junto con sus volumenes
+# docker compose  --env-file .env.development down -v
+
+services:
+    postgres:
+        container_name: 'db_transcendence'
+        image: postgres:latest #todo usar alpine
+        restart: unless-stopped
+        environment:
+            POSTGRES_PASSWORD: '${POSTGRESQL_DOCKER_ROOT_PASSWORD}'
+            POSTGRES_DB: 'db_back_${APP_NAME}'
+            POSTGRES_USER: '${POSTGRESQL_DOCKER_USER}'
+        ports:
+            - '${POSTGRESQL_DOCKER_PORT}:5432'
+        volumes:
+            - postgres-data:/var/lib/postgresql
+
+    redis:
+        image: redis:latest #todo usar alpine
+        container_name: 'redis_server_${APP_NAME}'
+        restart: unless-stopped
+        ports:
+            - '${REDIS_PORT}:6379'
+        volumes:
+            - redis-data:/data
+
+volumes:
+    postgres-data:
+    redis-data:
