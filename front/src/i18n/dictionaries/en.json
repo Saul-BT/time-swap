@@ -1,0 +1,123 @@
+{
+  "brand": {
+    "name": "Time Swap",
+    "tagline": "give an hour, get an hour"
+  },
+  "metadata": {
+    "title": "Time Swap · give an hour, get an hour",
+    "description": "See what people in your city are offering before you sign up. It is paid in hours, not in money."
+  },
+  "placeholder": {
+    "city": "[City]",
+    "area": "[Area]"
+  },
+  "common": {
+    "sampleContent": "Sample content"
+  },
+  "nav": {
+    "label": "Main",
+    "listings": "What's going around",
+    "howItWorks": "How it works",
+    "signIn": "Sign in",
+    "signUp": "Create account"
+  },
+  "hero": {
+    "eyebrow": "{city} · time is not stored, it circulates",
+    "title": "What do you need help with this week?",
+    "lead": "See what people in {city} are offering before you decide to sign up. It is paid in hours, not in money.",
+    "search": {
+      "skillLabel": "What you need",
+      "skillPlaceholder": "computers, moving house, guitar, company…",
+      "areaLabel": "Area",
+      "submit": "Search"
+    },
+    "filters": {
+      "label": "Applied filters",
+      "all": "All",
+      "offers": "Offers",
+      "requests": "Requests",
+      "inPerson": "In person",
+      "remote": "Remote",
+      "nearby": "Near me",
+      "barter": "Accepts barter"
+    }
+  },
+  "listings": {
+    "title": "Posted this week in {area}",
+    "more": "See more listings",
+    "kind": {
+      "offer": "Offer",
+      "request": "Request"
+    },
+    "mode": {
+      "inPerson": "In person",
+      "remote": "Remote",
+      "both": "In person or remote"
+    }
+  },
+  "howItWorks": {
+    "eyebrow": "First time here?",
+    "title": "This is not paid with money.",
+    "facts": {
+      "oneHourOneCredit": {
+        "figure": "1 h",
+        "description": "Every hour you give someone becomes a credit. The skill you bring makes no difference."
+      },
+      "debitLimit": {
+        "figure": "−3 h",
+        "description": "You can ask for help before giving anything: the account allows up to three hours in the red."
+      },
+      "noMoney": {
+        "figure": "€0",
+        "description": "Credits are neither bought nor sold. Only materials are reimbursed, if there are any."
+      }
+    }
+  },
+  "categories": {
+    "title": "Browse by what you know how to do",
+    "intro": "The starting categories are still being decided with the community.",
+    "listLabel": "Starting categories",
+    "items": {
+      "tech": "Computers and phones",
+      "languages": "Languages",
+      "companionship": "Companionship",
+      "pets": "Animal care",
+      "repairs": "Repairs",
+      "cooking": "Cooking",
+      "moving": "Moving and transport",
+      "sewing": "Sewing",
+      "tutoring": "School support",
+      "paperwork": "Paperwork and admin",
+      "music": "Music",
+      "gardening": "Gardening",
+      "writing": "Writing and CVs",
+      "photography": "Photography"
+    }
+  },
+  "members": {
+    "title": "People already taking part",
+    "skillsLabel": "Skills of {name}"
+  },
+  "dispute": {
+    "label": "The brake",
+    "title": "If something goes wrong, the relay stops.",
+    "body": "Either side can open a dispute. The hours for that exchange do not move until someone on the team reviews it, and a reversed movement does not disappear: it is offset by another one and both stay on the record."
+  },
+  "signUp": {
+    "title": "Writing to someone requires a verified account",
+    "lead": "It is the only barrier, and it exists so that nobody receives messages from anonymous profiles.",
+    "create": "Create my account",
+    "signIn": "Sign in",
+    "browse": "Just browsing"
+  },
+  "footer": {
+    "tagline": "Time Swap · a neighbourhood time bank",
+    "legalLabel": "Legal",
+    "languageLabel": "Language",
+    "links": {
+      "codeOfConduct": "Code of conduct",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
+  }
+}
