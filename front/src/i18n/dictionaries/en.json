@@ -30,6 +30,11 @@
     "discover": "Discover",
     "publish": "Post a listing"
   },
+  "browseListings": {
+    "title": "Listings",
+    "lead": "Temporary interface: a sample list. Real search is not here yet.",
+    "back": "Back to home"
+  },
   "hero": {
     "eyebrow": "{city} · time is not stored, it circulates",
     "title": "What do you need help with this week?",

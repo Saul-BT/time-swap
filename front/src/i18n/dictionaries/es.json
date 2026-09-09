@@ -30,6 +30,11 @@
     "discover": "Descubrir",
     "publish": "Publicar anuncio"
   },
+  "browseListings": {
+    "title": "Anuncios",
+    "lead": "Interfaz temporal: un listado de ejemplo. La búsqueda real todavía no está.",
+    "back": "Volver al inicio"
+  },
   "hero": {
     "eyebrow": "{city} · el tiempo no se guarda, circula",
     "title": "¿Con qué necesitas ayuda esta semana?",

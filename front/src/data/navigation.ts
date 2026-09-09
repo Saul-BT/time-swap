@@ -12,6 +12,7 @@ export const SECTION_ID = {
  */
 export const PATH = {
   loggedHome: "/inicio",
+  listings: "/anuncios",
   createAd: "/anuncios/nuevo",
 } as const;
 
