@@ -59,3 +59,5 @@ export type FooterLink = {
   id: FooterLinkId;
   href: string;
 };
+
+export type SignInErrorId = keyof Dictionary["signIn"]["errors"];
