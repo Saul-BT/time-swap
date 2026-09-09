@@ -1,3 +1,4 @@
+import type { LinkTarget } from "@/i18n/routes";
 import type { Dictionary } from "@/i18n/types";
 
 /**
@@ -50,7 +51,8 @@ export type FooterLinkId = keyof Dictionary["footer"]["links"];
 
 export type NavigationLink = {
   id: Exclude<NavigationLinkId, "label" | "signUp">;
-  href: string;
+  /** Resolved per locale with `localizePath`. */
+  target: LinkTarget;
 };
 
 export type FooterLink = {
