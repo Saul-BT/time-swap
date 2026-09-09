@@ -16,9 +16,9 @@ export const PATH = {
 } as const;
 
 export const HEADER_LINKS: readonly NavigationLink[] = [
-  { id: "listings", href: `#${SECTION_ID.listings}` },
-  { id: "howItWorks", href: `#${SECTION_ID.howItWorks}` },
-  { id: "signIn", href: PATH.loggedHome },
+  { id: "listings", target: `#${SECTION_ID.listings}` },
+  { id: "howItWorks", target: `#${SECTION_ID.howItWorks}` },
+  { id: "signIn", target: "signIn" },
 ];
 
 export const FOOTER_LINKS: readonly FooterLink[] = [

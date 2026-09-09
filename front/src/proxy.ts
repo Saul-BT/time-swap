@@ -1,10 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { isLocale, LOCALES } from "@/i18n/config";
+import { localizedSlugPairs } from "@/i18n/routes";
 import { negotiateLocale } from "@/lib/i18n/negotiateLocale";
 
 /**
- * Redirects a request without a locale prefix to the best supported locale.
- * `proxy.ts` is Next 16's name for the former `middleware.ts`.
+ * Two jobs, both about the locale segment. A request without one is sent to
+ * the best supported locale. A request that reaches a folder slug in a locale
+ * whose public slug is different is sent to the public one, so each page has a
+ * single URL per language. `proxy.ts` is Next 16's name for the former
+ * `middleware.ts`.
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,10 +18,20 @@ export function proxy(request: NextRequest) {
   );
 
   if (hasLocale) {
+    const pair = localizedSlugPairs().find(
+      ({ folderPath }) => folderPath === pathname,
+    );
+
+    if (pair) {
+      const url = request.nextUrl.clone();
+      url.pathname = pair.publicPath;
+
+      return NextResponse.redirect(url, 308);
+    }
+
     return;
   }
 
-  // A returning visitor's explicit choice beats the browser header.
   const preferred = request.cookies.get("NEXT_LOCALE")?.value;
   const locale =
     preferred && isLocale(preferred)
@@ -31,7 +45,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip Next internals, metadata files, assets, and `/brand-book` — the design
-  // system reference lives outside the locale tree and must not be prefixed.
   matcher: ["/((?!_next|brand-book|favicon.ico|.*\\.[^/]*$).*)"],
 };
