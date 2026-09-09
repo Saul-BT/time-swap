@@ -14,6 +14,7 @@ Los ADRs registran decisiones duraderas, su contexto y sus consecuencias. No son
 | [0008](0008-paleta-de-estados-y-desviaciones-del-tema.md) | front | Paleta de estados de MUI y desviaciones del sistema Relevo | Aceptado |
 | [0009](0009-stack-del-front.md) | front | Next 16 App Router, MUI 9 sobre Emotion, Biome y bun | Aceptado |
 | [0010](0010-i18n-por-ruta-con-diccionarios-en-servidor.md) | front | i18n por segmento de ruta con diccionarios solo en servidor | Aceptado |
+| [0011](0011-slugs-publicos-por-idioma.md) | front | Slugs públicos por idioma sobre carpetas en inglés | Aceptado |
 
 ## Cuándo escribir un ADR
 
