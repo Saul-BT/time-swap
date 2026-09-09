@@ -110,6 +110,74 @@
     "signIn": "Sign in",
     "browse": "Just browsing"
   },
+  "signIn": {
+    "metadata": {
+      "title": "Sign in · Time Swap",
+      "description": "Sign in to pick up where you left off."
+    },
+    "title": "Welcome back",
+    "lead": "Sign in to pick up where you left off.",
+    "form": {
+      "label": "Sign in",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "name@email.com",
+      "passwordLabel": "Password",
+      "forgotPassword": "I forgot it",
+      "showPassword": "Show",
+      "hidePassword": "Hide",
+      "remember": "Keep me signed in on this device",
+      "submit": "Sign in"
+    },
+    "noAccount": "Don't have an account yet?",
+    "createAccount": "Create an account",
+    "conduct": {
+      "before": "By signing in you accept the community ",
+      "link": "code of conduct",
+      "after": "."
+    },
+    "errors": {
+      "credentials": {
+        "title": "The email or the password do not match",
+        "body": "Check both fields and try again."
+      },
+      "tooManyAttempts": {
+        "title": "Too many attempts",
+        "body": "We have locked access for a while. If you cannot remember the password, ask for a link to change it."
+      },
+      "suspended": {
+        "title": "This account is suspended",
+        "body": "Someone on the team is reviewing it. We will write to the email you registered with."
+      },
+      "unverified": {
+        "title": "You have not verified your email yet",
+        "body": "Look for the link we sent you when you registered. Until then you can browse, but not write to anyone."
+      },
+      "sessionExpired": {
+        "title": "Your session has expired",
+        "body": "Sign in again to pick up where you left off. Your hours and agreements are still there."
+      }
+    },
+    "panel": {
+      "eyebrow": "While you were away",
+      "title": "Someone in your area asked for exactly what you know how to do.",
+      "body": "Contact requests wait until you answer them. None expires without warning you.",
+      "factsLabel": "Account rules",
+      "facts": {
+        "oneHourOneCredit": "= 1 credit, always",
+        "debitLimit": "lowest balance allowed",
+        "noMoney": "never turns into money"
+      }
+    }
+  },
+  "recoverAccess": {
+    "metadata": {
+      "title": "Recover access · Time Swap",
+      "description": "Ask for a link to change your password."
+    },
+    "title": "Recover access",
+    "lead": "This screen is not built yet. When it is, we will send a single-use link to the email you registered with.",
+    "backToSignIn": "Back to sign in"
+  },
   "footer": {
     "tagline": "Time Swap · a neighbourhood time bank",
     "legalLabel": "Legal",
