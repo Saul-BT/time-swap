@@ -5,6 +5,23 @@
 # docker compose  --env-file .env.development down -v
 
 services:
+    app:
+        container_name: 'app_${APP_NAME}'
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        env_file:
+            - .env
+        environment:
+            BBDD_HOST: postgres
+            REDIS_HOST: redis
+        ports:
+            - '${APP_PORT}:${APP_PORT}'
+        depends_on:
+            - postgres
+            - redis
+            
     postgres:
         container_name: 'db_transcendence'
         image: postgres:latest #todo usar alpine
