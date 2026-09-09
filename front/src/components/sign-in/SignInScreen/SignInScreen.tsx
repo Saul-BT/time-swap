@@ -28,6 +28,7 @@ export default async function SignInScreen({
 }: SignInScreenProps) {
   const { brand, signIn } = await getDictionary();
   const locale = await getLocale();
+  // TODO(content): resolves to "#" until the code of conduct page exists.
   const conductHref =
     FOOTER_LINKS.find((link) => link.id === "codeOfConduct")?.href ?? "#";
 

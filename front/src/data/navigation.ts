@@ -13,6 +13,8 @@ export const HEADER_LINKS: readonly NavigationLink[] = [
   { id: "signIn", target: "signIn" },
 ];
 
+// TODO(content): dead "#" links. Point each one at its route once the legal
+// pages exist, and move them to `ROUTES` so they localize like the rest.
 export const FOOTER_LINKS: readonly FooterLink[] = [
   { id: "codeOfConduct", href: "#" },
   { id: "privacy", href: "#" },

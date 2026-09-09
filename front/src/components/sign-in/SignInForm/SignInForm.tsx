@@ -92,6 +92,8 @@ export default async function SignInForm({ action, error }: SignInFormProps) {
         />
       </FormField>
 
+      {/* TODO(auth): `remember` is submitted but nothing reads it. Bind it to
+          the session cookie lifetime once the sign-in endpoint exists. */}
       <SignInFormRemember className={signInFormClasses.remember}>
         <Checkbox
           id={SIGN_IN_FIELD_ID.remember}

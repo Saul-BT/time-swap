@@ -6,12 +6,14 @@ import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
 import { localizePath } from "@/i18n/routes";
 
 /**
- * Placeholder until the API exposes authentication: every attempt comes back
- * as a credentials mismatch so the screen shows its error state.
- *
  * The locale is bound by the page: `next/root-params` is not available
  * inside a Server Action.
  */
+// FIXME(auth): mocked action. Every attempt returns `credentials` so the
+// screen can show its error state; no credentials are checked and no session
+// is created. Replace the redirect with the real call, map the API response
+// onto `SignInErrorId`, and redirect to the target page on success.
+// When: the back end exposes the sign-in endpoint.
 export async function signIn(
   locale: string,
   _formData: FormData,

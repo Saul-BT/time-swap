@@ -20,7 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/** Placeholder route: the recovery flow is not designed yet. */
+// FIXME(recover): static placeholder. Build the real flow — email field,
+// one-time link request, rate limiting and the sent/expired states.
+// When: the recovery flow is designed.
 export default async function RecoverAccessPage() {
   const { recoverAccess } = await getDictionary();
   const locale = await getLocale();
