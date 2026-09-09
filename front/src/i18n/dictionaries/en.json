@@ -30,6 +30,12 @@
     "discover": "Discover",
     "publish": "Post a listing"
   },
+  "listingDetail": {
+    "lead": "Temporary interface: a sample detail. Contact does nothing yet.",
+    "hoursLabel": "Rough duration",
+    "contact": "Request contact (demo)",
+    "back": "Back"
+  },
   "hero": {
     "eyebrow": "{city} · time is not stored, it circulates",
     "title": "What do you need help with this week?",
