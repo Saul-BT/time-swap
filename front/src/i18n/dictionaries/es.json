@@ -21,6 +21,15 @@
     "signIn": "Entrar",
     "signUp": "Crear cuenta"
   },
+  "loggedHome": {
+    "title": "Tu inicio",
+    "lead": "Interfaz temporal: aquí verías lo que pide tu atención. No hay sesión real todavía.",
+    "balanceLabel": "Saldo",
+    "balanceValue": "2 h",
+    "attentionTitle": "Pendiente",
+    "discover": "Descubrir",
+    "publish": "Publicar anuncio"
+  },
   "hero": {
     "eyebrow": "{city} · el tiempo no se guarda, circula",
     "title": "¿Con qué necesitas ayuda esta semana?",
