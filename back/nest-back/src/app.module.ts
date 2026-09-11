@@ -51,11 +51,13 @@ dotenv.config({ path: envFile }); // Configurar la variable global para el .env
                     database: `db_back_${process.env.APP_NAME}`,
                     autoLoadEntities: true,
                     synchronize: configService.getOrThrow<string>('BBDD_SYNCHRONIZE') === 'development', // Valor comparado contra el .env
-                    ssl: configService.getOrThrow<boolean>('BBDD_SSL'), // Valor comparado contra el .env
+                    //ssl: configService.getOrThrow<boolean>('BBDD_SSL'), // Valor comparado contra el .env
+                    ssl: false, //todo support ssl with certificate in deployment
                     extra: {
-                        ssl: configService.getOrThrow<boolean>('BBDD_SSL') // Valor comparado contra el .env
+                        /*ssl: configService.getOrThrow<boolean>('BBDD_SSL') // Valor comparado contra el .env
                             ? { rejectUnauthorized: false }
-                            : null,
+                            : null,*/
+                        ssl: false //todo support ssl with certificate in deployment
                     },
                     //logging: ['query', 'error', 'schema'], // Logs detallados
                 };

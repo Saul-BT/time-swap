@@ -10,6 +10,8 @@ function checkEquals(configA: Record<string, unknown>, configB: Record<string, u
 }
 
 export function validateEnv(config: Record<string, unknown>) {
+    return config; //todo compartir .env por docker en lugar de ficheros
+
     // Conseguir todas las variables del .env.example
     const absolutePath = path.resolve('./.env.example');
     const envExample = fs.readFileSync(absolutePath, 'utf8');
