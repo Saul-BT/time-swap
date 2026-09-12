@@ -30,6 +30,12 @@
     "discover": "Descubrir",
     "publish": "Publicar anuncio"
   },
+  "listingDetail": {
+    "lead": "Interfaz temporal: detalle de ejemplo. El contacto no hace nada todavía.",
+    "hoursLabel": "Duración orientativa",
+    "contact": "Solicitar contacto (demo)",
+    "back": "Volver"
+  },
   "hero": {
     "eyebrow": "{city} · el tiempo no se guarda, circula",
     "title": "¿Con qué necesitas ayuda esta semana?",
