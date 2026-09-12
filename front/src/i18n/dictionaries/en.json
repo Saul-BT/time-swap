@@ -169,6 +169,72 @@
       }
     }
   },
+  "register": {
+    "metadata": {
+      "title": "Create account · Time Swap",
+      "description": "Create your Time Swap account: a few details and nothing else."
+    },
+    "header": {
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "stepper": {
+      "label": "Registration progress",
+      "account": "Your account",
+      "password": "Password",
+      "profile": "About you"
+    },
+    "account": {
+      "title": "Let's create your account",
+      "lead": "Four details and nothing else. Telling us what you know how to do comes in step 3, and you can leave it for another day.",
+      "fullNameLabel": "Full name",
+      "postalCodeLabel": "Postal code",
+      "postalCodePlaceholder": "28080",
+      "postalCodeHint": "Only to show you exchanges nearby. It is never made public.",
+      "nicknameLabel": "Nickname",
+      "nicknamePlaceholder": "marta_r",
+      "nicknameHint": "This is what the community will see. Your full name is not needed.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "name@email.com",
+      "submit": "Continue"
+    },
+    "password": {
+      "title": "Choose a password",
+      "lead": "Only you know it. Make it long, and do not reuse it anywhere else.",
+      "mismatchTitle": "The passwords do not match",
+      "mismatchBody": "Check both fields: they need to be exactly the same.",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm the password",
+      "showPassword": "Show",
+      "hidePassword": "Hide",
+      "back": "Back",
+      "continue": "Continue",
+      "strength": {
+        "veryWeak": "Very weak",
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "excellent": "Excellent",
+        "ariaLabel": "Password strength",
+        "ariaLabelWithLevel": "Password strength: {level}"
+      }
+    },
+    "profile": {
+      "title": "Tell us a bit more",
+      "lead": "This is not required to have an account. You can fill it in now or leave it for another day.",
+      "skillsLegend": "Skills: what you know how to do",
+      "interestsLegend": "Interests: what you would like to receive",
+      "back": "Back",
+      "skip": "Fill in later",
+      "save": "Save and finish"
+    },
+    "done": {
+      "title": "Account created",
+      "lead": "This is a preview: nothing is connected to the server yet, so nothing was really saved.",
+      "body": "Once sign-up is connected, this step will send your details and take you straight to your account.",
+      "cta": "Go to sign in"
+    }
+  },
   "recoverAccess": {
     "metadata": {
       "title": "Recover access · Time Swap",

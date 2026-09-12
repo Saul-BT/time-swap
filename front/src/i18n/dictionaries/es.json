@@ -169,6 +169,72 @@
       }
     }
   },
+  "register": {
+    "metadata": {
+      "title": "Crear cuenta · Time Swap",
+      "description": "Crea tu cuenta en Time Swap: unos pocos datos y nada más."
+    },
+    "header": {
+      "hasAccount": "¿Ya tienes cuenta?",
+      "signIn": "Entrar"
+    },
+    "stepper": {
+      "label": "Progreso del registro",
+      "account": "Tu cuenta",
+      "password": "Contraseña",
+      "profile": "Sobre ti"
+    },
+    "account": {
+      "title": "Vamos a crear tu cuenta",
+      "lead": "Cuatro datos y nada más. Lo de contar qué sabes hacer viene en el paso 3, y puedes dejarlo para otro día.",
+      "fullNameLabel": "Nombre y apellidos",
+      "postalCodeLabel": "Código postal",
+      "postalCodePlaceholder": "28080",
+      "postalCodeHint": "Solo para mostrarte intercambios cerca. Nunca se hace pública.",
+      "nicknameLabel": "Nickname",
+      "nicknamePlaceholder": "marta_r",
+      "nicknameHint": "Es lo que verá la comunidad. No hace falta tu nombre completo.",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "nombre@correo.com",
+      "submit": "Continuar"
+    },
+    "password": {
+      "title": "Elige una contraseña",
+      "lead": "Solo tú la conoces. Que sea larga y que no la uses en ningún otro sitio.",
+      "mismatchTitle": "Las contraseñas no coinciden",
+      "mismatchBody": "Revisa los dos campos: tienen que ser exactamente iguales.",
+      "passwordLabel": "Contraseña",
+      "confirmPasswordLabel": "Confirma la contraseña",
+      "showPassword": "Ver",
+      "hidePassword": "Ocultar",
+      "back": "Atrás",
+      "continue": "Continuar",
+      "strength": {
+        "veryWeak": "Muy débil",
+        "weak": "Débil",
+        "fair": "Regular",
+        "good": "Buena",
+        "excellent": "Excelente",
+        "ariaLabel": "Seguridad de la contraseña",
+        "ariaLabelWithLevel": "Seguridad de la contraseña: {level}"
+      }
+    },
+    "profile": {
+      "title": "Cuéntanos algo más",
+      "lead": "Esto no hace falta para tener cuenta. Puedes rellenarlo ahora o dejarlo para otro día.",
+      "skillsLegend": "Habilidades: lo que sabes hacer",
+      "interestsLegend": "Intereses: lo que te gustaría recibir",
+      "back": "Atrás",
+      "skip": "Rellenar más tarde",
+      "save": "Guardar y terminar"
+    },
+    "done": {
+      "title": "Cuenta creada",
+      "lead": "Esto es una vista previa: todavía no hay nada conectado al servidor, así que no se ha guardado nada de verdad.",
+      "body": "Cuando el registro esté conectado, este paso enviará tus datos y te llevará directamente a tu cuenta.",
+      "cta": "Ir a iniciar sesión"
+    }
+  },
   "recoverAccess": {
     "metadata": {
       "title": "Recuperar el acceso · Time Swap",

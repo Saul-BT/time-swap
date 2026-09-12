@@ -11,6 +11,7 @@ export const FOLDER_LOCALE: Locale = "en";
 export const ROUTES = {
   home: { es: "/", en: "/" },
   signIn: { es: "/entrar", en: "/sign-in" },
+  register: { es: "/crear-cuenta", en: "/register" },
   recoverAccess: { es: "/recuperar", en: "/recover" },
 } as const satisfies Record<string, Record<Locale, string>>;
 
