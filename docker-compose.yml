@@ -1,10 +1,37 @@
 # Es importante lanzar el comando para levantar el docker usando el .env correcto
-# docker compose --env-file .env up -d
-
+# docker compose --env-file back/nest-back/.env up -d --build
 # Para eliminar el docker stack junto con sus volumenes
 # docker compose  --env-file .env.development down -v
 
 services:
+    front:
+        container_name: 'front_${APP_NAME}'
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        ports:
+            - '3000:3000'
+        depends_on:
+            - app
+
+    app:
+        container_name: 'app_${APP_NAME}'
+        build:
+            context: ./back/nest-back
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        env_file:
+            - ./back/nest-back/.env
+        environment:
+            BBDD_HOST: postgres
+            REDIS_HOST: redis
+        ports:
+            - '${APP_PORT}:${APP_PORT}'
+        depends_on:
+            - postgres
+            - redis
+            
     postgres:
         container_name: 'db_transcendence'
         image: postgres:latest #todo usar alpine
