@@ -1,0 +1,123 @@
+{
+  "brand": {
+    "name": "Time Swap",
+    "tagline": "das una hora, recibes una hora"
+  },
+  "metadata": {
+    "title": "Time Swap · das una hora, recibes una hora",
+    "description": "Mira lo que ofrece la gente de tu ciudad antes de registrarte. Se paga con horas, no con dinero."
+  },
+  "placeholder": {
+    "city": "[Ciudad]",
+    "area": "[Zona]"
+  },
+  "common": {
+    "sampleContent": "Contenido de ejemplo"
+  },
+  "nav": {
+    "label": "Principal",
+    "listings": "Qué circula",
+    "howItWorks": "Cómo funciona",
+    "signIn": "Entrar",
+    "signUp": "Crear cuenta"
+  },
+  "hero": {
+    "eyebrow": "{city} · el tiempo no se guarda, circula",
+    "title": "¿Con qué necesitas ayuda esta semana?",
+    "lead": "Mira lo que ofrece la gente de {city} antes de decidir si te registras. Se paga con horas, no con dinero.",
+    "search": {
+      "skillLabel": "Qué necesitas",
+      "skillPlaceholder": "informática, mudanza, guitarra, compañía…",
+      "areaLabel": "Zona",
+      "submit": "Buscar"
+    },
+    "filters": {
+      "label": "Filtros aplicados",
+      "all": "Todo",
+      "offers": "Ofertas",
+      "requests": "Solicitudes",
+      "inPerson": "Presencial",
+      "remote": "Remoto",
+      "nearby": "Cerca de mí",
+      "barter": "Acepta trueque"
+    }
+  },
+  "listings": {
+    "title": "Publicado esta semana en {area}",
+    "more": "Ver más anuncios",
+    "kind": {
+      "offer": "Oferta",
+      "request": "Solicitud"
+    },
+    "mode": {
+      "inPerson": "Presencial",
+      "remote": "Remoto",
+      "both": "Presencial o remoto"
+    }
+  },
+  "howItWorks": {
+    "eyebrow": "¿Primera vez aquí?",
+    "title": "Esto no se paga con dinero.",
+    "facts": {
+      "oneHourOneCredit": {
+        "figure": "1 h",
+        "description": "Cada hora que dedicas a alguien se convierte en un crédito. Da igual la habilidad que pongas."
+      },
+      "debitLimit": {
+        "figure": "−3 h",
+        "description": "Puedes pedir ayuda antes de haber dado nada: la cuenta admite hasta tres horas en negativo."
+      },
+      "noMoney": {
+        "figure": "0 €",
+        "description": "Los créditos no se compran ni se venden. Solo se reembolsan los materiales, si los hay."
+      }
+    }
+  },
+  "categories": {
+    "title": "Explora por lo que sabes hacer",
+    "intro": "Las categorías iniciales todavía se están decidiendo con la comunidad.",
+    "listLabel": "Categorías iniciales",
+    "items": {
+      "tech": "Informática y móviles",
+      "languages": "Idiomas",
+      "companionship": "Acompañamiento",
+      "pets": "Cuidado de animales",
+      "repairs": "Reparaciones",
+      "cooking": "Cocina",
+      "moving": "Mudanzas y transporte",
+      "sewing": "Costura",
+      "tutoring": "Apoyo escolar",
+      "paperwork": "Trámites y papeleo",
+      "music": "Música",
+      "gardening": "Jardinería",
+      "writing": "Escritura y CV",
+      "photography": "Fotografía"
+    }
+  },
+  "members": {
+    "title": "Personas que ya participan",
+    "skillsLabel": "Habilidades de {name}"
+  },
+  "dispute": {
+    "label": "El freno",
+    "title": "Si algo se tuerce, el relevo se para.",
+    "body": "Cualquiera de las dos partes puede abrir una disputa. Las horas de ese intercambio no se mueven hasta que alguien del equipo lo revisa, y un movimiento revertido no desaparece: se compensa con otro y los dos quedan a la vista."
+  },
+  "signUp": {
+    "title": "Para escribir a alguien hace falta cuenta verificada",
+    "lead": "Es la única barrera, y existe para que nadie reciba mensajes de perfiles anónimos.",
+    "create": "Crear mi cuenta",
+    "signIn": "Entrar",
+    "browse": "Solo mirar"
+  },
+  "footer": {
+    "tagline": "Time Swap · banco de tiempo vecinal",
+    "legalLabel": "Legal",
+    "languageLabel": "Idioma",
+    "links": {
+      "codeOfConduct": "Código de conducta",
+      "privacy": "Privacidad",
+      "terms": "Términos"
+    }
+  }
+}
