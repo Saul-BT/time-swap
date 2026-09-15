@@ -10,6 +10,10 @@ import { space } from "./tokens";
 export const rule = (theme: Theme) =>
   `${theme.system.borderWidth}px solid ${theme.palette.text.primary}`;
 
+/** Accent rule: marks what the reader was sent to look at. */
+export const accentRule = (theme: Theme) =>
+  `${theme.system.borderWidth}px solid ${theme.palette.primary.main}`;
+
 /** Soft rule: divides the inside of a surface. */
 export const softRule = (theme: Theme) =>
   `${theme.system.borderWidth}px solid ${theme.palette.divider}`;
@@ -31,9 +35,30 @@ export const sectionSpacingY = (
   },
 });
 
+/** Off the screen, still in the accessibility tree. */
+export const visuallyHidden = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  margin: -1,
+  padding: 0,
+  border: 0,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  whiteSpace: "nowrap",
+} as const;
+
 /** Resets a `ul` used purely for grouping. */
 export const bareList = {
   listStyle: "none",
   margin: 0,
   padding: 0,
+} as const;
+
+/** Resets a `fieldset` used purely for grouping. */
+export const bareFieldset = {
+  margin: 0,
+  padding: 0,
+  border: 0,
+  minWidth: 0,
 } as const;

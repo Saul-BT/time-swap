@@ -18,6 +18,25 @@ export const ROUTES = {
   // Before `listingDetail`, or `:id` would swallow the slug in rewrites and redirects.
   createAd: { es: "/anuncios/nuevo", en: "/listings/new" },
   listingDetail: { es: "/anuncios/:id", en: "/listings/:id" },
+  settingsProfile: { es: "/ajustes/perfil", en: "/settings/profile" },
+  settingsProfilePresentation: {
+    es: "/ajustes/perfil/presentacion",
+    en: "/settings/profile/presentation",
+  },
+  settingsProfileSkills: {
+    es: "/ajustes/perfil/habilidades",
+    en: "/settings/profile/skills",
+  },
+  settingsProfileAvailability: {
+    es: "/ajustes/perfil/disponibilidad",
+    en: "/settings/profile/availability",
+  },
+  settingsProfileZone: {
+    es: "/ajustes/perfil/zona",
+    en: "/settings/profile/zone",
+  },
+  settingsPrivacy: { es: "/ajustes/privacidad", en: "/settings/privacy" },
+  memberProfile: { es: "/miembros/:id", en: "/members/:id" },
 } as const satisfies Record<string, Record<Locale, string>>;
 
 export type RouteId = keyof typeof ROUTES;

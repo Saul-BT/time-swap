@@ -2,6 +2,7 @@
 
 - **Estado:** Aceptado
 - **Fecha:** 2026-09-03
+- **Ampliado:** 2026-09-14 — el par de estados pendientes sobre tinta
 
 ## Contexto
 
@@ -28,6 +29,20 @@ estado `:focus-visible` y el comportamiento de los titulares condensados en cast
 | `info` | `#151318` (tinta) | **Se descarta el azul propuesto.** Un tercer color frío competiría con el freno y rompería la regla «un solo acento». Lo informativo en este sistema es tinta sobre superficie con borde. |
 | `success` | `#1E5B3A` | Se acepta el candidato. El verde de confirmación es convención y su tono (148°) se distingue del freno (182°). |
 
+**Los dos estados pendientes sobre tinta.** Los valores de arriba están calibrados contra el fondo
+(`#F3F2F5`). Sobre las superficies invertidas —la fila activa del rail de ajustes, que usa tinta de
+fondo— los mismos valores caen a 3,1:1 (`warning`) y 2,3:1 (`success`), por debajo del 4,5:1 de texto
+y del 3:1 de gráficos. Se añade un par de valores solo para ese contexto, mismo tono, subidos en
+luminosidad, expuestos como `palette.onInk`:
+
+| Rol | Valor | Contraste sobre tinta |
+|---|---|---|
+| `onInk.warning` | `#E09600` | 7,5:1 |
+| `onInk.success` | `#4FB483` | 7,2:1 |
+
+No son colores nuevos del sistema: son los mismos dos estados resueltos para el segundo fondo que el
+producto usa. Ningún componente los elige por su cuenta; los pide con `tone="inverse"`.
+
 **Desviaciones respecto a la especificación del sistema**, ambas necesarias para que el sistema funcione en producto:
 
 1. **Interlineado de titulares: 1,06 en lugar de 0,98.** Con 0,98 las tildes y virgulillas de los
@@ -52,6 +67,8 @@ estado `:focus-visible` y el comportamiento de los titulares condensados en cast
   etiqueta pueden confundirse; conviene que ningún componente los use como único portador de significado.
 - El interlineado de 1,06 se aparta de la especificación original, así que especificación y tema divergen en ese
   valor concreto.
+- La paleta de estados pasa de cuatro valores a seis. Cada fondo nuevo que no sea ni fondo ni tinta
+  volvería a abrir el problema; la salida entonces no es un tercer par, sino dejar de invertir.
 
 ## Alternativas consideradas
 

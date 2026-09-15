@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AppProviders from "@/components/layout/AppProviders";
+import { ErrorCopyProvider } from "@/components/layout/ErrorCopy";
 import { LOCALES } from "@/i18n/config";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath, routeAlternates } from "@/i18n/routes";
@@ -34,11 +35,30 @@ export default async function SiteLayout({
   params,
 }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
+  const { error, settings } = await getDictionary();
 
   return (
     <html lang={lang} className={fontVariables}>
       <body>
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          <ErrorCopyProvider
+            copy={{
+              page: {
+                title: error.title,
+                body: error.body,
+                retry: error.retry,
+                home: error.home,
+              },
+              panel: {
+                title: settings.panel.loadErrorTitle,
+                body: settings.panel.loadErrorBody,
+                retry: settings.panel.retry,
+              },
+            }}
+          >
+            {children}
+          </ErrorCopyProvider>
+        </AppProviders>
       </body>
     </html>
   );

@@ -5,10 +5,12 @@ import {
   FormControlLabel,
   formControlLabelClasses,
   Checkbox as MuiCheckbox,
+  checkboxClasses as muiCheckboxClasses,
   styled,
 } from "@mui/material";
 import { rule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
+import { checkboxClasses } from "./Checkbox.util";
 
 const NAME = "Checkbox";
 
@@ -17,6 +19,9 @@ export const CheckboxRoot = styled(MuiCheckbox, { name: NAME, slot: "Root" })(
     padding: theme.spacing(space.xs),
     color: theme.palette.text.primary,
     "&:hover": { backgroundColor: "transparent" },
+    [`&.${muiCheckboxClasses.disabled} .${checkboxClasses.box}`]: {
+      opacity: 0.4,
+    },
     [`&.${buttonBaseClasses.focusVisible}`]: {
       outline: `${theme.system.focusRingWidth}px solid ${theme.palette.text.primary}`,
       outlineOffset: -theme.system.focusRingWidth,
@@ -52,5 +57,10 @@ export const CheckboxLabel = styled(FormControlLabel, {
   marginRight: 0,
   minHeight: 44,
   gap: theme.spacing(space.xs / 2),
-  [`& .${formControlLabelClasses.label}`]: { ...theme.typography.body2 },
+  [`& .${formControlLabelClasses.label}`]: {
+    ...theme.typography.body2,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: theme.spacing(space.xs),
+  },
 }));
