@@ -35,6 +35,19 @@ export const statusColor = {
   success: "#1E5B3A",
 } as const;
 
+/**
+ * The two pending states again, for the inverted surfaces that use `ink` as a
+ * background. `statusColor` is calibrated against `background`, where it reads
+ * at 5.3:1 and 7.2:1; over ink the same values fall to 3.1:1 and 2.3:1.
+ * Contrast ratios below are measured against `color.ink`.
+ */
+export const statusColorOnInk = {
+  /** Same hue as `statusColor.warning`, lifted. 7.5:1. */
+  warning: "#E09600",
+  /** Same hue as `statusColor.success`, lifted. 7.2:1. */
+  success: "#4FB483",
+} as const;
+
 /** CSS variables published by `next/font` in `fonts.ts`. */
 export const fontFamily = {
   /** Oswald 700. Uppercase headlines. */
@@ -67,6 +80,14 @@ export const structure = {
   controlHeight: 52,
   contentWidth: 1240,
   focusRingWidth: 3,
+  /** Minimum side of a cell in a selectable grid, such as the week grid. */
+  gridCellSize: 44,
+} as const;
+
+/** Lucide icon sizes. `sm` sits inline with text, `md` next to a label or in a control. */
+export const iconSize = {
+  sm: 16,
+  md: 22,
 } as const;
 
 /**

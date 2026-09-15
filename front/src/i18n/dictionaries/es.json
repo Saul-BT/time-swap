@@ -178,6 +178,248 @@
     "lead": "Esta pantalla todavía no está construida. Cuando lo esté, te enviaremos un enlace de un solo uso al correo con el que te registraste.",
     "backToSignIn": "Volver a entrar"
   },
+  "settings": {
+    "metadata": {
+      "profileTitle": "Tu perfil · Time Swap",
+      "privacyTitle": "Privacidad · Time Swap",
+      "description": "Mantén al día lo que ofreces, lo que buscas y cómo te ven."
+    },
+    "account": {
+      "label": "Mi cuenta",
+      "profile": "Perfil",
+      "notifications": "Notificaciones",
+      "wallet": "Cartera",
+      "listings": "Mis anuncios"
+    },
+    "shell": {
+      "breadcrumb": "Mi cuenta",
+      "title": "Tu perfil",
+      "leadIndex": "Cinco apartados. Entra en uno, guarda y vuelve.",
+      "leadDetail": "Un apartado cada vez. Los que faltan para publicar están marcados.",
+      "viewPublic": "Ver mi perfil público",
+      "navLabel": "Apartados del perfil",
+      "back": "Tu perfil",
+      "stepOf": "{n} de {total}",
+      "progressUnavailable": "No hemos podido cargar tu progreso. Los apartados siguen disponibles."
+    },
+    "completion": {
+      "sentence": "{done} de {total} listos.",
+      "review": "{section} por revisar",
+      "missing": "falta {section}",
+      "canPublish": "Listo para publicar."
+    },
+    "sections": {
+      "presentation": "Presentación",
+      "skills": "Habilidades",
+      "availability": "Disponibilidad",
+      "zone": "Zona",
+      "privacy": "Privacidad"
+    },
+    "status": {
+      "done": "Listo",
+      "review": "Revisar",
+      "missing": "Falta",
+      "reviewLong": "Por revisar",
+      "missingLong": "Falta para publicar"
+    },
+    "panel": {
+      "stepLabel": "Apartado {n} de {total}",
+      "save": "Guardar {section}",
+      "saving": "Guardando…",
+      "saved": "Guardado",
+      "next": "Siguiente: {section}",
+      "unsavedTitle": "Tienes cambios sin guardar",
+      "unsavedBody": "Si sales ahora, se pierden los cambios de este apartado.",
+      "unsavedStay": "Seguir editando",
+      "unsavedLeave": "Salir sin guardar",
+      "serverErrorTitle": "No hemos podido guardar",
+      "serverErrorBody": "Tus cambios siguen aquí. Vuelve a intentarlo en un momento.",
+      "loadErrorTitle": "No hemos podido cargar este apartado",
+      "loadErrorBody": "Nada se ha perdido. Vuelve a intentarlo o entra en otro apartado.",
+      "retry": "Reintentar"
+    },
+    "reveal": {
+      "legend": "Quién ve {field}",
+      "visitor": "Visitante",
+      "member": "Miembro",
+      "contact": "Contacto",
+      "agreement": "Acuerdo",
+      "short": {
+        "visitor": "V",
+        "member": "M",
+        "contact": "C",
+        "agreement": "A"
+      },
+      "hint": {
+        "visitor": "Lo ve cualquiera, también sin cuenta.",
+        "member": "Solo con cuenta verificada.",
+        "contact": "Cuando aceptes una solicitud de contacto.",
+        "agreement": "Solo con un acuerdo cerrado."
+      }
+    },
+    "presentation": {
+      "lead": "Cómo te ven en tus anuncios, tu perfil y el chat.",
+      "photo": "Foto de perfil",
+      "changePhoto": "Cambiar foto",
+      "displayName": "Nombre visible",
+      "displayNameHint": "Siempre público. No es tu nombre legal.",
+      "pronouns": "Pronombres",
+      "optional": "(opcional)",
+      "pronounsPlaceholder": "Sin especificar",
+      "bio": "Presentación",
+      "bioField": "tu presentación",
+      "counter": "{count} / {max}",
+      "errors": {
+        "displayNameRequired": "Escribe el nombre con el que quieres que te vean.",
+        "bioContainsContact": "Quita el número de teléfono o el correo. Los datos de contacto se comparten en el chat, cuando tú quieras.",
+        "bioTooLong": "Acorta la presentación: como mucho {max} caracteres."
+      }
+    },
+    "skills": {
+      "lead": "Del catálogo, con buscador. Hace falta al menos una para publicar.",
+      "offerLabel": "Puedes ayudar con",
+      "offerHint": "Se eligen del catálogo, no se escriben: así te encuentran buscando lo mismo. Hace falta al menos una para publicar.",
+      "wantLabel": "Con qué te gustaría que te ayudaran",
+      "wantHint": "Opcional. Sirve para que te propongan trueques.",
+      "search": "Buscar en el catálogo",
+      "selectedLabel": "Elegidas",
+      "suggestionsLabel": "Sugerencias",
+      "add": "Añadir {name}",
+      "remove": "Quitar {name}",
+      "noMatch": "Nada en el catálogo con ese nombre.",
+      "emptyOffer": "Todavía no has elegido ninguna. Hace falta al menos una para publicar.",
+      "skillsField": "tus habilidades",
+      "interestsField": "tus intereses",
+      "errors": {
+        "skillsRequired": "Elige al menos una habilidad del catálogo."
+      }
+    },
+    "availability": {
+      "lead": "Orientativa. Referencia para anuncios y acuerdos, no un calendario.",
+      "gridLabel": "Toca las casillas en las que sueles tener un rato",
+      "hint": "Orientativo. Se muestra como referencia en tus anuncios y acuerdos; no reserva nada.",
+      "field": "tu disponibilidad",
+      "cellLabel": "{day} · {slot}",
+      "days": {
+        "mon": "L",
+        "tue": "M",
+        "wed": "X",
+        "thu": "J",
+        "fri": "V",
+        "sat": "S",
+        "sun": "D"
+      },
+      "daysLong": {
+        "mon": "Lunes",
+        "tue": "Martes",
+        "wed": "Miércoles",
+        "thu": "Jueves",
+        "fri": "Viernes",
+        "sat": "Sábado",
+        "sun": "Domingo"
+      },
+      "slots": {
+        "morning": "Mañana",
+        "afternoon": "Tarde",
+        "evening": "Noche"
+      }
+    },
+    "zone": {
+      "lead": "Solo el distrito o el barrio. Nunca la dirección.",
+      "emptyTitle": "Todavía no has elegido zona.",
+      "emptyBody": "Guardamos el centro de tu zona, nunca tu dirección. Sirve para las búsquedas por cercanía.",
+      "pick": "Elegir mi barrio",
+      "approximate": "Aproximar",
+      "approximating": "Buscando tu zona…",
+      "deniedTitle": "El navegador no ha compartido tu ubicación.",
+      "deniedBody": "No pasa nada: elige tu barrio a mano.",
+      "unsupportedTitle": "Este navegador no puede aproximar tu zona.",
+      "unsupportedBody": "Elige tu barrio a mano.",
+      "pickerLabel": "Tu barrio",
+      "pickerPlaceholder": "Busca tu barrio",
+      "noMatch": "No encontramos ese barrio.",
+      "currentTitle": "Tu zona",
+      "current": "{neighborhood}, {district}",
+      "change": "Cambiar",
+      "precisionLegend": "Qué se muestra de tu zona",
+      "precisionHint": "Cuanto más amplia, menos coincidencias cercanas verás. El distrito lo ve todo el mundo.",
+      "precision": {
+        "city": "Ciudad",
+        "district": "Distrito",
+        "neighborhood": "Barrio"
+      },
+      "modalityLegend": "Cómo puedes participar",
+      "modalityHint": "A distancia no necesita zona.",
+      "modality": {
+        "in_person": "En persona",
+        "remote": "A distancia"
+      },
+      "field": "tu barrio",
+      "revealHint": "El barrio se muestra cuando aceptes un contacto. El punto de encuentro lo pones tú en el chat, con un acuerdo cerrado.",
+      "errors": {
+        "zoneRequiredInPerson": "Para ofrecer en persona hace falta una zona. Elige tu barrio o marca solo «a distancia».",
+        "modalityRequired": "Marca al menos una forma de participar."
+      }
+    },
+    "privacy": {
+      "lead": "Qué ve cada persona y desde cuándo. Nada sube de nivel sin que tú lo decidas.",
+      "now": "Ahora mismo:",
+      "visibleToVisitors": {
+        "title": "Mi perfil se ve sin tener cuenta",
+        "body": "Cualquiera que llegue desde fuera puede leer tu presentación y tus habilidades.",
+        "on": "cualquiera",
+        "off": "solo miembros verificados"
+      },
+      "searchable": {
+        "title": "Mis anuncios salen en buscadores",
+        "body": "Afecta a Google y similares. La búsqueda dentro de Time Swap no cambia.",
+        "on": "en los buscadores",
+        "off": "fuera de los buscadores"
+      },
+      "matrixTitle": "Desde cuándo se ve cada dato",
+      "matrixHint": "Resumen de toda la política. Cada dato se cambia en su apartado; el lápiz te lleva allí.",
+      "dataHeader": "Dato",
+      "fixed": "fijo",
+      "never": "Nunca",
+      "cellLabel": "{field} · {moment}",
+      "change": "Cambiar {field}",
+      "rows": {
+        "nameAndModality": "Nombre y modalidad",
+        "district": "Distrito",
+        "bio": "Presentación",
+        "skills": "Habilidades",
+        "interests": "Intereses",
+        "availability": "Disponibilidad",
+        "neighborhood": "Barrio",
+        "contact": "Correo, teléfono, dirección, saldo"
+      },
+      "footnote": "Nombre, modalidad y distrito: siempre públicos. Correo, teléfono, dirección exacta y saldo de horas: nunca, en ningún momento."
+    }
+  },
+  "memberProfile": {
+    "metadata": {
+      "title": "{name} · Time Swap",
+      "description": "Perfil público de {name} en Time Swap."
+    },
+    "eyebrow": "Miembro",
+    "offers": "Puede ayudar con",
+    "wants": "Le gustaría que le ayudaran con",
+    "availability": "Suele tener un rato",
+    "zone": "Zona",
+    "modality": "Cómo participa",
+    "contactNotice": "Los datos de contacto se comparten en el chat, cuando esta persona acepte tu solicitud.",
+    "ownProfileTitle": "Así te ven",
+    "ownProfileBody": "Este es tu perfil público tal y como lo ve un miembro con cuenta.",
+    "editProfile": "Gestionar mi perfil",
+    "hidden": "Este dato se muestra más adelante.",
+    "notFound": "No encontramos este perfil."
+  },
+  "error": {
+    "title": "Algo ha fallado",
+    "body": "No hemos podido montar esta página. Vuelve a intentarlo en un momento.",
+    "retry": "Reintentar",
+    "home": "Volver al inicio"
+  },
   "footer": {
     "tagline": "Time Swap · banco de tiempo vecinal",
     "legalLabel": "Legal",

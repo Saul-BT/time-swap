@@ -7,4 +7,5 @@ export const formNoticeClasses = createComponentClasses("FormNotice", [
   "root",
   "title",
   "body",
+  "action",
 ]);

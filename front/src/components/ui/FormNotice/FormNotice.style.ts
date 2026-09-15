@@ -27,3 +27,9 @@ export const FormNoticeTitle = styled(Typography, {
     marginBottom: theme.spacing(space.xs / 2),
   }),
 );
+
+export const FormNoticeAction = styled("div", { name: NAME, slot: "Action" })(
+  ({ theme }) => ({
+    marginTop: theme.spacing(space.sm),
+  }),
+);

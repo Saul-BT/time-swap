@@ -178,6 +178,248 @@
     "lead": "This screen is not built yet. When it is, we will send a single-use link to the email you registered with.",
     "backToSignIn": "Back to sign in"
   },
+  "settings": {
+    "metadata": {
+      "profileTitle": "Your profile · Time Swap",
+      "privacyTitle": "Privacy · Time Swap",
+      "description": "Keep what you offer, what you look for and how people see you up to date."
+    },
+    "account": {
+      "label": "My account",
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "wallet": "Wallet",
+      "listings": "My listings"
+    },
+    "shell": {
+      "breadcrumb": "My account",
+      "title": "Your profile",
+      "leadIndex": "Five sections. Open one, save and come back.",
+      "leadDetail": "One section at a time. The ones you need before publishing are marked.",
+      "viewPublic": "View my public profile",
+      "navLabel": "Profile sections",
+      "back": "Your profile",
+      "stepOf": "{n} of {total}",
+      "progressUnavailable": "We could not load your progress. The sections are still available."
+    },
+    "completion": {
+      "sentence": "{done} of {total} ready.",
+      "review": "{section} to review",
+      "missing": "{section} missing",
+      "canPublish": "Ready to publish."
+    },
+    "sections": {
+      "presentation": "Presentation",
+      "skills": "Skills",
+      "availability": "Availability",
+      "zone": "Zone",
+      "privacy": "Privacy"
+    },
+    "status": {
+      "done": "Done",
+      "review": "Review",
+      "missing": "Missing",
+      "reviewLong": "To review",
+      "missingLong": "Needed to publish"
+    },
+    "panel": {
+      "stepLabel": "Section {n} of {total}",
+      "save": "Save {section}",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "next": "Next: {section}",
+      "unsavedTitle": "You have unsaved changes",
+      "unsavedBody": "If you leave now, the changes in this section are lost.",
+      "unsavedStay": "Keep editing",
+      "unsavedLeave": "Leave without saving",
+      "serverErrorTitle": "We could not save",
+      "serverErrorBody": "Your changes are still here. Try again in a moment.",
+      "loadErrorTitle": "We could not load this section",
+      "loadErrorBody": "Nothing was lost. Try again, or open another section.",
+      "retry": "Retry"
+    },
+    "reveal": {
+      "legend": "Who sees {field}",
+      "visitor": "Visitor",
+      "member": "Member",
+      "contact": "Contact",
+      "agreement": "Agreement",
+      "short": {
+        "visitor": "V",
+        "member": "M",
+        "contact": "C",
+        "agreement": "A"
+      },
+      "hint": {
+        "visitor": "Anyone can see it, even without an account.",
+        "member": "Only with a verified account.",
+        "contact": "Once you accept a contact request.",
+        "agreement": "Only with a closed agreement."
+      }
+    },
+    "presentation": {
+      "lead": "How people see you in your listings, your profile and the chat.",
+      "photo": "Profile photo",
+      "changePhoto": "Change photo",
+      "displayName": "Display name",
+      "displayNameHint": "Always public. Not your legal name.",
+      "pronouns": "Pronouns",
+      "optional": "(optional)",
+      "pronounsPlaceholder": "Not specified",
+      "bio": "Presentation",
+      "bioField": "your presentation",
+      "counter": "{count} / {max}",
+      "errors": {
+        "displayNameRequired": "Write the name you want people to see.",
+        "bioContainsContact": "Remove the phone number or the email. Contact details are shared in the chat, when you decide.",
+        "bioTooLong": "Shorten the presentation: {max} characters at most."
+      }
+    },
+    "skills": {
+      "lead": "From the catalogue, with search. You need at least one to publish.",
+      "offerLabel": "You can help with",
+      "offerHint": "They come from the catalogue, not typed: that way people find you searching for the same thing. You need at least one to publish.",
+      "wantLabel": "What you would like help with",
+      "wantHint": "Optional. It helps people propose swaps.",
+      "search": "Search the catalogue",
+      "selectedLabel": "Selected",
+      "suggestionsLabel": "Suggestions",
+      "add": "Add {name}",
+      "remove": "Remove {name}",
+      "noMatch": "Nothing in the catalogue with that name.",
+      "emptyOffer": "You have not chosen any yet. You need at least one to publish.",
+      "skillsField": "your skills",
+      "interestsField": "your interests",
+      "errors": {
+        "skillsRequired": "Choose at least one skill from the catalogue."
+      }
+    },
+    "availability": {
+      "lead": "Indicative. A reference for listings and agreements, not a calendar.",
+      "gridLabel": "Tap the cells where you usually have a moment",
+      "hint": "Indicative. Shown as a reference in your listings and agreements; it books nothing.",
+      "field": "your availability",
+      "cellLabel": "{day} · {slot}",
+      "days": {
+        "mon": "M",
+        "tue": "T",
+        "wed": "W",
+        "thu": "T",
+        "fri": "F",
+        "sat": "S",
+        "sun": "S"
+      },
+      "daysLong": {
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday",
+        "sun": "Sunday"
+      },
+      "slots": {
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "evening": "Evening"
+      }
+    },
+    "zone": {
+      "lead": "Only the district or the neighbourhood. Never the address.",
+      "emptyTitle": "You have not chosen a zone yet.",
+      "emptyBody": "We store the centre of your zone, never your address. It powers searches by proximity.",
+      "pick": "Choose my neighbourhood",
+      "approximate": "Approximate",
+      "approximating": "Finding your zone…",
+      "deniedTitle": "The browser did not share your location.",
+      "deniedBody": "No problem: choose your neighbourhood by hand.",
+      "unsupportedTitle": "This browser cannot approximate your zone.",
+      "unsupportedBody": "Choose your neighbourhood by hand.",
+      "pickerLabel": "Your neighbourhood",
+      "pickerPlaceholder": "Search your neighbourhood",
+      "noMatch": "We could not find that neighbourhood.",
+      "currentTitle": "Your zone",
+      "current": "{neighborhood}, {district}",
+      "change": "Change",
+      "precisionLegend": "What is shown of your zone",
+      "precisionHint": "The wider it is, the fewer nearby matches you will see. Everyone sees the district.",
+      "precision": {
+        "city": "City",
+        "district": "District",
+        "neighborhood": "Neighbourhood"
+      },
+      "modalityLegend": "How you can take part",
+      "modalityHint": "Remote needs no zone.",
+      "modality": {
+        "in_person": "In person",
+        "remote": "Remote"
+      },
+      "field": "your neighbourhood",
+      "revealHint": "The neighbourhood is shown once you accept a contact. You set the meeting point yourself in the chat, with a closed agreement.",
+      "errors": {
+        "zoneRequiredInPerson": "Offering in person needs a zone. Choose your neighbourhood or tick only “remote”.",
+        "modalityRequired": "Tick at least one way to take part."
+      }
+    },
+    "privacy": {
+      "lead": "What each person sees and from when. Nothing moves up a level unless you decide it.",
+      "now": "Right now:",
+      "visibleToVisitors": {
+        "title": "My profile is visible without an account",
+        "body": "Anyone arriving from outside can read your presentation and your skills.",
+        "on": "anyone",
+        "off": "verified members only"
+      },
+      "searchable": {
+        "title": "My listings appear in search engines",
+        "body": "Affects Google and the like. Search inside Time Swap does not change.",
+        "on": "in search engines",
+        "off": "out of search engines"
+      },
+      "matrixTitle": "From when each piece of data is visible",
+      "matrixHint": "The whole policy at a glance. Each item is changed in its own section; the pencil takes you there.",
+      "dataHeader": "Data",
+      "fixed": "fixed",
+      "never": "Never",
+      "cellLabel": "{field} · {moment}",
+      "change": "Change {field}",
+      "rows": {
+        "nameAndModality": "Name and modality",
+        "district": "District",
+        "bio": "Presentation",
+        "skills": "Skills",
+        "interests": "Interests",
+        "availability": "Availability",
+        "neighborhood": "Neighbourhood",
+        "contact": "Email, phone, address, balance"
+      },
+      "footnote": "Name, modality and district: always public. Email, phone, exact address and hour balance: never, at any moment."
+    }
+  },
+  "memberProfile": {
+    "metadata": {
+      "title": "{name} · Time Swap",
+      "description": "{name}'s public profile on Time Swap."
+    },
+    "eyebrow": "Member",
+    "offers": "Can help with",
+    "wants": "Would like help with",
+    "availability": "Usually has a moment",
+    "zone": "Zone",
+    "modality": "How they take part",
+    "contactNotice": "Contact details are shared in the chat, once this person accepts your request.",
+    "ownProfileTitle": "This is how people see you",
+    "ownProfileBody": "This is your public profile as a member with an account sees it.",
+    "editProfile": "Manage my profile",
+    "hidden": "This is shown later on.",
+    "notFound": "We could not find this profile."
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "We could not build this page. Try again in a moment.",
+    "retry": "Try again",
+    "home": "Back to home"
+  },
   "footer": {
     "tagline": "Time Swap · a neighbourhood time bank",
     "legalLabel": "Legal",

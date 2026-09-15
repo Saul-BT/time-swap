@@ -1,12 +1,23 @@
 "use client";
 
+import { autocompleteClasses } from "@mui/material/Autocomplete";
+import { buttonBaseClasses } from "@mui/material/ButtonBase";
 import { inputLabelClasses } from "@mui/material/InputLabel";
 import { outlinedInputClasses } from "@mui/material/OutlinedInput";
+import { switchClasses } from "@mui/material/Switch";
 import { createTheme } from "@mui/material/styles";
+import { toggleButtonClasses } from "@mui/material/ToggleButton";
 import LinkBehavior from "@/lib/mui/LinkBehavior";
-import { color, fontFamily, statusColor, structure, typeScale } from "./tokens";
+import {
+  color,
+  fontFamily,
+  statusColor,
+  statusColorOnInk,
+  structure,
+  typeScale,
+} from "./tokens";
 
-/** Exposes `structure` as `theme.system`, so styles need not import the tokens. */
+/** Exposes the tokens styles need as `theme.system` and `palette.onInk`. */
 declare module "@mui/material/styles" {
   interface Theme {
     system: typeof structure;
@@ -14,9 +25,20 @@ declare module "@mui/material/styles" {
   interface ThemeOptions {
     system?: typeof structure;
   }
+  interface Palette {
+    onInk: typeof statusColorOnInk;
+  }
+  interface PaletteOptions {
+    onInk?: typeof statusColorOnInk;
+  }
 }
 
 const rule = `${structure.borderWidth}px solid ${color.ink}`;
+const softRule = `${structure.borderWidth}px solid ${color.line}`;
+const focusRing = {
+  outline: `${structure.focusRingWidth}px solid ${color.ink}`,
+  outlineOffset: 2,
+};
 
 const theme = createTheme({
   system: structure,
@@ -52,6 +74,7 @@ const theme = createTheme({
     warning: { main: statusColor.warning, contrastText: color.onDark },
     info: { main: statusColor.info, contrastText: color.onDark },
     success: { main: statusColor.success, contrastText: color.onDark },
+    onInk: statusColorOnInk,
   },
 
   typography: {
@@ -109,6 +132,7 @@ const theme = createTheme({
         root: {
           minHeight: structure.controlHeight,
           padding: "15px 24px",
+          gap: 8,
           border: rule,
           borderRadius: 0,
           boxShadow: "none",
@@ -255,6 +279,176 @@ const theme = createTheme({
           fontWeight: 700,
         },
       },
+    },
+
+    MuiToggleButtonGroup: {
+      styleOverrides: {
+        root: { border: rule, borderRadius: 0 },
+        grouped: {
+          border: 0,
+          borderRadius: 0,
+          "&:not(:first-of-type)": { borderLeft: rule, marginLeft: 0 },
+          "&:not(:last-of-type)": { borderRight: 0 },
+        },
+        firstButton: { borderRadius: 0 },
+        lastButton: { borderRadius: 0 },
+        middleButton: { borderRadius: 0 },
+      },
+    },
+
+    MuiToggleButton: {
+      defaultProps: { disableRipple: true },
+      styleOverrides: {
+        root: {
+          minHeight: structure.controlHeight,
+          padding: "12px 20px",
+          gap: 8,
+          border: 0,
+          borderRadius: 0,
+          color: color.ink,
+          backgroundColor: "transparent",
+          fontFamily: fontFamily.body,
+          fontWeight: 700,
+          fontSize: "0.9375rem",
+          letterSpacing: "0.04em",
+          textTransform: "uppercase",
+          "&:hover": { backgroundColor: color.line },
+          [`&.${toggleButtonClasses.selected}`]: {
+            backgroundColor: color.accent,
+            color: color.onDark,
+            "&:hover": { backgroundColor: color.ink },
+          },
+          [`&.${toggleButtonClasses.disabled}`]: {
+            color: color.inkMuted,
+            border: 0,
+          },
+        },
+      },
+    },
+
+    MuiSwitch: {
+      defaultProps: { disableRipple: true },
+      styleOverrides: {
+        root: { width: 52, height: 32, padding: 0, overflow: "visible" },
+        switchBase: {
+          padding: 6,
+          color: color.ink,
+          "&:hover": { backgroundColor: "transparent" },
+          [`&.${switchClasses.checked}`]: {
+            transform: "translateX(20px)",
+            color: color.onDark,
+            "&:hover": { backgroundColor: "transparent" },
+            [`& + .${switchClasses.track}`]: {
+              backgroundColor: color.accent,
+              borderColor: color.accent,
+              opacity: 1,
+            },
+          },
+          [`&.${buttonBaseClasses.focusVisible} + .${switchClasses.track}`]:
+            focusRing,
+          [`&.${switchClasses.disabled}`]: {
+            color: color.inkMuted,
+            [`& + .${switchClasses.track}`]: {
+              borderColor: color.inkMuted,
+              opacity: 1,
+            },
+          },
+        },
+        thumb: {
+          width: 20,
+          height: 20,
+          borderRadius: 0,
+          boxShadow: "none",
+          backgroundColor: "currentColor",
+        },
+        track: {
+          borderRadius: 0,
+          border: rule,
+          backgroundColor: color.surface,
+          opacity: 1,
+        },
+      },
+    },
+
+    MuiTableContainer: {
+      styleOverrides: {
+        root: { border: rule, backgroundColor: color.surface },
+      },
+    },
+
+    MuiTableCell: {
+      styleOverrides: {
+        root: { borderBottom: softRule, padding: "12px 16px" },
+        head: {
+          fontFamily: fontFamily.body,
+          fontWeight: 700,
+          fontSize: "0.75rem",
+          lineHeight: 1.4,
+          letterSpacing: "0.16em",
+          textTransform: "uppercase",
+          color: color.inkMuted,
+          borderBottom: rule,
+        },
+        body: { fontSize: "1rem" },
+      },
+    },
+
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          "&:last-of-type td, &:last-of-type th": { borderBottom: 0 },
+        },
+      },
+    },
+
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: { border: rule, marginTop: -structure.borderWidth },
+        listbox: { padding: 0 },
+        option: {
+          minHeight: 44,
+          [`&.${autocompleteClasses.focused}`]: { backgroundColor: color.line },
+          '&[aria-selected="true"]': {
+            backgroundColor: color.line,
+            fontWeight: 700,
+          },
+        },
+        noOptions: { color: color.inkMuted },
+        tag: { margin: 4 },
+        inputRoot: { padding: "6px 8px", gap: 4 },
+      },
+    },
+
+    MuiSkeleton: {
+      defaultProps: { animation: false },
+      styleOverrides: {
+        root: { backgroundColor: color.line, borderRadius: 0 },
+      },
+    },
+
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          border: rule,
+          borderRadius: 0,
+          boxShadow: "none",
+          padding: 32,
+          margin: 24,
+          maxWidth: 480,
+        },
+      },
+    },
+
+    MuiDialogTitle: {
+      styleOverrides: { root: { padding: 0, marginBottom: 8 } },
+    },
+
+    MuiDialogContent: {
+      styleOverrides: { root: { padding: 0, marginBottom: 32 } },
+    },
+
+    MuiDialogActions: {
+      styleOverrides: { root: { padding: 0, gap: 16 } },
     },
   },
 });

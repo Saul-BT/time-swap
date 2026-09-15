@@ -1,6 +1,5 @@
 import Typography from "@mui/material/Typography";
 import { contrastRatio, formatContrastRatio } from "@/lib/color/contrast";
-import { color } from "@/theme/tokens";
 import { SwatchListRoot, SwatchSample } from "./SwatchList.style";
 import { SWATCHES, swatchListClasses } from "./SwatchList.util";
 
@@ -18,8 +17,8 @@ export default function SwatchList() {
           </Typography>
           <Typography variant="caption" component="p" color="textSecondary">
             {swatch.value}
-            {swatch.measureContrast
-              ? ` · ${formatContrastRatio(contrastRatio(swatch.value, color.background), "en")}`
+            {swatch.measuredAgainst
+              ? ` · ${formatContrastRatio(contrastRatio(swatch.value, swatch.measuredAgainst), "en")}`
               : ""}
           </Typography>
         </li>

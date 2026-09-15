@@ -15,6 +15,9 @@ Los ADRs registran decisiones duraderas, su contexto y sus consecuencias. No son
 | [0009](0009-stack-del-front.md) | front | Next 16 App Router, MUI 9 sobre Emotion, Biome y bun | Aceptado |
 | [0010](0010-i18n-por-ruta-con-diccionarios-en-servidor.md) | front | i18n por segmento de ruta con diccionarios solo en servidor | Aceptado |
 | [0011](0011-slugs-publicos-por-idioma.md) | front | Slugs públicos por idioma sobre carpetas en inglés | Aceptado |
+| [0012](0012-guardado-por-apartado.md) | front | Guardado por apartado en la gestión del perfil | Aceptado |
+| [0013](0013-momentos-de-revelacion.md) | producto | Cuatro momentos de revelación por dato del perfil | Aceptado |
+| [0015](0015-chrome-de-ajustes-en-el-layout.md) | front | Chrome de ajustes en el layout y navegación que se marca sola | Aceptado |
 
 ## Cuándo escribir un ADR
 

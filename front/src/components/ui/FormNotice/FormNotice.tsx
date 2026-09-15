@@ -1,11 +1,17 @@
 import Typography from "@mui/material/Typography";
-import { FormNoticeRoot, FormNoticeTitle } from "./FormNotice.style";
+import {
+  FormNoticeAction,
+  FormNoticeRoot,
+  FormNoticeTitle,
+} from "./FormNotice.style";
 import { type FormNoticeTone, formNoticeClasses } from "./FormNotice.util";
 
 export type FormNoticeProps = {
   tone?: FormNoticeTone;
   title: React.ReactNode;
   children: React.ReactNode;
+  /** One control under the text, such as a retry button. */
+  action?: React.ReactNode;
 };
 
 /**
@@ -16,6 +22,7 @@ export default function FormNotice({
   tone = "info",
   title,
   children,
+  action,
 }: FormNoticeProps) {
   return (
     <FormNoticeRoot
@@ -34,6 +41,11 @@ export default function FormNotice({
       <Typography className={formNoticeClasses.body} variant="body2">
         {children}
       </Typography>
+      {action ? (
+        <FormNoticeAction className={formNoticeClasses.action}>
+          {action}
+        </FormNoticeAction>
+      ) : null}
     </FormNoticeRoot>
   );
 }

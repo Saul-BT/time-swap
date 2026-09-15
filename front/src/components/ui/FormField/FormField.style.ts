@@ -35,3 +35,12 @@ export const FormFieldLabel = styled(FormLabel, { name: NAME, slot: "Label" })(
     },
   }),
 );
+
+export const FormFieldHint = styled("p", { name: NAME, slot: "Hint" })(
+  ({ theme }) => ({
+    ...theme.typography.caption,
+    margin: 0,
+    marginTop: theme.spacing(space.xs / 2),
+    color: theme.palette.text.secondary,
+  }),
+);
