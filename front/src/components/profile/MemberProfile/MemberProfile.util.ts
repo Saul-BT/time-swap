@@ -1,4 +1,4 @@
-import {createComponentClasses} from "@/lib/mui/componentClasses";
+import { createComponentClasses } from "@/lib/mui/componentClasses";
 
 export const memberProfileClasses = createComponentClasses("MemberProfile", [
   "root",

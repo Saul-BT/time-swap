@@ -12,7 +12,7 @@ const NAME = "MemberProfile";
 export const MemberProfileRoot = styled(Paper, {
   name: NAME,
   slot: "Root",
-})<WithComponent>(({theme}) => ({
+})<WithComponent>(({ theme }) => ({
   margin: "0 auto",
   maxWidth: 560,
   padding: theme.spacing(space.md),
@@ -21,7 +21,7 @@ export const MemberProfileRoot = styled(Paper, {
 export const MemberProfileIdentity = styled(Stack, {
   name: NAME,
   slot: "Identity",
-})(({theme}) => ({
+})(({ theme }) => ({
   alignItems: "center",
   marginBottom: theme.spacing(space.sm),
 }));
@@ -47,7 +47,7 @@ export const MemberProfileQuote = styled("blockquote", {
 export const MemberProfileActions = styled(Stack, {
   name: NAME,
   slot: "Actions",
-})(({theme}) => ({
+})(({ theme }) => ({
   alignItems: "flex-start",
   gap: theme.spacing(space.sm),
 }));

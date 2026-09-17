@@ -1,9 +1,9 @@
-import {notFound} from "next/navigation";
+import { notFound } from "next/navigation";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
 import MemberProfile from "@/components/profile/MemberProfile";
-import {MEMBERS} from "@/data/members";
+import { MEMBERS } from "@/data/members";
 
 export default async function MemberProfilePage({
   params,

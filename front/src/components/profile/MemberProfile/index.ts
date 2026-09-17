@@ -1,2 +1,2 @@
-export { default } from ".";
-export { memberProfileClasses } from "./MemberProfile.util";
+export {default} from ".";
+export {memberProfileClasses} from "./MemberProfile.util";
