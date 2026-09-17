@@ -98,6 +98,12 @@
     "title": "Personas que ya participan",
     "skillsLabel": "Habilidades de {name}"
   },
+  "profile": {
+  "skillsLabel": "Habilidades de {name}",
+  "backLink": "Volver al inicio",
+  "notFoundTitle": "Perfil no encontrado",
+  "notFoundBody": "Este perfil no existe o ya no está disponible."
+ },
   "dispute": {
     "label": "El freno",
     "title": "Si algo se tuerce, el relevo se para.",
