@@ -5,7 +5,6 @@ import Checkbox from "@/components/ui/Checkbox";
 import FormField from "@/components/ui/FormField";
 import FormNotice from "@/components/ui/FormNotice";
 import PasswordField from "@/components/ui/PasswordField";
-import { SECTION_ID } from "@/data/navigation";
 import { SIGN_IN_ERROR_TONE } from "@/data/sign-in";
 import type { SignInErrorId } from "@/data/types";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
@@ -112,7 +111,7 @@ export default async function SignInForm({ action, error }: SignInFormProps) {
 
       <Typography className={signInFormClasses.switch} variant="body2">
         {signIn.noAccount}{" "}
-        <Link href={`${localizePath(locale, "home")}#${SECTION_ID.signUp}`}>
+        <Link href={localizePath(locale, "register")}>
           {signIn.createAccount}
         </Link>
       </Typography>

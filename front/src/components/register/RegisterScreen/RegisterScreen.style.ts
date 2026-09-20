@@ -45,7 +45,6 @@ export const RegisterScreenBrandName = styled(Typography, {
   [theme.breakpoints.up("md")]: { fontSize: 28 },
 }));
 
-/** Centers the wizard card; the card itself decides its own max width. */
 export const RegisterScreenMain = styled("main", { name: NAME, slot: "Main" })(
   ({ theme }) => ({
     flex: 1,

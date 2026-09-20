@@ -25,7 +25,7 @@ export default async function SignUpSection() {
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
         >
-          <Button variant="contained" href={`#${SECTION_ID.signUp}`}>
+          <Button variant="contained" href={localizePath(locale, "register")}>
             {signUp.create}
           </Button>
           <Button variant="outlined" href={localizePath(locale, "signIn")}>
