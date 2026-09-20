@@ -1,5 +1,7 @@
 "use client";
 
+import { inputLabelClasses } from "@mui/material/InputLabel";
+import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 import { createTheme } from "@mui/material/styles";
 import LinkBehavior from "@/lib/mui/LinkBehavior";
 import { color, fontFamily, statusColor, structure, typeScale } from "./tokens";
@@ -146,18 +148,19 @@ const theme = createTheme({
           backgroundColor: color.surface,
           borderRadius: 0,
           fontSize: "1.0625rem",
-          "& .MuiOutlinedInput-notchedOutline": {
+          [`& .${outlinedInputClasses.notchedOutline}`]: {
             borderWidth: structure.borderWidth,
             borderColor: color.ink,
             borderRadius: 0,
           },
-          "&:hover .MuiOutlinedInput-notchedOutline": {
+          [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
             borderColor: color.ink,
           },
-          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderWidth: structure.borderWidth,
-            borderColor: color.accent,
-          },
+          [`&.${outlinedInputClasses.focused} .${outlinedInputClasses.notchedOutline}`]:
+            {
+              borderWidth: structure.borderWidth,
+              borderColor: color.accent,
+            },
         },
         input: { padding: "14px 16px" },
       },
@@ -176,7 +179,7 @@ const theme = createTheme({
         root: {
           fontWeight: 600,
           color: color.ink,
-          "&.Mui-focused": { color: color.accent },
+          [`&.${inputLabelClasses.focused}`]: { color: color.accent },
         },
       },
     },
