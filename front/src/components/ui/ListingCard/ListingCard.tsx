@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import type { Listing } from "@/data/types";
 import { getDictionary } from "@/i18n/dictionary";
-import Ribbon from "../../ui/Ribbon";
+import Ribbon from "../Ribbon";
 import {
   ListingCardBody,
   ListingCardFooter,

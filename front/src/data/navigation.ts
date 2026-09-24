@@ -7,9 +7,7 @@ export const SECTION_ID = {
   signUp: "acceso",
 } as const;
 
-/**
- * Paths under `/[lang]`. Temporary until auth and the member API exist.
- */
+// FIXME(i18n): replaced by `ROUTES` in `src/i18n/routes.ts` (from #20).
 export const PATH = {
   loggedHome: "/inicio",
   listings: "/anuncios",

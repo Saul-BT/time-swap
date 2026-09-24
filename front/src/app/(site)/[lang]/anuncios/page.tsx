@@ -1,25 +1,25 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import type { Metadata } from "next";
-import FilterList from "@/components/landing/FilterList";
-import ListingCard from "@/components/landing/ListingCard";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
+import FilterList from "@/components/ui/FilterList";
+import ListingCard from "@/components/ui/ListingCard";
 import { LISTINGS } from "@/data/listings";
 import { PATH } from "@/data/navigation";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
+import { bareList } from "@/theme/rules";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { browseListings } = await getDictionary();
   return { title: browseListings.title };
 }
 
-/** Temporary listings browse: sample cards only, no search backend. */
+// FIXME: Temporary listings browse: UI only, sample data and no search backend (revisit).
 export default async function BrowseListingsPage() {
   const { browseListings, common } = await getDictionary();
   const locale = await getLocale();
+  // FIXME(i18n): use `localizePath` (from #20).
   const loggedHomeHref = `/${locale}${PATH.loggedHome}`;
 
   return (
@@ -30,7 +30,7 @@ export default async function BrowseListingsPage() {
           <Typography variant="h2" gutterBottom>
             {browseListings.title}
           </Typography>
-          <Typography variant="body1" sx={{ mb: 2, maxWidth: 640 }}>
+          <Typography variant="body1" sx={{ mb: 2 }}>
             {browseListings.lead}
           </Typography>
           <Typography
@@ -46,31 +46,18 @@ export default async function BrowseListingsPage() {
             <FilterList />
           </Box>
 
-          <Box
-            component="ul"
-            sx={{
-              listStyle: "none",
-              p: 0,
-              m: 0,
-              display: "grid",
-              gap: 2.5,
-              gridTemplateColumns: {
-                xs: "1fr",
-                sm: "repeat(2, minmax(0, 1fr))",
-                md: "repeat(3, minmax(0, 1fr))",
-              },
-            }}
-          >
+          <Grid container component="ul" spacing={2.5} sx={bareList}>
             {LISTINGS.map((listing) => (
-              <Box
+              <Grid
                 key={listing.id}
                 component="li"
+                size={{ xs: 12, sm: 6, md: 4 }}
                 sx={{ display: "flex", minWidth: 0 }}
               >
                 <ListingCard listing={listing} />
-              </Box>
+              </Grid>
             ))}
-          </Box>
+          </Grid>
 
           <Button variant="outlined" href={loggedHomeHref} sx={{ mt: 4 }}>
             {browseListings.back}
