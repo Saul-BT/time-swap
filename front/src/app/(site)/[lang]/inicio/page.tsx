@@ -16,6 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function LoggedHomePage() {
   const { loggedHome } = await getDictionary();
   const locale = await getLocale();
+  // FIXME(i18n): use `localizePath` (from #20).
   const homeHref = `/${locale}`;
   const publishHref = `/${locale}${PATH.createAd}`;
 

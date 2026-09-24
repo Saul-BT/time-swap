@@ -30,6 +30,19 @@
     "discover": "Discover",
     "publish": "Post a listing"
   },
+  "createAd": {
+    "title": "Post a listing",
+    "lead": "Temporary interface: the fields are here, but nothing is saved.",
+    "kindLabel": "Type",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "categoryLabel": "Category",
+    "modeLabel": "Mode",
+    "areaLabel": "Approximate area",
+    "hoursLabel": "Rough duration",
+    "submit": "Publish (demo)",
+    "cancel": "Back"
+  },
   "hero": {
     "eyebrow": "{city} · time is not stored, it circulates",
     "title": "What do you need help with this week?",
