@@ -36,6 +36,19 @@
     "contact": "Solicitar contacto (demo)",
     "back": "Volver"
   },
+  "createAd": {
+    "title": "Publicar un anuncio",
+    "lead": "Interfaz temporal: los campos están, pero no se guarda nada.",
+    "kindLabel": "Tipo",
+    "titleLabel": "Título",
+    "descriptionLabel": "Descripción",
+    "categoryLabel": "Categoría",
+    "modeLabel": "Modalidad",
+    "areaLabel": "Zona aproximada",
+    "hoursLabel": "Duración orientativa",
+    "submit": "Publicar (demo)",
+    "cancel": "Volver"
+  },
   "hero": {
     "eyebrow": "{city} · el tiempo no se guarda, circula",
     "title": "¿Con qué necesitas ayuda esta semana?",

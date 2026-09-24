@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.git/
+.env
+.env.local
+.env.development
+.env.production
+*.log
+.vscode/
+.idea/
+coverage/

@@ -1,6 +1,4 @@
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import { Button, Stack, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
@@ -14,10 +12,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: loggedHome.title };
 }
 
-/** Temporary member home: UI only, no session and no backend. */
+// FIXME: Temporary member home: UI only, no session and no backend (revist).
 export default async function LoggedHomePage() {
   const { loggedHome } = await getDictionary();
   const locale = await getLocale();
+  // FIXME(i18n): use `localizePath` (from #20).
   const homeHref = `/${locale}`;
   const publishHref = `/${locale}${PATH.createAd}`;
 

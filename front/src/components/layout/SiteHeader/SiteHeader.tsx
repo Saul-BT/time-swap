@@ -30,6 +30,7 @@ export default async function SiteHeader() {
 
         <SiteHeaderNav className={siteHeaderClasses.nav} aria-label={nav.label}>
           {HEADER_LINKS.map((link) => {
+            // FIXME: use `localizePath` util (from #20).
             const href = link.href.startsWith("/")
               ? `/${locale}${link.href}`
               : link.href;
