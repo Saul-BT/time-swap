@@ -1,8 +1,4 @@
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import { Button, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
@@ -16,10 +12,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: createAd.title };
 }
 
-/** Temporary publish screen: UI only, nothing is persisted. */
+// FIXME: Temporary publish screen: UI only, nothing is persisted (revisit).
 export default async function CreateAdPage() {
   const { createAd, listings, categories } = await getDictionary();
   const locale = await getLocale();
+  // FIXME(i18n): use `localizePath` (from #20).
   const loggedHomeHref = `/${locale}${PATH.loggedHome}`;
 
   return (
@@ -30,13 +27,13 @@ export default async function CreateAdPage() {
           <Typography variant="h2" gutterBottom>
             {createAd.title}
           </Typography>
-          <Typography variant="body1" sx={{ mb: 4, maxWidth: 640 }}>
+          <Typography variant="body1" sx={{ mb: 4 }}>
             {createAd.lead}
           </Typography>
 
           {/* Demo only: submit returns to the temporary logged home. */}
           <form action={loggedHomeHref}>
-            <Stack spacing={3} sx={{ maxWidth: 640 }}>
+            <Stack spacing={3}>
               <TextField
                 required
                 select
