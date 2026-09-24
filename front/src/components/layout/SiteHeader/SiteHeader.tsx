@@ -1,5 +1,5 @@
 import { HEADER_LINKS, SECTION_ID } from "@/data/navigation";
-import { getDictionary } from "@/i18n/dictionary";
+import { getDictionary, getLocale } from "@/i18n/dictionary";
 import Ribbon from "../../ui/Ribbon";
 import NavCell from "../NavCell";
 import {
@@ -12,6 +12,7 @@ import { siteHeaderClasses } from "./SiteHeader.util";
 
 export default async function SiteHeader() {
   const { brand, nav } = await getDictionary();
+  const locale = await getLocale();
 
   return (
     <header className={siteHeaderClasses.root}>
@@ -28,11 +29,18 @@ export default async function SiteHeader() {
         </SiteHeaderBrand>
 
         <SiteHeaderNav className={siteHeaderClasses.nav} aria-label={nav.label}>
-          {HEADER_LINKS.map((link) => (
-            <NavCell key={link.id} href={link.href}>
-              {nav[link.id]}
-            </NavCell>
-          ))}
+          {HEADER_LINKS.map((link) => {
+            // FIXME: use `localizePath` util (from #20).
+            const href = link.href.startsWith("/")
+              ? `/${locale}${link.href}`
+              : link.href;
+
+            return (
+              <NavCell key={link.id} href={href}>
+                {nav[link.id]}
+              </NavCell>
+            );
+          })}
           <NavCell href={`#${SECTION_ID.signUp}`} emphasis="solid">
             {nav.signUp}
           </NavCell>

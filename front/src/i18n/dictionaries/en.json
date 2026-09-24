@@ -21,6 +21,15 @@
     "signIn": "Sign in",
     "signUp": "Create account"
   },
+  "loggedHome": {
+    "title": "Your home",
+    "lead": "Temporary interface: this is where you'd see what needs your attention. There is no real session yet.",
+    "balanceLabel": "Balance",
+    "balanceValue": "2 h",
+    "attentionTitle": "Pending",
+    "discover": "Discover",
+    "publish": "Post a listing"
+  },
   "hero": {
     "eyebrow": "{city} · time is not stored, it circulates",
     "title": "What do you need help with this week?",
