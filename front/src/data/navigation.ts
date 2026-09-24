@@ -7,10 +7,10 @@ export const SECTION_ID = {
   signUp: "acceso",
 } as const;
 
-// FIXME(i18n): use `localizePath`/`routeAlternates` (from #20).
-
+// FIXME(i18n): replaced by `ROUTES` in `src/i18n/routes.ts` (from #20).
 export const PATH = {
   loggedHome: "/inicio",
+  listings: "/anuncios",
   createAd: "/anuncios/nuevo",
   listingDetail: (id: string) => `/anuncios/${id}`,
 } as const;

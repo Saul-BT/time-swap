@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import { PATH } from "@/data/navigation";
 import type { Listing } from "@/data/types";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
-import Ribbon from "../../ui/Ribbon";
+import Ribbon from "../Ribbon";
 import {
   ListingCardBody,
   ListingCardFooter,
@@ -23,6 +23,7 @@ import {
 export default async function ListingCard({ listing }: { listing: Listing }) {
   const { listings } = await getDictionary();
   const locale = await getLocale();
+  // FIXME(i18n): use `localizePath` (from #20).
   const href = `/${locale}${PATH.listingDetail(listing.id)}`;
 
   return (

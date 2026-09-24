@@ -1,11 +1,11 @@
 import Button from "@mui/material/Button";
+import ListingCard from "@/components/ui/ListingCard";
 import { LISTINGS } from "@/data/listings";
 import { SECTION_ID } from "@/data/navigation";
 import { getDictionary } from "@/i18n/dictionary";
 import { interpolate } from "@/lib/i18n/interpolate";
 import Section from "../../layout/Section";
 import SectionHeader from "../../ui/SectionHeader";
-import ListingCard from "../ListingCard";
 import {
   ListingsSectionGrid,
   ListingsSectionItem,

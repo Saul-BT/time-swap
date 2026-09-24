@@ -1,13 +1,13 @@
 import { Button, Stack, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  formatListingMeta,
-  getListingRibbon,
-} from "@/components/landing/ListingCard/ListingCard.util";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
+import {
+  formatListingMeta,
+  getListingRibbon,
+} from "@/components/ui/ListingCard/ListingCard.util";
 import Ribbon from "@/components/ui/Ribbon";
 import TabularFigure from "@/components/ui/TabularFigure";
 import { getListingById, LISTINGS } from "@/data/listings";

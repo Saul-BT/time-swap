@@ -30,6 +30,11 @@
     "discover": "Descubrir",
     "publish": "Publicar anuncio"
   },
+  "browseListings": {
+    "title": "Anuncios",
+    "lead": "Interfaz temporal: un listado de ejemplo. La búsqueda real todavía no está.",
+    "back": "Volver al inicio"
+  },
   "listingDetail": {
     "lead": "Interfaz temporal: detalle de ejemplo. El contacto no hace nada todavía.",
     "hoursLabel": "Duración orientativa",

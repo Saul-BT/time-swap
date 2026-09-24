@@ -17,8 +17,8 @@ export default async function LoggedHomePage() {
   const { loggedHome } = await getDictionary();
   const locale = await getLocale();
   // FIXME(i18n): use `localizePath` (from #20).
-  const homeHref = `/${locale}`;
   const publishHref = `/${locale}${PATH.createAd}`;
+  const listingsHref = `/${locale}${PATH.listings}`;
 
   return (
     <>
@@ -70,7 +70,7 @@ export default async function LoggedHomePage() {
             <Button variant="contained" href={publishHref}>
               {loggedHome.publish}
             </Button>
-            <Button variant="outlined" href={homeHref}>
+            <Button variant="outlined" href={listingsHref}>
               {loggedHome.discover}
             </Button>
           </Stack>
