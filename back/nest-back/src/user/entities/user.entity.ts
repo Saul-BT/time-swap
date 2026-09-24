@@ -38,6 +38,13 @@ export class User {
     })
     language!: Language;
 
+    @Column({
+        type: 'bigint',
+        default: 0,
+        nullable: false,
+    })
+    points!: number;
+
     @CreateDateColumn()
     createdAt!: Date;
 

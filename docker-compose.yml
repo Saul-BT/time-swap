@@ -1,0 +1,68 @@
+# Es importante lanzar el comando para levantar el docker usando el .env correcto
+# docker compose --env-file back/nest-back/.env up -d --build
+# Para eliminar el docker stack junto con sus volumenes
+# docker compose  --env-file .env.development down -v
+
+services:
+    front:
+        container_name: 'front_${APP_NAME}'
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        ports:
+            - '3000:3000'
+        depends_on:
+            - backend #todo healthcheck
+            
+    backend:
+        container_name: 'backend_${APP_NAME}'
+        build: ./back/nest-back
+        env_file:
+            ./back/nest-back/.env
+        environment:
+            BBDD_HOST: postgres
+            REDIS_HOST: redis
+        ports:
+            - 3001:3001 #todo parametrize from .env
+        depends_on:
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+            #todo add healthcheck endpoint that also verifies connection to postgres and redis
+            #something like @Get('/health') async health() { await this.dataSource.query('SELECT 1'); await this.redis.ping(); return { status: 'ok' };}
+
+    postgres:
+        container_name: 'db_transcendence'
+        image: postgres:18.6-alpine3.24
+        restart: unless-stopped
+        environment:
+            POSTGRES_PASSWORD: '${POSTGRESQL_DOCKER_ROOT_PASSWORD}'
+            POSTGRES_DB: '${POSTGRESQL_DATABASE_NAME}'
+            POSTGRES_USER: '${POSTGRESQL_DOCKER_USER}'
+        volumes:
+            - postgres-data:/var/lib/postgresql
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $POSTGRESQL_DOCKER_USER -d $POSTGRESQL_DATABASE_NAME"] #it complains on first startup since nest creates it after first connection
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+
+    redis:
+        image: redis:8-alpine
+        container_name: 'redis_back_transcendence'
+        restart: unless-stopped
+        volumes:
+            - redis-data:/data
+        healthcheck:
+            test: ["CMD-SHELL", "redis-cli ping"] #todo add password
+            #test: ["CMD-SHELL", "redis-cli -a $REDIS_PASSWORD ping]
+            interval: 10s
+            timeout: 3s
+            retries: 5
+
+volumes:
+    postgres-data:
+    redis-data:
