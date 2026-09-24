@@ -35,6 +35,25 @@
     "lead": "Temporary interface: a sample list. Real search is not here yet.",
     "back": "Back to home"
   },
+  "listingDetail": {
+    "lead": "Temporary interface: a sample detail. Contact does nothing yet.",
+    "hoursLabel": "Rough duration",
+    "contact": "Request contact (demo)",
+    "back": "Back"
+  },
+  "createAd": {
+    "title": "Post a listing",
+    "lead": "Temporary interface: the fields are here, but nothing is saved.",
+    "kindLabel": "Type",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "categoryLabel": "Category",
+    "modeLabel": "Mode",
+    "areaLabel": "Approximate area",
+    "hoursLabel": "Rough duration",
+    "submit": "Publish (demo)",
+    "cancel": "Back"
+  },
   "hero": {
     "eyebrow": "{city} · time is not stored, it circulates",
     "title": "What do you need help with this week?",
