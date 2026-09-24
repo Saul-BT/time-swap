@@ -12,6 +12,7 @@ export const SECTION_ID = {
 export const PATH = {
   loggedHome: "/inicio",
   createAd: "/anuncios/nuevo",
+  listingDetail: (id: string) => `/anuncios/${id}`,
 } as const;
 
 export const HEADER_LINKS: readonly NavigationLink[] = [

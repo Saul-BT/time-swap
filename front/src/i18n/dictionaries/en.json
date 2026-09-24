@@ -30,6 +30,12 @@
     "discover": "Discover",
     "publish": "Post a listing"
   },
+  "listingDetail": {
+    "lead": "Temporary interface: a sample detail. Contact does nothing yet.",
+    "hoursLabel": "Rough duration",
+    "contact": "Request contact (demo)",
+    "back": "Back"
+  },
   "createAd": {
     "title": "Post a listing",
     "lead": "Temporary interface: the fields are here, but nothing is saved.",
