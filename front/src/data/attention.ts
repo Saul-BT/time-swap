@@ -1,4 +1,5 @@
-/** Sample attention items for the temporary logged-in home. Not translated. */
+// TODO(i18n): Check if we need to move something.
+
 export const ATTENTION_ITEMS = [
   {
     id: "contact",
