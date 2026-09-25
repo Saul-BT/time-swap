@@ -7,12 +7,11 @@ import { CompanyRole } from 'src/company/enums/company-role.enum';
 //import FileService from 'src/files/services/file-service.service';
 import { Role, User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
-import * as fs from 'fs';
-import * as path from 'path';
-import type { StreamableFile } from '@nestjs/common';
 import { ErrorManager } from 'src/common/error-handling/error.manager';
 //import { I18nService } from 'nestjs-i18n';
 import { APPConstants } from 'src/common/constants/app-constants';
+import { ConfigService } from '@nestjs/config';
+import { error } from 'console';
 //import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 
 @Injectable()
@@ -22,21 +21,8 @@ export class SeederService {
      */
     private readonly logger = new Logger(SeederService.name);
 
-    // Rutas de las imagenes
-    private readonly DEFAULT_LOGO_PATH = path.join(process.cwd(), 'assets', 'img', APPConstants.DEFAULT_LOGO_IMG);
-
-    private getEnvVar(key: string, fallback = ''): string {
-        const value = process.env[key];
-        if (value === undefined || value === null) {
-            if (!fallback) {
-                this.logger.warn(`Environment variable ${key} is not defined. Using fallback value.`);
-            }
-            return fallback;
-        }
-        return value;
-    }
-
     constructor(
+        private readonly configService: ConfigService, //for reading .env values
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
         @InjectRepository(Company)
@@ -48,97 +34,14 @@ export class SeederService {
         //private readonly fileService: FileService,
     ) {}
 
+    getEnvVar(key: string): string {
+        let value: string|undefined = this.configService.get(key);
+        return value != undefined? value : '';
+    }
+
     async seed() {
-        await this.seedBucketsMinIO(true);
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        await this.setDefaultPolicyBuckets(true);
-
-        await this.seedDefaultImages(true);
         await this.seedUsers(true);
-        await this.seedTicket(true);
         await this.seedCompany(true);
-    }
-
-    /**
-     * Método para añadir los buckets a MinIO de los enums FileBuckets y DocumentsBuckets.
-     *
-     * @returns     El return se usa para romper la lógica en caso de estar en producción
-     */
-    async seedBucketsMinIO(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding Buckets in MinIO');
-                const allBuckets: string[] = Object.values(FileBuckets);
-                for (const bucket of allBuckets) {
-                    this.logger.debug(`Seeding bucket ${bucket} into MinIO`);
-                    await this.fileService.createBucket(bucket);
-                }
-            } catch (error) {
-                this.logger.error(error);
-            }
-        }
-    }
-
-    /**
-     * Método que cambia la politica de los buckets y los hace publicos
-     *
-     * @returns     El return se usa para romper la lógica en caso de estar en producción
-     */
-    async setDefaultPolicyBuckets(force: boolean = false) {
-        if (force) {
-            try {
-                await this.fileService.makeBucketPublic(FileBuckets.PUBLIC_BUCKET);
-            } catch (error) {
-                this.logger.error(error);
-            }
-        }
-    }
-
-    async seedDefaultImages(force = false) {
-        if (force) {
-            try {
-                // Verificar si las imágenes ya existen
-                const logoExist = await this.fileService.fileExists(FileBuckets.PUBLIC_BUCKET, [
-                    APPConstants.DEFAULT_LOGO_IMG,
-                ]);
-
-                if (!logoExist) {
-                    try {
-                        // Leer el archivo del sistema de archivos
-                        const imageBuffer = fs.readFileSync(this.DEFAULT_LOGO_PATH);
-
-                        // Subir a MinIO
-                        await this.fileService.uploadFile(
-                            FileBuckets.PUBLIC_BUCKET,
-                            [APPConstants.DEFAULT_LOGO_IMG],
-                            imageBuffer,
-                            'image/png',
-                            false,
-                        );
-                    } catch (error: unknown) {
-                        const message = error instanceof Error ? error.message : 'Unexpected error';
-                        this.logger.error(`Error uploading default logo image: ${message}`);
-                    }
-                }
-            } catch (error: unknown) {
-                const message = error instanceof Error ? error.message : 'Unexpected error';
-                this.logger.error(`Error seeding default images: ${message}`);
-            }
-        }
-    }
-
-    async getDefaultLogoFile(): Promise<StreamableFile> {
-        try {
-            return await this.fileService.retrieveFileByPath(
-                FileBuckets.PUBLIC_BUCKET,
-                [APPConstants.DEFAULT_LOGO_IMG],
-                false,
-            );
-        } catch (error: unknown) {
-            const message = error instanceof Error ? error.message : 'Unexpected error';
-            this.logger.error(`Error getting default logo: ${message}`);
-            throw new ErrorManager('NOT_FOUND', this.i18n.t('error.FILE.DEFAULT_LOGO_NOT_FOUND'));
-        }
     }
 
     /**
@@ -184,82 +87,6 @@ export class SeederService {
         }
     }
 
-    async seedTicket(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding tickets');
-                if (process.env.NODE_ENV === 'production') return;
-
-                // Se crea un usuario para pasar por el correo para el ticket
-                const accountName = Role.USER.toString();
-                const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
-                const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
-
-                const user = await this.userRepository.findOneBy({
-                    mail: mail,
-                });
-
-                if (!user) {
-                    this.logger.debug(`No user with email ${mail} and USER role found`);
-                    return;
-                }
-
-                // Crea 6 tickets con diferentes categorias
-                const ticketData = [
-                    { title: 'Help with company setup', category: TicketCategory.COMPANY, notes: 0 },
-                    { title: 'Dashboard not loading correctly', category: TicketCategory.DASHBOARD, notes: 0 },
-                    { title: 'Need assistance with asset inventory', category: TicketCategory.ASSET, notes: 1 },
-                    { title: 'Alert configuration issue', category: TicketCategory.ALERTS, notes: 1 },
-                    { title: 'General question about the platform', category: TicketCategory.OTHER, notes: 2 },
-                    { title: 'Problem with user permissions', category: TicketCategory.USER, notes: 4 },
-                ];
-
-                for (const data of ticketData) {
-                    // comprobar si el ticket ya existe
-                    const existingTicket = await this.ticketRepository.findOneBy({
-                        title: data.title,
-                        user: { id: user.id },
-                    });
-
-                    if (existingTicket) {
-                        this.logger.debug(`Ticket "${data.title}" already exists for user ${user.name}`);
-                        continue;
-                    }
-
-                    // Aqui se crea el ticket
-                    const newTicket = new Ticket();
-                    newTicket.title = data.title;
-                    newTicket.category = data.category;
-                    newTicket.status = TicketStatus.OPEN;
-                    newTicket.user = user;
-                    newTicket.notes = [];
-
-                    // Crear notas y añadirlas al ticket
-                    if (data.notes > 0) {
-                        for (let i = 0; i < data.notes; i++) {
-                            const ticketNote = new TicketNote();
-                            ticketNote.text = `Note ${i + 1} for ticket: ${data.title}`;
-                            ticketNote.createdBy = user;
-                            ticketNote.ticket = newTicket;
-
-                            // Añadir la nota al array de notas del ticket
-                            newTicket.notes.push(ticketNote);
-                        }
-                    }
-
-                    // Guardar el ticket con sus notas
-                    await this.ticketRepository.save(newTicket);
-
-                    this.logger.debug(`Created ticket "${data.title}" for user ${user.name} with ${data.notes} notes`);
-                }
-
-                this.logger.debug('Finished seeding tickets');
-            } catch (error) {
-                this.logger.error(error);
-            }
-        }
-    }
-
     async seedCompany(force: boolean = false) {
         if (force) {
             try {
@@ -274,6 +101,9 @@ export class SeederService {
                 const user = await this.userRepository.findOneBy({
                     mail: mail,
                 });
+                if (!user)
+                    throw error('Seeding user ' + mail + ' not found');
+
                 const companyName = process.env.APP_NAME + ' testing company';
 
                 // Comprobar si la compañía ya existe
@@ -292,6 +122,9 @@ export class SeederService {
                 const company = await this.companyRepository.findOneBy({
                     name: companyName,
                 });
+                if (!company)
+                    throw error('Seeding company ' + companyName + ' not found');
+
                 const userCompany = new UserCompany();
                 userCompany.user = user;
                 userCompany.company = company;
@@ -363,11 +196,6 @@ export class SeederService {
 
             await this.userRepository.save(user);
             this.logger.debug(`SQL: User ${accountName} created`);
-
-            // Crear sección de minio del usuario para todos los buckets de documentos y archivos
-            // @TODO no hace falta crear la seccion de un usuario en cada bucket
-            //const userPath = this.fileService.getUserPath(userData.id, userData.mail);
-            //await this.fileInitService.createPathInAllBuckets([userPath]);
         }
     }
 }

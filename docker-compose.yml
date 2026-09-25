@@ -24,7 +24,7 @@ services:
             BBDD_HOST: postgres
             REDIS_HOST: redis
         ports:
-            - 3001:3001 #todo parametrize from .env
+            - 8000:8000 #todo parametrize from .env
         depends_on:
             postgres:
                 condition: service_healthy
@@ -41,6 +41,8 @@ services:
             POSTGRES_PASSWORD: '${POSTGRESQL_DOCKER_ROOT_PASSWORD}'
             POSTGRES_DB: '${POSTGRESQL_DATABASE_NAME}'
             POSTGRES_USER: '${POSTGRESQL_DOCKER_USER}'
+        ports:
+         - 5432:5432 #exposed for debugging
         volumes:
             - postgres-data:/var/lib/postgresql
         healthcheck:

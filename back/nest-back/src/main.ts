@@ -67,7 +67,10 @@ async function bootstrap() {
         }),
     );*/
     app.use(helmet());
-    app.enableCors(); // Activar Cors
+    app.enableCors({
+        origin: 'http://localhost:3000', //todo get frontend url from .env
+        credentials: true
+    }); // Activar Cors
 
     const swaggerDocBuilder = new DocumentBuilder() // Datos para mostrar en Swagger y funcionamiento general
         .setTitle('TEMPLATE API') // @CAMBIAR
@@ -153,7 +156,7 @@ async function bootstrap() {
     //const logginInterceptor = new LogginInterceptor(reflector, auditLogService, jwtService);
     //app.useGlobalInterceptors(logginInterceptor);
 
-    await app.listen(parseInt(process.env.APP_PORT ?? '8001')); // Puertos de escucha de la app
+    await app.listen(parseInt(process.env.APP_PORT ?? '8000')); // Puertos de escucha de la app
 }
 
 bootstrap().then(
@@ -162,6 +165,6 @@ bootstrap().then(
         r, // Arranque de la APP
     ) =>
         console.log(
-            'NestJS server running on port ' + (process.env.APP_PORT || '8001'), // Mensaje de confirmación por consola para debug
+            'NestJS server running on port ' + (process.env.APP_PORT || '8000'), // Mensaje de confirmación por consola para debug
         ),
 );
