@@ -5,6 +5,8 @@ import { getDictionary } from "@/i18n/dictionary";
 import Section from "../../layout/Section";
 import { SignUpActions, SignUpCopy, SignUpLayout } from "./SignUpSection.style";
 import { signUpSectionClasses } from "./SignUpSection.util";
+import SignUpButton from "./SignUpButton";
+import SignInButton from "./SignInButton";
 
 export default async function SignUpSection() {
   const { signUp } = await getDictionary();
@@ -23,12 +25,8 @@ export default async function SignUpSection() {
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
         >
-          <Button variant="contained" href={`#${SECTION_ID.signUp}`}>
-            {signUp.create}
-          </Button>
-          <Button variant="outlined" href={`#${SECTION_ID.signUp}`}>
-            {signUp.signIn}
-          </Button>
+          <><SignUpButton/></>
+          <><SignInButton/></>
           <Button variant="text" href={`#${SECTION_ID.listings}`}>
             {signUp.browse}
           </Button>
