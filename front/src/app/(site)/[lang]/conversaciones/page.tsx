@@ -14,20 +14,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: chat.inboxTitle };
 }
 
-/** Temporary inbox: sample threads only, no messaging backend. */
 export default async function ConversationsPage() {
   const { chat } = await getDictionary();
   const locale = await getLocale();
-  const backHref = `/${locale}${PATH.loggedHome}`;
 
   const items = CONVERSATIONS.flatMap((conversation) => {
-    const listing = getListingById(conversation.listingId);
-    if (!listing) {
-      return [];
-    }
+    const listing = getListingById(conversation.id);
+    if (!listing) return [];
 
     const last = conversation.messages.at(-1);
-
     return [
       {
         id: conversation.id,
@@ -51,15 +46,13 @@ export default async function ConversationsPage() {
           <Typography variant="body1" sx={{ mb: 4, maxWidth: 640 }}>
             {chat.inboxLead}
           </Typography>
-
           <ConversationList
             items={items}
             emptyLabel={chat.inboxEmpty}
             label={chat.inboxTitle}
           />
-
           <Stack direction="row" sx={{ mt: 4 }}>
-            <Button variant="outlined" href={backHref}>
+            <Button variant="outlined" href={`/${locale}${PATH.loggedHome}`}>
               {chat.back}
             </Button>
           </Stack>

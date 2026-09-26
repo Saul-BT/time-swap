@@ -2,6 +2,7 @@
 
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import NextLink from "next/link";
 import { bareList, softRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
@@ -49,3 +50,12 @@ export const ConversationListMeta = styled(Box, {
   gap: theme.spacing(space.sm),
   alignItems: "baseline",
 }));
+
+export const ConversationListPreview = styled(Typography, {
+  name: NAME,
+  slot: "Preview",
+})({
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+});

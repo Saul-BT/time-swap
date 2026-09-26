@@ -58,20 +58,15 @@ export type FooterLink = {
   href: string;
 };
 
-export type ChatMessageFrom = "self" | "peer";
-
 export type ChatMessage = {
   id: string;
   body: string;
-  /** Display time. Sample content, not translated. */
   sentAt: string;
-  from: ChatMessageFrom;
+  from: "self" | "peer";
 };
 
-/** One thread per listing for the signed-in member. */
 export type Conversation = {
   id: string;
-  listingId: string;
   peerName: string;
   messages: readonly ChatMessage[];
 };

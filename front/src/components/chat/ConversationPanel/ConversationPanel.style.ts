@@ -107,7 +107,6 @@ export const ConversationPanelMessageMeta = styled(Typography, {
   color: theme.palette.text.secondary,
 }));
 
-/** Real form element with Paper surface tokens (border + background). */
 export const ConversationPanelComposer = styled("form", {
   name: NAME,
   slot: "Composer",

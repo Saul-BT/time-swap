@@ -46,9 +46,7 @@ export default function ConversationPanel({
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const body = draft.trim();
-    if (!body) {
-      return;
-    }
+    if (!body) return;
 
     setMessages((current) => [
       ...current,

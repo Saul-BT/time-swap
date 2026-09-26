@@ -22,32 +22,23 @@ export async function generateMetadata({
   params,
 }: ConversationPageProps): Promise<Metadata> {
   const { id } = await params;
-  const conversation = getConversationById(id);
-  const listing = conversation
-    ? getListingById(conversation.listingId)
-    : undefined;
+  const listing = getListingById(id);
   return { title: listing?.title ?? "Chat" };
 }
 
-/** Temporary listing chat: local composer only, no messaging backend. */
 export default async function ConversationPage({
   params,
 }: ConversationPageProps) {
   const { id } = await params;
   const conversation = getConversationById(id);
+  const listing = conversation ? getListingById(conversation.id) : undefined;
 
-  if (!conversation) {
-    notFound();
-  }
-
-  const listing = getListingById(conversation.listingId);
-  if (!listing) {
+  if (!conversation || !listing) {
     notFound();
   }
 
   const { chat } = await getDictionary();
   const locale = await getLocale();
-  const inboxHref = `/${locale}${PATH.conversations}`;
   const listingHref = `/${locale}${PATH.listingDetail(listing.id)}`;
 
   return (
@@ -61,7 +52,6 @@ export default async function ConversationPage({
           <Typography variant="h2" gutterBottom sx={{ mt: 1 }}>
             {listing.title}
           </Typography>
-
           <ConversationPanel
             peerName={conversation.peerName}
             listingTitle={listing.title}
@@ -70,13 +60,12 @@ export default async function ConversationPage({
             initialMessages={conversation.messages}
             copy={chat}
           />
-
           <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={2}
             sx={{ mt: 4 }}
           >
-            <Button variant="outlined" href={inboxHref}>
+            <Button variant="outlined" href={`/${locale}${PATH.conversations}`}>
               {chat.backToInbox}
             </Button>
             <Button variant="text" href={listingHref}>

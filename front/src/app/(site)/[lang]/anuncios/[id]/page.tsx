@@ -30,7 +30,7 @@ export async function generateMetadata({
   return { title: listing?.title ?? "Anuncio" };
 }
 
-/** Temporary listing detail: Contactar opens the sample listing chat. */
+/** Temporary listing detail. */
 export default async function ListingDetailPage({
   params,
 }: ListingDetailPageProps) {
