@@ -2,7 +2,7 @@
 
 import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
-import { styled } from "@mui/material/styles";
+import { styled, type Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import NextLink from "next/link";
 import type { WithComponent } from "@/lib/mui/polymorphic";
@@ -11,58 +11,135 @@ import { space } from "@/theme/tokens";
 
 const NAME = "ConversationPanel";
 
+const inset = (theme: Theme) => ({
+  paddingInline: theme.spacing(space.sm + 1),
+  [theme.breakpoints.up("md")]: {
+    paddingInline: theme.spacing(space.lg),
+  },
+});
+
+export const ConversationScreen = styled(Box, {
+  name: NAME,
+  slot: "Screen",
+})(({ theme }) => ({
+  position: "fixed",
+  inset: 0,
+  zIndex: 1,
+  display: "flex",
+  flexDirection: "column",
+  overflow: "hidden",
+  backgroundColor: theme.palette.background.default,
+}));
+
 export const ConversationPanelRoot = styled(Box, {
   name: NAME,
   slot: "Root",
-})(({ theme }) => ({
+})({
+  flex: 1,
+  minHeight: 0,
   display: "flex",
   flexDirection: "column",
-  gap: theme.spacing(space.sm + 1),
-  maxWidth: 720,
-}));
+});
 
-export const ConversationPanelContext = styled(NextLink, {
+export const ConversationPanelBar = styled(Box, {
   name: NAME,
-  slot: "Context",
+  slot: "Bar",
 })(({ theme }) => ({
-  display: "block",
-  textDecoration: "none",
-  color: "inherit",
+  ...inset(theme),
+  flexShrink: 0,
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.spacing(0.5),
+  paddingBlock: theme.spacing(space.sm),
+  borderBottom: softRule(theme),
   backgroundColor: theme.palette.background.paper,
-  border: rule(theme),
 }));
 
-export const ConversationPanelContextBody = styled(Box, {
+export const ConversationPanelRow = styled(Box, {
   name: NAME,
-  slot: "ContextBody",
+  slot: "Row",
 })(({ theme }) => ({
-  padding: theme.spacing(space.sm + 1),
   display: "flex",
-  flexDirection: "column",
-  gap: theme.spacing(space.xs),
+  alignItems: "baseline",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  gap: theme.spacing(space.xs, space.sm),
+  minWidth: 0,
+}));
+
+export const ConversationPanelBack = styled(NextLink, {
+  name: NAME,
+  slot: "Back",
+})(({ theme }) => ({
+  ...theme.typography.subtitle2,
+  color: theme.palette.primary.main,
+  textDecoration: "none",
+  flexShrink: 0,
+  "&:hover": { textDecoration: "underline" },
+}));
+
+export const ConversationPanelTitle = styled(Typography, {
+  name: NAME,
+  slot: "Title",
+})<WithComponent>({
+  flex: "1 1 12rem",
+  minWidth: 0,
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+});
+
+export const ConversationPanelMeta = styled(Typography, {
+  name: NAME,
+  slot: "Meta",
+})<WithComponent>({
+  flexShrink: 0,
+  marginLeft: "auto",
+});
+
+export const ConversationPanelListingLink = styled(NextLink, {
+  name: NAME,
+  slot: "ListingLink",
+})(({ theme }) => ({
+  ...theme.typography.subtitle2,
+  color: theme.palette.text.primary,
+  textDecoration: "underline",
+  flexShrink: 0,
 }));
 
 export const ConversationPanelThread = styled("ul", {
   name: NAME,
   slot: "Thread",
 })(({ theme }) => ({
+  ...inset(theme),
   listStyle: "none",
   margin: 0,
-  padding: theme.spacing(space.sm, 0),
+  flex: 1,
+  minHeight: 0,
+  overflow: "auto",
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(space.sm),
-  minHeight: 280,
-  borderTop: softRule(theme),
-  borderBottom: softRule(theme),
+  paddingBlock: theme.spacing(space.sm),
 }));
+
+export const ConversationPanelPush = styled("li", {
+  name: NAME,
+  slot: "Push",
+})({
+  marginTop: "auto",
+  height: 0,
+});
 
 export const ConversationPanelEmpty = styled("li", {
   name: NAME,
   slot: "Empty",
 })(({ theme }) => ({
+  margin: "auto",
+  textAlign: "center",
+  maxWidth: 420,
   color: theme.palette.text.secondary,
-  paddingBlock: theme.spacing(space.md),
   ...theme.typography.body2,
 }));
 
@@ -76,7 +153,7 @@ export const ConversationPanelMessage = styled("li", {
   flexDirection: "column",
   alignItems: ownerState.from === "self" ? "flex-end" : "flex-start",
   gap: theme.spacing(0.5),
-  maxWidth: "85%",
+  maxWidth: "min(70%, 32rem)",
   alignSelf: ownerState.from === "self" ? "flex-end" : "flex-start",
 }));
 
@@ -111,15 +188,12 @@ export const ConversationPanelComposer = styled("form", {
   name: NAME,
   slot: "Composer",
 })(({ theme }) => ({
+  ...inset(theme),
+  flexShrink: 0,
   display: "flex",
-  flexDirection: "column",
   alignItems: "stretch",
   backgroundColor: theme.palette.background.paper,
-  border: rule(theme),
-  [theme.breakpoints.up("sm")]: {
-    flexDirection: "row",
-    alignItems: "stretch",
-  },
+  borderTop: rule(theme),
 }));
 
 export const ConversationPanelComposerInput = styled(InputBase, {
@@ -130,11 +204,4 @@ export const ConversationPanelComposerInput = styled(InputBase, {
   minWidth: 0,
   minHeight: theme.system.controlHeight,
   paddingInline: theme.spacing(space.sm),
-}));
-
-export const ConversationPanelHint = styled(Typography, {
-  name: NAME,
-  slot: "Hint",
-})<WithComponent>(({ theme }) => ({
-  color: theme.palette.text.secondary,
 }));

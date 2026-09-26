@@ -47,14 +47,12 @@
     "inboxEmpty": "There are no conversations yet.",
     "emptyThread": "Write the first message about this listing.",
     "messagesLabel": "Messages",
-    "listingLabel": "About this listing",
     "openListing": "View listing",
     "composerLabel": "Message",
     "composerPlaceholder": "Write a message…",
     "send": "Send",
     "back": "Back",
-    "backToInbox": "All conversations",
-    "demoHint": "Messages only live on this screen; nothing is saved."
+    "backToInbox": "All conversations"
   },
   "createAd": {
     "title": "Post a listing",

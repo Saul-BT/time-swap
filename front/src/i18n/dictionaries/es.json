@@ -47,14 +47,12 @@
     "inboxEmpty": "Todavía no hay conversaciones.",
     "emptyThread": "Escribe el primer mensaje sobre este anuncio.",
     "messagesLabel": "Mensajes",
-    "listingLabel": "Sobre este anuncio",
     "openListing": "Ver anuncio",
     "composerLabel": "Mensaje",
     "composerPlaceholder": "Escribe un mensaje…",
     "send": "Enviar",
     "back": "Volver",
-    "backToInbox": "Todas las conversaciones",
-    "demoHint": "Los mensajes solo viven en esta pantalla; no se guardan."
+    "backToInbox": "Todas las conversaciones"
   },
   "createAd": {
     "title": "Publicar un anuncio",

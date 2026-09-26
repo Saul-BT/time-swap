@@ -1,9 +1,9 @@
-import { Button, Stack, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ConversationPanel from "@/components/chat/ConversationPanel";
-import Section from "@/components/layout/Section";
-import SiteFooter from "@/components/layout/SiteFooter";
+import ConversationPanel, {
+  ConversationScreen,
+  conversationPanelClasses,
+} from "@/components/chat/ConversationPanel";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { CONVERSATIONS, getConversationById } from "@/data/conversations";
 import { getListingById } from "@/data/listings";
@@ -39,42 +39,19 @@ export default async function ConversationPage({
 
   const { chat } = await getDictionary();
   const locale = await getLocale();
-  const listingHref = `/${locale}${PATH.listingDetail(listing.id)}`;
 
   return (
-    <>
+    <ConversationScreen className={conversationPanelClasses.screen}>
       <SiteHeader />
-      <main>
-        <Section>
-          <Typography variant="overline" component="p" color="textSecondary">
-            {conversation.peerName}
-          </Typography>
-          <Typography variant="h2" gutterBottom sx={{ mt: 1 }}>
-            {listing.title}
-          </Typography>
-          <ConversationPanel
-            peerName={conversation.peerName}
-            listingTitle={listing.title}
-            listingHours={listing.hours}
-            listingHref={listingHref}
-            initialMessages={conversation.messages}
-            copy={chat}
-          />
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={2}
-            sx={{ mt: 4 }}
-          >
-            <Button variant="outlined" href={`/${locale}${PATH.conversations}`}>
-              {chat.backToInbox}
-            </Button>
-            <Button variant="text" href={listingHref}>
-              {chat.openListing}
-            </Button>
-          </Stack>
-        </Section>
-      </main>
-      <SiteFooter />
-    </>
+      <ConversationPanel
+        peerName={conversation.peerName}
+        listingTitle={listing.title}
+        listingHours={listing.hours}
+        listingHref={`/${locale}${PATH.listingDetail(listing.id)}`}
+        backHref={`/${locale}${PATH.conversations}`}
+        initialMessages={conversation.messages}
+        copy={chat}
+      />
+    </ConversationScreen>
   );
 }

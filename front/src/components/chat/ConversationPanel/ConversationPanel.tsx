@@ -1,21 +1,24 @@
 "use client";
 
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { type FormEvent, useId, useState } from "react";
+import { type FormEvent, useEffect, useId, useRef, useState } from "react";
 import type { ChatMessage } from "@/data/types";
 import {
+  ConversationPanelBack,
+  ConversationPanelBar,
   ConversationPanelComposer,
   ConversationPanelComposerInput,
-  ConversationPanelContext,
-  ConversationPanelContextBody,
   ConversationPanelEmpty,
-  ConversationPanelHint,
+  ConversationPanelListingLink,
   ConversationPanelMessage,
   ConversationPanelMessageBody,
   ConversationPanelMessageMeta,
+  ConversationPanelMeta,
+  ConversationPanelPush,
   ConversationPanelRoot,
+  ConversationPanelRow,
   ConversationPanelThread,
+  ConversationPanelTitle,
 } from "./ConversationPanel.style";
 import {
   type ChatCopy,
@@ -27,6 +30,7 @@ export type ConversationPanelProps = {
   listingTitle: string;
   listingHours: string;
   listingHref: string;
+  backHref: string;
   initialMessages: readonly ChatMessage[];
   copy: ChatCopy;
 };
@@ -36,12 +40,26 @@ export default function ConversationPanel({
   listingTitle,
   listingHours,
   listingHref,
+  backHref,
   initialMessages,
   copy,
 }: ConversationPanelProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([...initialMessages]);
   const [draft, setDraft] = useState("");
   const inputId = useId();
+  const threadRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    const node = threadRef.current;
+    if (
+      !node ||
+      messages.length === 0 ||
+      node.scrollHeight <= node.clientHeight
+    ) {
+      return;
+    }
+    node.scrollTop = node.scrollHeight;
+  }, [messages]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,29 +80,43 @@ export default function ConversationPanel({
 
   return (
     <ConversationPanelRoot className={conversationPanelClasses.root}>
-      <ConversationPanelContext
-        className={conversationPanelClasses.context}
-        href={listingHref}
-        aria-label={copy.openListing}
-      >
-        <ConversationPanelContextBody
-          className={conversationPanelClasses.contextBody}
-        >
-          <Typography variant="overline" component="p" color="textSecondary">
-            {copy.listingLabel}
-          </Typography>
-          <Typography variant="h3" component="p">
-            {listingTitle}
-          </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
+      <ConversationPanelBar className={conversationPanelClasses.bar}>
+        <ConversationPanelRow className={conversationPanelClasses.row}>
+          <ConversationPanelBack
+            className={conversationPanelClasses.back}
+            href={backHref}
+          >
+            {copy.backToInbox}
+          </ConversationPanelBack>
+          <ConversationPanelMeta
+            className={conversationPanelClasses.meta}
+            variant="body2"
+            color="textSecondary"
+          >
             {peerName}
             {" · "}
             {listingHours}
-          </Typography>
-        </ConversationPanelContextBody>
-      </ConversationPanelContext>
+          </ConversationPanelMeta>
+        </ConversationPanelRow>
+        <ConversationPanelRow className={conversationPanelClasses.row}>
+          <ConversationPanelTitle
+            className={conversationPanelClasses.title}
+            variant="h4"
+            component="h1"
+          >
+            {listingTitle}
+          </ConversationPanelTitle>
+          <ConversationPanelListingLink
+            className={conversationPanelClasses.listingLink}
+            href={listingHref}
+          >
+            {copy.openListing}
+          </ConversationPanelListingLink>
+        </ConversationPanelRow>
+      </ConversationPanelBar>
 
       <ConversationPanelThread
+        ref={threadRef}
         className={conversationPanelClasses.thread}
         aria-label={copy.messagesLabel}
       >
@@ -93,27 +125,33 @@ export default function ConversationPanel({
             {copy.emptyThread}
           </ConversationPanelEmpty>
         ) : (
-          messages.map((message) => (
-            <ConversationPanelMessage
-              key={message.id}
-              className={conversationPanelClasses.message}
-              ownerState={{ from: message.from }}
-            >
-              <ConversationPanelMessageBody
-                className={conversationPanelClasses.messageBody}
+          <>
+            <ConversationPanelPush
+              className={conversationPanelClasses.push}
+              aria-hidden
+            />
+            {messages.map((message) => (
+              <ConversationPanelMessage
+                key={message.id}
+                className={conversationPanelClasses.message}
                 ownerState={{ from: message.from }}
               >
-                {message.body}
-              </ConversationPanelMessageBody>
-              <ConversationPanelMessageMeta
-                className={conversationPanelClasses.messageMeta}
-                variant="caption"
-                component="p"
-              >
-                {message.sentAt}
-              </ConversationPanelMessageMeta>
-            </ConversationPanelMessage>
-          ))
+                <ConversationPanelMessageBody
+                  className={conversationPanelClasses.messageBody}
+                  ownerState={{ from: message.from }}
+                >
+                  {message.body}
+                </ConversationPanelMessageBody>
+                <ConversationPanelMessageMeta
+                  className={conversationPanelClasses.messageMeta}
+                  variant="caption"
+                  component="p"
+                >
+                  {message.sentAt}
+                </ConversationPanelMessageMeta>
+              </ConversationPanelMessage>
+            ))}
+          </>
         )}
       </ConversationPanelThread>
 
@@ -135,14 +173,6 @@ export default function ConversationPanel({
           {copy.send}
         </Button>
       </ConversationPanelComposer>
-
-      <ConversationPanelHint
-        className={conversationPanelClasses.hint}
-        variant="caption"
-        component="p"
-      >
-        {copy.demoHint}
-      </ConversationPanelHint>
     </ConversationPanelRoot>
   );
 }
