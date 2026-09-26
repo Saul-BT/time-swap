@@ -57,3 +57,16 @@ export type FooterLink = {
   id: FooterLinkId;
   href: string;
 };
+
+export type ChatMessage = {
+  id: string;
+  body: string;
+  sentAt: string;
+  from: "self" | "peer";
+};
+
+export type Conversation = {
+  id: string;
+  peerName: string;
+  messages: readonly ChatMessage[];
+};

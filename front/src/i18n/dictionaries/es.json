@@ -36,10 +36,23 @@
     "back": "Volver al inicio"
   },
   "listingDetail": {
-    "lead": "Interfaz temporal: detalle de ejemplo. El contacto no hace nada todavía.",
+    "lead": "Interfaz temporal: detalle de ejemplo. Contactar abre el chat del anuncio.",
     "hoursLabel": "Duración orientativa",
-    "contact": "Solicitar contacto (demo)",
+    "contact": "Contactar",
     "back": "Volver"
+  },
+  "chat": {
+    "inboxTitle": "Chat",
+    "inboxLead": "Interfaz temporal: hilos de ejemplo ligados a anuncios. No hay mensajería real todavía.",
+    "inboxEmpty": "Todavía no hay chats.",
+    "emptyThread": "Escribe el primer mensaje sobre este anuncio.",
+    "messagesLabel": "Mensajes",
+    "openListing": "Ver anuncio",
+    "composerLabel": "Mensaje",
+    "composerPlaceholder": "Escribe un mensaje…",
+    "send": "Enviar",
+    "back": "Volver",
+    "backToInbox": "Chat"
   },
   "createAd": {
     "title": "Publicar un anuncio",
