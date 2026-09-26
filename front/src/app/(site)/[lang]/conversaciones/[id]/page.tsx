@@ -1,14 +1,13 @@
 import Box from "@mui/material/Box";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ConversationPanel from "@/components/chat/ConversationPanel";
-import SiteHeader from "@/components/layout/SiteHeader";
+import ChatPanel from "@/components/chat/ChatPanel";
 import { CONVERSATIONS, getConversationById } from "@/data/conversations";
 import { getListingById } from "@/data/listings";
 import { PATH } from "@/data/navigation";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 
-type ConversationPageProps = {
+type ChatPageProps = {
   params: Promise<{ id: string }>;
 };
 
@@ -18,15 +17,18 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: ConversationPageProps): Promise<Metadata> {
+}: ChatPageProps): Promise<Metadata> {
+  const { chat } = await getDictionary();
   const { id } = await params;
   const listing = getListingById(id);
-  return { title: listing?.title ?? "Chat" };
+  return {
+    title: listing
+      ? `${chat.threadTitle} · ${listing.title}`
+      : chat.threadTitle,
+  };
 }
 
-export default async function ConversationPage({
-  params,
-}: ConversationPageProps) {
+export default async function ChatPage({ params }: ChatPageProps) {
   const { id } = await params;
   const conversation = getConversationById(id);
   const listing = conversation ? getListingById(conversation.id) : undefined;
@@ -50,10 +52,10 @@ export default async function ConversationPage({
         bgcolor: "background.default",
       }}
     >
-      <SiteHeader />
-      <ConversationPanel
+      <ChatPanel
         peerName={conversation.peerName}
         listingTitle={listing.title}
+        listingSummary={listing.summary}
         listingHours={listing.hours}
         listingHref={`/${locale}${PATH.listingDetail(listing.id)}`}
         backHref={`/${locale}${PATH.conversations}`}
