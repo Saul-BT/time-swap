@@ -3,7 +3,6 @@ import {
   ConversationListItem,
   ConversationListLink,
   ConversationListMeta,
-  ConversationListPreview,
   ConversationListRoot,
 } from "./ConversationList.style";
 import { conversationListClasses } from "./ConversationList.util";
@@ -61,13 +60,14 @@ export default function ConversationList({
             <Typography variant="body2" color="textSecondary">
               {item.peerName}
             </Typography>
-            <ConversationListPreview
+            <Typography
               className={conversationListClasses.preview}
               variant="body2"
               color="textSecondary"
+              noWrap
             >
               {item.preview}
-            </ConversationListPreview>
+            </Typography>
           </ConversationListLink>
         </ConversationListItem>
       ))}

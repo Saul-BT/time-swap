@@ -8,6 +8,7 @@ import NextLink from "next/link";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { rule, softRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
+import { conversationPanelClasses as classes } from "./ConversationPanel.util";
 
 const NAME = "ConversationPanel";
 
@@ -17,6 +18,9 @@ const inset = (theme: Theme) => ({
     paddingInline: theme.spacing(space.lg),
   },
 });
+
+const side = (from: "self" | "peer") =>
+  from === "self" ? "flex-end" : "flex-start";
 
 export const ConversationScreen = styled(Box, {
   name: NAME,
@@ -67,14 +71,17 @@ export const ConversationPanelRow = styled(Box, {
   minWidth: 0,
 }));
 
-export const ConversationPanelBack = styled(NextLink, {
+export const ConversationPanelLink = styled(NextLink, {
   name: NAME,
-  slot: "Back",
-})(({ theme }) => ({
+  slot: "Link",
+})<{ ownerState: { tone: "accent" | "ink" } }>(({ theme, ownerState }) => ({
   ...theme.typography.subtitle2,
-  color: theme.palette.primary.main,
-  textDecoration: "none",
   flexShrink: 0,
+  color:
+    ownerState.tone === "accent"
+      ? theme.palette.primary.main
+      : theme.palette.text.primary,
+  textDecoration: ownerState.tone === "accent" ? "none" : "underline",
   "&:hover": { textDecoration: "underline" },
 }));
 
@@ -89,24 +96,6 @@ export const ConversationPanelTitle = styled(Typography, {
   WebkitBoxOrient: "vertical",
   overflow: "hidden",
 });
-
-export const ConversationPanelMeta = styled(Typography, {
-  name: NAME,
-  slot: "Meta",
-})<WithComponent>({
-  flexShrink: 0,
-  marginLeft: "auto",
-});
-
-export const ConversationPanelListingLink = styled(NextLink, {
-  name: NAME,
-  slot: "ListingLink",
-})(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  color: theme.palette.text.primary,
-  textDecoration: "underline",
-  flexShrink: 0,
-}));
 
 export const ConversationPanelThread = styled("ul", {
   name: NAME,
@@ -124,14 +113,6 @@ export const ConversationPanelThread = styled("ul", {
   paddingBlock: theme.spacing(space.sm),
 }));
 
-export const ConversationPanelPush = styled("li", {
-  name: NAME,
-  slot: "Push",
-})({
-  marginTop: "auto",
-  height: 0,
-});
-
 export const ConversationPanelEmpty = styled("li", {
   name: NAME,
   slot: "Empty",
@@ -143,46 +124,34 @@ export const ConversationPanelEmpty = styled("li", {
   ...theme.typography.body2,
 }));
 
-type MessageOwnerState = { from: "self" | "peer" };
-
 export const ConversationPanelMessage = styled("li", {
   name: NAME,
   slot: "Message",
-})<{ ownerState: MessageOwnerState }>(({ theme, ownerState }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: ownerState.from === "self" ? "flex-end" : "flex-start",
-  gap: theme.spacing(0.5),
-  maxWidth: "min(70%, 32rem)",
-  alignSelf: ownerState.from === "self" ? "flex-end" : "flex-start",
-}));
-
-export const ConversationPanelMessageBody = styled(Box, {
-  name: NAME,
-  slot: "MessageBody",
-})<{ ownerState: MessageOwnerState }>(({ theme, ownerState }) => ({
-  padding: theme.spacing(space.sm),
-  border: rule(theme),
-  whiteSpace: "pre-wrap",
-  wordBreak: "break-word",
-  ...theme.typography.body2,
-  ...(ownerState.from === "self"
-    ? {
-        backgroundColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-      }
-    : {
-        backgroundColor: theme.palette.background.paper,
-      }),
-}));
-
-export const ConversationPanelMessageMeta = styled(Typography, {
-  name: NAME,
-  slot: "MessageMeta",
-})<WithComponent>(({ theme }) => ({
-  color: theme.palette.text.secondary,
-}));
+})<{ ownerState: { from: "self" | "peer"; lead: boolean } }>(
+  ({ theme, ownerState }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: side(ownerState.from),
+    alignSelf: side(ownerState.from),
+    gap: theme.spacing(0.5),
+    maxWidth: "min(70%, 32rem)",
+    marginTop: ownerState.lead ? "auto" : undefined,
+    [`& .${classes.messageBody}`]: {
+      padding: theme.spacing(space.sm),
+      border: rule(theme),
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-word",
+      ...theme.typography.body2,
+      ...(ownerState.from === "self"
+        ? {
+            backgroundColor: theme.palette.primary.main,
+            borderColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+          }
+        : { backgroundColor: theme.palette.background.paper }),
+    },
+  }),
+);
 
 export const ConversationPanelComposer = styled("form", {
   name: NAME,

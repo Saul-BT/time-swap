@@ -1,20 +1,17 @@
 "use client";
 
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { type FormEvent, useEffect, useId, useRef, useState } from "react";
 import type { ChatMessage } from "@/data/types";
 import {
-  ConversationPanelBack,
   ConversationPanelBar,
   ConversationPanelComposer,
   ConversationPanelComposerInput,
   ConversationPanelEmpty,
-  ConversationPanelListingLink,
+  ConversationPanelLink,
   ConversationPanelMessage,
-  ConversationPanelMessageBody,
-  ConversationPanelMessageMeta,
-  ConversationPanelMeta,
-  ConversationPanelPush,
   ConversationPanelRoot,
   ConversationPanelRow,
   ConversationPanelThread,
@@ -22,7 +19,7 @@ import {
 } from "./ConversationPanel.style";
 import {
   type ChatCopy,
-  conversationPanelClasses,
+  conversationPanelClasses as classes,
 } from "./ConversationPanel.util";
 
 export type ConversationPanelProps = {
@@ -59,7 +56,7 @@ export default function ConversationPanel({
       return;
     }
     node.scrollTop = node.scrollHeight;
-  }, [messages]);
+  }, [messages.length]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -79,88 +76,75 @@ export default function ConversationPanel({
   }
 
   return (
-    <ConversationPanelRoot className={conversationPanelClasses.root}>
-      <ConversationPanelBar className={conversationPanelClasses.bar}>
-        <ConversationPanelRow className={conversationPanelClasses.row}>
-          <ConversationPanelBack
-            className={conversationPanelClasses.back}
+    <ConversationPanelRoot className={classes.root}>
+      <ConversationPanelBar className={classes.bar}>
+        <ConversationPanelRow className={classes.row}>
+          <ConversationPanelLink
+            className={classes.link}
             href={backHref}
+            ownerState={{ tone: "accent" }}
           >
             {copy.backToInbox}
-          </ConversationPanelBack>
-          <ConversationPanelMeta
-            className={conversationPanelClasses.meta}
+          </ConversationPanelLink>
+          <Typography
             variant="body2"
             color="textSecondary"
+            sx={{ flexShrink: 0, ml: "auto" }}
           >
             {peerName}
             {" · "}
             {listingHours}
-          </ConversationPanelMeta>
+          </Typography>
         </ConversationPanelRow>
-        <ConversationPanelRow className={conversationPanelClasses.row}>
+        <ConversationPanelRow className={classes.row}>
           <ConversationPanelTitle
-            className={conversationPanelClasses.title}
+            className={classes.title}
             variant="h4"
             component="h1"
           >
             {listingTitle}
           </ConversationPanelTitle>
-          <ConversationPanelListingLink
-            className={conversationPanelClasses.listingLink}
+          <ConversationPanelLink
+            className={classes.link}
             href={listingHref}
+            ownerState={{ tone: "ink" }}
           >
             {copy.openListing}
-          </ConversationPanelListingLink>
+          </ConversationPanelLink>
         </ConversationPanelRow>
       </ConversationPanelBar>
 
       <ConversationPanelThread
         ref={threadRef}
-        className={conversationPanelClasses.thread}
+        className={classes.thread}
         aria-label={copy.messagesLabel}
       >
         {messages.length === 0 ? (
-          <ConversationPanelEmpty className={conversationPanelClasses.empty}>
+          <ConversationPanelEmpty className={classes.empty}>
             {copy.emptyThread}
           </ConversationPanelEmpty>
         ) : (
-          <>
-            <ConversationPanelPush
-              className={conversationPanelClasses.push}
-              aria-hidden
-            />
-            {messages.map((message) => (
-              <ConversationPanelMessage
-                key={message.id}
-                className={conversationPanelClasses.message}
-                ownerState={{ from: message.from }}
-              >
-                <ConversationPanelMessageBody
-                  className={conversationPanelClasses.messageBody}
-                  ownerState={{ from: message.from }}
-                >
-                  {message.body}
-                </ConversationPanelMessageBody>
-                <ConversationPanelMessageMeta
-                  className={conversationPanelClasses.messageMeta}
-                  variant="caption"
-                  component="p"
-                >
-                  {message.sentAt}
-                </ConversationPanelMessageMeta>
-              </ConversationPanelMessage>
-            ))}
-          </>
+          messages.map((message, index) => (
+            <ConversationPanelMessage
+              key={message.id}
+              className={classes.message}
+              ownerState={{ from: message.from, lead: index === 0 }}
+            >
+              <Box className={classes.messageBody}>{message.body}</Box>
+              <Typography variant="caption" component="p" color="textSecondary">
+                {message.sentAt}
+              </Typography>
+            </ConversationPanelMessage>
+          ))
         )}
       </ConversationPanelThread>
 
       <ConversationPanelComposer
-        className={conversationPanelClasses.composer}
+        className={classes.composer}
         onSubmit={handleSubmit}
       >
         <ConversationPanelComposerInput
-          className={conversationPanelClasses.composerInput}
+          className={classes.composerInput}
           id={inputId}
           name="mensaje"
           value={draft}
