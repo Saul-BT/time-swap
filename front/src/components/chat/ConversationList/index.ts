@@ -3,4 +3,3 @@ export type {
   ConversationListProps,
 } from "./ConversationList";
 export { default } from "./ConversationList";
-export { conversationListClasses } from "./ConversationList.util";

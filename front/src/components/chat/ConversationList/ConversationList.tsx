@@ -1,11 +1,6 @@
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import {
-  ConversationListItem,
-  ConversationListLink,
-  ConversationListMeta,
-  ConversationListRoot,
-} from "./ConversationList.style";
-import { conversationListClasses } from "./ConversationList.util";
 
 export type ConversationListEntry = {
   id: string;
@@ -36,41 +31,65 @@ export default function ConversationList({
   }
 
   return (
-    <ConversationListRoot
-      className={conversationListClasses.root}
+    <Box
+      component="ul"
       aria-label={label}
+      sx={{
+        listStyle: "none",
+        m: 0,
+        p: 0,
+        maxWidth: 720,
+        borderTop: "2px solid",
+        borderColor: "divider",
+      }}
     >
       {items.map((item) => (
-        <ConversationListItem
+        <Box
           key={item.id}
-          className={conversationListClasses.item}
+          component="li"
+          sx={{ borderBottom: "2px solid", borderColor: "divider" }}
         >
-          <ConversationListLink
-            className={conversationListClasses.link}
+          <Link
             href={item.href}
+            underline="none"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              py: 3,
+              color: "inherit",
+              "&:hover .preview": { color: "text.primary" },
+            }}
           >
-            <ConversationListMeta className={conversationListClasses.meta}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 2,
+                alignItems: "baseline",
+              }}
+            >
               <Typography variant="subtitle1">{item.listingTitle}</Typography>
               {item.sentAt ? (
                 <Typography variant="caption" color="textSecondary">
                   {item.sentAt}
                 </Typography>
               ) : null}
-            </ConversationListMeta>
+            </Box>
             <Typography variant="body2" color="textSecondary">
               {item.peerName}
             </Typography>
             <Typography
-              className={conversationListClasses.preview}
+              className="preview"
               variant="body2"
               color="textSecondary"
               noWrap
             >
               {item.preview}
             </Typography>
-          </ConversationListLink>
-        </ConversationListItem>
+          </Link>
+        </Box>
       ))}
-    </ConversationListRoot>
+    </Box>
   );
 }

@@ -1,9 +1,7 @@
+import Box from "@mui/material/Box";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ConversationPanel, {
-  ConversationScreen,
-  conversationPanelClasses,
-} from "@/components/chat/ConversationPanel";
+import ConversationPanel from "@/components/chat/ConversationPanel";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { CONVERSATIONS, getConversationById } from "@/data/conversations";
 import { getListingById } from "@/data/listings";
@@ -41,7 +39,17 @@ export default async function ConversationPage({
   const locale = await getLocale();
 
   return (
-    <ConversationScreen className={conversationPanelClasses.screen}>
+    <Box
+      sx={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1,
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        bgcolor: "background.default",
+      }}
+    >
       <SiteHeader />
       <ConversationPanel
         peerName={conversation.peerName}
@@ -52,6 +60,6 @@ export default async function ConversationPage({
         initialMessages={conversation.messages}
         copy={chat}
       />
-    </ConversationScreen>
+    </Box>
   );
 }
