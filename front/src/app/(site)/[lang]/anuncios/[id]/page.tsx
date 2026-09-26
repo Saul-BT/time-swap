@@ -30,7 +30,7 @@ export async function generateMetadata({
   return { title: listing?.title ?? "Anuncio" };
 }
 
-/** Temporary listing detail: sample content only, no contact backend. */
+/** Temporary listing detail: Contactar opens the sample listing chat. */
 export default async function ListingDetailPage({
   params,
 }: ListingDetailPageProps) {
@@ -44,6 +44,7 @@ export default async function ListingDetailPage({
   const { listingDetail, listings } = await getDictionary();
   const locale = await getLocale();
   const backHref = `/${locale}${PATH.loggedHome}`;
+  const chatHref = `/${locale}${PATH.conversation(listing.id)}`;
 
   return (
     <>
@@ -80,7 +81,7 @@ export default async function ListingDetailPage({
           </Typography>
 
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-            <Button variant="contained" href={backHref}>
+            <Button variant="contained" href={chatHref}>
               {listingDetail.contact}
             </Button>
             <Button variant="outlined" href={backHref}>

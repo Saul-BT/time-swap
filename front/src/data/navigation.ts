@@ -13,6 +13,8 @@ export const PATH = {
   listings: "/anuncios",
   createAd: "/anuncios/nuevo",
   listingDetail: (id: string) => `/anuncios/${id}`,
+  conversations: "/conversaciones",
+  conversation: (id: string) => `/conversaciones/${id}`,
 } as const;
 
 export const HEADER_LINKS: readonly NavigationLink[] = [

@@ -36,10 +36,25 @@
     "back": "Back to home"
   },
   "listingDetail": {
-    "lead": "Temporary interface: a sample detail. Contact does nothing yet.",
+    "lead": "Temporary interface: a sample detail. Contact opens the listing chat.",
     "hoursLabel": "Rough duration",
-    "contact": "Request contact (demo)",
+    "contact": "Contact",
     "back": "Back"
+  },
+  "chat": {
+    "inboxTitle": "Conversations",
+    "inboxLead": "Temporary interface: sample threads tied to listings. There is no real messaging yet.",
+    "inboxEmpty": "There are no conversations yet.",
+    "emptyThread": "Write the first message about this listing.",
+    "messagesLabel": "Messages",
+    "listingLabel": "About this listing",
+    "openListing": "View listing",
+    "composerLabel": "Message",
+    "composerPlaceholder": "Write a message…",
+    "send": "Send",
+    "back": "Back",
+    "backToInbox": "All conversations",
+    "demoHint": "Messages only live on this screen; nothing is saved."
   },
   "createAd": {
     "title": "Post a listing",
