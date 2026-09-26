@@ -24,7 +24,7 @@ export default function ConversationList({
 }: ConversationListProps) {
   if (items.length === 0) {
     return (
-      <Typography variant="body2" color="textSecondary" sx={{ maxWidth: 640 }}>
+      <Typography variant="body2" color="textSecondary">
         {emptyLabel}
       </Typography>
     );
@@ -38,7 +38,6 @@ export default function ConversationList({
         listStyle: "none",
         m: 0,
         p: 0,
-        maxWidth: 720,
         borderTop: "2px solid",
         borderColor: "divider",
       }}
@@ -53,30 +52,35 @@ export default function ConversationList({
             href={item.href}
             underline="none"
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-              py: 3,
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr auto",
+                md: "minmax(14rem, 1.2fr) 9rem minmax(0, 2fr) auto",
+              },
+              columnGap: { xs: 2, md: 3 },
+              rowGap: 0.5,
+              alignItems: "baseline",
+              py: 2,
               color: "inherit",
               "&:hover .preview": { color: "text.primary" },
             }}
           >
-            <Box
+            <Typography
+              variant="subtitle1"
+              noWrap
+              sx={{ gridColumn: { md: 1 }, gridRow: 1 }}
+            >
+              {item.listingTitle}
+            </Typography>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              noWrap
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 2,
-                alignItems: "baseline",
+                gridColumn: { xs: "1 / -1", md: 2 },
+                gridRow: { xs: 2, md: 1 },
               }}
             >
-              <Typography variant="subtitle1">{item.listingTitle}</Typography>
-              {item.sentAt ? (
-                <Typography variant="caption" color="textSecondary">
-                  {item.sentAt}
-                </Typography>
-              ) : null}
-            </Box>
-            <Typography variant="body2" color="textSecondary">
               {item.peerName}
             </Typography>
             <Typography
@@ -84,9 +88,26 @@ export default function ConversationList({
               variant="body2"
               color="textSecondary"
               noWrap
+              sx={{
+                gridColumn: { xs: "1 / -1", md: 3 },
+                gridRow: { xs: 3, md: 1 },
+              }}
             >
               {item.preview}
             </Typography>
+            {item.sentAt ? (
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                sx={{
+                  gridColumn: { xs: 2, md: 4 },
+                  gridRow: 1,
+                  justifySelf: "end",
+                }}
+              >
+                {item.sentAt}
+              </Typography>
+            ) : null}
           </Link>
         </Box>
       ))}

@@ -42,17 +42,17 @@
     "back": "Back"
   },
   "chat": {
-    "inboxTitle": "Conversations",
+    "inboxTitle": "Chat",
     "inboxLead": "Temporary interface: sample threads tied to listings. There is no real messaging yet.",
-    "inboxEmpty": "There are no conversations yet.",
+    "inboxEmpty": "There are no chats yet.",
     "emptyThread": "Write the first message about this listing.",
     "messagesLabel": "Messages",
-    "threadTitle": "Chat",
     "openListing": "View listing",
     "composerLabel": "Message",
     "composerPlaceholder": "Write a message…",
     "send": "Send",
-    "back": "Back"
+    "back": "Back",
+    "backToInbox": "Chat"
   },
   "createAd": {
     "title": "Post a listing",

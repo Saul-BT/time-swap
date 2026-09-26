@@ -1,7 +1,8 @@
-import { Box, Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import type { Metadata } from "next";
 import ConversationList from "@/components/chat/ConversationList";
-import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { CONVERSATIONS } from "@/data/conversations";
@@ -38,26 +39,34 @@ export default async function ConversationsPage() {
   return (
     <>
       <SiteHeader />
-      <main>
-        <Section>
-          <Typography variant="h2" gutterBottom>
-            {chat.inboxTitle}
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 4, maxWidth: 640 }}>
-            {chat.inboxLead}
-          </Typography>
-          <ConversationList
-            items={items}
-            emptyLabel={chat.inboxEmpty}
-            label={chat.inboxTitle}
-          />
-          <Box sx={{ mt: 4 }}>
-            <Button variant="outlined" href={`/${locale}${PATH.loggedHome}`}>
-              {chat.back}
-            </Button>
-          </Box>
-        </Section>
-      </main>
+      <Box
+        component="main"
+        sx={{
+          width: "100%",
+          maxWidth: 1240,
+          mx: "auto",
+          px: { xs: 3, md: 7 },
+          pt: 3,
+          pb: 6,
+        }}
+      >
+        <Typography variant="h2" gutterBottom>
+          {chat.inboxTitle}
+        </Typography>
+        <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
+          {chat.inboxLead}
+        </Typography>
+        <ConversationList
+          items={items}
+          emptyLabel={chat.inboxEmpty}
+          label={chat.inboxTitle}
+        />
+        <Box sx={{ mt: 3 }}>
+          <Button variant="outlined" href={`/${locale}${PATH.loggedHome}`}>
+            {chat.back}
+          </Button>
+        </Box>
+      </Box>
       <SiteFooter />
     </>
   );

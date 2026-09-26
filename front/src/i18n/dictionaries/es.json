@@ -42,17 +42,17 @@
     "back": "Volver"
   },
   "chat": {
-    "inboxTitle": "Conversaciones",
+    "inboxTitle": "Chat",
     "inboxLead": "Interfaz temporal: hilos de ejemplo ligados a anuncios. No hay mensajería real todavía.",
-    "inboxEmpty": "Todavía no hay conversaciones.",
+    "inboxEmpty": "Todavía no hay chats.",
     "emptyThread": "Escribe el primer mensaje sobre este anuncio.",
     "messagesLabel": "Mensajes",
-    "threadTitle": "Chat",
     "openListing": "Ver anuncio",
     "composerLabel": "Mensaje",
     "composerPlaceholder": "Escribe un mensaje…",
     "send": "Enviar",
-    "back": "Volver"
+    "back": "Volver",
+    "backToInbox": "Chat"
   },
   "createAd": {
     "title": "Publicar un anuncio",
