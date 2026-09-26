@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ConversationPanel from "@/components/chat/ConversationPanel";
+import ConversationPanel from "@/components/chat/ConversationPanel/ConversationPanel";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { CONVERSATIONS, getConversationById } from "@/data/conversations";
 import { getListingById } from "@/data/listings";

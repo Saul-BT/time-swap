@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import type { Metadata } from "next";
-import ConversationList from "@/components/chat/ConversationList";
+import ConversationList from "@/components/chat/ConversationList/ConversationList";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { CONVERSATIONS } from "@/data/conversations";
