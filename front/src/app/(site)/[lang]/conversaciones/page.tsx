@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import ConversationList from "@/components/chat/ConversationList";
 import Section from "@/components/layout/Section";
@@ -51,11 +51,11 @@ export default async function ConversationsPage() {
             emptyLabel={chat.inboxEmpty}
             label={chat.inboxTitle}
           />
-          <Stack direction="row" sx={{ mt: 4 }}>
+          <Box sx={{ mt: 4 }}>
             <Button variant="outlined" href={`/${locale}${PATH.loggedHome}`}>
               {chat.back}
             </Button>
-          </Stack>
+          </Box>
         </Section>
       </main>
       <SiteFooter />
