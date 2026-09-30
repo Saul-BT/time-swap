@@ -8,12 +8,15 @@ Companion to [`../AGENTS.md`](../AGENTS.md). Decisions with a real trade-off are
 src/
   app/
     (site)/[lang]/        localized site; root layout + pages
+    (site)/[lang]/sign-in/  sign-in route; `actions.ts` holds its server action
+    (site)/[lang]/recover/  access recovery, placeholder until the flow is designed
     (brand-book)/brand-book/   design-system reference, outside the locale, English only
     globals.css           html/body resets only; everything else is theme
   components/
     ui/        presentational primitives, no data, no domain (Ribbon, Eyebrow, TabularFigure…)
     layout/    page chrome and providers (SiteHeader, Section, AppProviders…)
     landing/   sections of the landing; read data + dictionary
+    sign-in/   the sign-in screen: form, editorial panel, split layout
     brand-book/  components used only by /brand-book
   data/      content structure (ids, order) and sample content — see its README
   i18n/      locales, dictionaries, server-only loader
@@ -40,6 +43,7 @@ Ribbon/
 - **Variants** travel in an `ownerState` prop, never in loose boolean props (`ownerState={{ compact }}`).
 - **Class names** come from `createComponentClasses(name, slots)` in `src/lib/mui/componentClasses.ts` and are set with `className={xClasses.slot}`. Declared in `.util.ts`, **never** in `.style.ts` (see Traps). Remove a class entry when its slot goes.
 - **`component` prop** on a styled MUI slot needs `<WithComponent>` from `src/lib/mui/polymorphic.ts`; `styled()` drops it otherwise.
+- **MUI class names are imported, never typed.** Target MUI slots and states through the `xClasses` object each component exports (`outlinedInputClasses.notchedOutline`, `formLabelClasses.focused`); global state classes such as `Mui-focusVisible` come from `buttonBaseClasses`. A literal `"Mui-…"` or `".MuiX-…"` string is a defect.
 - **Alias a MUI import as `MuiX`** only when the local slot name would collide (`import MuiChip …; export const Chip = styled(MuiChip)`). No prefix on our own class names: MUI owns `Mui*`, nothing collides.
 - Three or more style props → a styled slot, not `sx`. `sx` is for one-off layout from a server component and must be a **plain object** (see Traps).
 - Public prop types are named `<Component>Props` and exported from the barrel.
@@ -59,6 +63,7 @@ Ribbon/
 ## i18n
 
 - Routes live under `/[lang]`; `proxy.ts` redirects bare paths using the `NEXT_LOCALE` cookie, then `Accept-Language`. `/brand-book` is excluded.
+- **Folders are the English slug; public slugs per locale live in `src/i18n/routes.ts`** (ADR 0011). A new page adds a folder and a `ROUTES` entry; `next.config.ts` and `proxy.ts` derive the rewrite and the redirect from it. Links never hard-code a path: `localizePath(locale, "signIn")`, or an anchor. Pages set `alternates` with `routeAlternates(id)`.
 - `es.json` is the source of truth; `en.json` must have the same shape or the build fails. Keys are camelCase, nested by screen section (`hero.search.submit`).
 - Server components call `getDictionary()` / `getLocale()` from `src/i18n/dictionary.ts`. Both read the root param with `next/root-params`; no locale prop drilling.
 - Variables inside copy use `{name}` and `interpolate()`. Punctuation and separators (`·`) are code, not copy.

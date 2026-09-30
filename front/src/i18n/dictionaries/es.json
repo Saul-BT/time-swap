@@ -110,6 +110,74 @@
     "signIn": "Entrar",
     "browse": "Solo mirar"
   },
+  "signIn": {
+    "metadata": {
+      "title": "Entrar · Time Swap",
+      "description": "Entra para seguir donde lo dejaste."
+    },
+    "title": "Ya estás de vuelta",
+    "lead": "Entra para seguir donde lo dejaste.",
+    "form": {
+      "label": "Acceso",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "nombre@correo.com",
+      "passwordLabel": "Contraseña",
+      "forgotPassword": "No la recuerdo",
+      "showPassword": "Ver",
+      "hidePassword": "Ocultar",
+      "remember": "No cerrar sesión en este dispositivo",
+      "submit": "Entrar"
+    },
+    "noAccount": "¿Todavía no tienes cuenta?",
+    "createAccount": "Crear una cuenta",
+    "conduct": {
+      "before": "Al entrar aceptas el ",
+      "link": "código de conducta",
+      "after": " de la comunidad."
+    },
+    "errors": {
+      "credentials": {
+        "title": "El correo o la contraseña no coinciden",
+        "body": "Revisa los dos campos e inténtalo de nuevo."
+      },
+      "tooManyAttempts": {
+        "title": "Demasiados intentos",
+        "body": "Hemos bloqueado el acceso durante un rato. Si no recuerdas la contraseña, pide un enlace para cambiarla."
+      },
+      "suspended": {
+        "title": "Esta cuenta está suspendida",
+        "body": "Alguien del equipo la está revisando. Te escribiremos al correo con el que te registraste."
+      },
+      "unverified": {
+        "title": "Todavía no has verificado el correo",
+        "body": "Busca el enlace que te enviamos al registrarte. Hasta entonces puedes mirar, pero no escribir a nadie."
+      },
+      "sessionExpired": {
+        "title": "La sesión ha caducado",
+        "body": "Vuelve a entrar para seguir donde lo dejaste. Tus horas y tus acuerdos siguen ahí."
+      }
+    },
+    "panel": {
+      "eyebrow": "Mientras no estabas",
+      "title": "Alguien de tu zona pidió exactamente lo que tú sabes hacer.",
+      "body": "Las solicitudes de contacto esperan hasta que las contestas. Ninguna caduca sin avisarte.",
+      "factsLabel": "Reglas de la cuenta",
+      "facts": {
+        "oneHourOneCredit": "= 1 crédito, siempre",
+        "debitLimit": "saldo mínimo permitido",
+        "noMoney": "nunca se convierte en dinero"
+      }
+    }
+  },
+  "recoverAccess": {
+    "metadata": {
+      "title": "Recuperar el acceso · Time Swap",
+      "description": "Pide un enlace para cambiar la contraseña."
+    },
+    "title": "Recuperar el acceso",
+    "lead": "Esta pantalla todavía no está construida. Cuando lo esté, te enviaremos un enlace de un solo uso al correo con el que te registraste.",
+    "backToSignIn": "Volver a entrar"
+  },
   "footer": {
     "tagline": "Time Swap · banco de tiempo vecinal",
     "legalLabel": "Legal",
