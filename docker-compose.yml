@@ -16,6 +16,7 @@ services:
             - backend #todo healthcheck
             
     backend:
+        #todo add seeding on first startup with sentinel file
         container_name: 'backend_${APP_NAME}'
         build: ./back/nest-back
         env_file:
