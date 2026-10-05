@@ -50,6 +50,7 @@ Ribbon/
 - **No empty styled slots.** A slot with no styles is a plain tag with `className={xClasses.slot}`; `styled()` is for styles, not for naming.
 - **Links go through `next/link`.** The theme sets `LinkBehavior` (`src/lib/mui/LinkBehavior.tsx`) as `MuiLink`'s component and `MuiButtonBase`'s `LinkComponent`, so `<Link href>` and `<Button href>` already render one. A custom link slot is `styled(NextLink)`, never `styled("a")`.
 - Lists stay real lists (`ul`/`li`, `dl`/`dt`/`dd`, `blockquote`, `figure`) with an accessible name. Decorative elements get `aria-hidden`.
+- **Icons are lucide through `ui/Icon`**: sizes come from `iconSize`, stroke 2, `aria-hidden` unless a `label` is given. No inline `<svg>`, no emoji.
 
 ## Theme and design system
 

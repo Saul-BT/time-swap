@@ -156,8 +156,8 @@
       "emailPlaceholder": "name@email.com",
       "passwordLabel": "Password",
       "forgotPassword": "I forgot it",
-      "showPassword": "Show",
-      "hidePassword": "Hide",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
       "remember": "Keep me signed in on this device",
       "submit": "Sign in"
     },

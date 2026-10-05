@@ -259,8 +259,8 @@ export default function BrandBookPage() {
                 <PasswordField
                   id="bb-password"
                   name="password"
-                  showLabel="Show"
-                  hideLabel="Hide"
+                  showLabel="Show password"
+                  hideLabel="Hide password"
                 />
               ),
             },

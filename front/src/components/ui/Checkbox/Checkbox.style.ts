@@ -48,7 +48,7 @@ export const CheckboxLabel = styled(FormControlLabel, {
   name: NAME,
   slot: "Label",
 })(({ theme }) => ({
-  marginLeft: -theme.spacing(space.xs),
+  marginLeft: theme.spacing(-space.xs),
   marginRight: 0,
   minHeight: 44,
   gap: theme.spacing(space.xs / 2),

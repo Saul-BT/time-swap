@@ -156,8 +156,8 @@
       "emailPlaceholder": "nombre@correo.com",
       "passwordLabel": "Contraseña",
       "forgotPassword": "No la recuerdo",
-      "showPassword": "Ver",
-      "hidePassword": "Ocultar",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
       "remember": "No cerrar sesión en este dispositivo",
       "submit": "Entrar"
     },
