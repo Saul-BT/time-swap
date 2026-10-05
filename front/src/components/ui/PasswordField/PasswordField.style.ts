@@ -1,7 +1,6 @@
 "use client";
 
-import ButtonBase from "@mui/material/ButtonBase";
-import { styled } from "@mui/material/styles";
+import { ButtonBase, styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 const NAME = "PasswordField";

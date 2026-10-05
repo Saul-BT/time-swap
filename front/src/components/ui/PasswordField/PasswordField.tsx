@@ -1,7 +1,6 @@
 "use client";
 
-import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import { InputAdornment, OutlinedInput } from "@mui/material";
 import { useState } from "react";
 import { PasswordFieldToggle } from "./PasswordField.style";
 import { passwordFieldClasses } from "./PasswordField.util";

@@ -1,4 +1,4 @@
-import type { TypographyProps } from "@mui/material/Typography";
+import type { TypographyProps } from "@mui/material";
 import { joinClasses } from "@/lib/mui/componentClasses";
 import { EyebrowRoot } from "./Eyebrow.style";
 import { eyebrowClasses } from "./Eyebrow.util";

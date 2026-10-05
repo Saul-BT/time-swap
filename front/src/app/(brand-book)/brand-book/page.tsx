@@ -1,12 +1,14 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
-import InputBase from "@mui/material/InputBase";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import {
+  Avatar,
+  Button,
+  Chip,
+  Container,
+  Divider,
+  InputBase,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import BrandBookSection from "@/components/brand-book/BrandBookSection";
 import ScaleList from "@/components/brand-book/ScaleList";
 import Specimen from "@/components/brand-book/Specimen";

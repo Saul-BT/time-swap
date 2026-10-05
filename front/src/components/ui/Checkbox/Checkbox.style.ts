@@ -1,11 +1,12 @@
 "use client";
 
-import { buttonBaseClasses } from "@mui/material/ButtonBase";
-import MuiCheckbox from "@mui/material/Checkbox";
-import FormControlLabel, {
+import {
+  buttonBaseClasses,
+  FormControlLabel,
   formControlLabelClasses,
-} from "@mui/material/FormControlLabel";
-import { styled } from "@mui/material/styles";
+  Checkbox as MuiCheckbox,
+  styled,
+} from "@mui/material";
 import { rule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 
