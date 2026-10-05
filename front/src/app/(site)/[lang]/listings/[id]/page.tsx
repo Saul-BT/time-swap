@@ -11,8 +11,8 @@ import {
 import Ribbon from "@/components/ui/Ribbon";
 import TabularFigure from "@/components/ui/TabularFigure";
 import { getListingById, LISTINGS } from "@/data/listings";
-import { PATH } from "@/data/navigation";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
+import { localizePath } from "@/i18n/routes";
 
 type ListingDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -43,7 +43,7 @@ export default async function ListingDetailPage({
 
   const { listingDetail, listings } = await getDictionary();
   const locale = await getLocale();
-  const backHref = `/${locale}${PATH.loggedHome}`;
+  const backHref = localizePath(locale, "loggedHome");
 
   return (
     <>

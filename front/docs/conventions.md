@@ -10,6 +10,7 @@ src/
     (site)/[lang]/        localized site; root layout + pages
     (site)/[lang]/sign-in/  sign-in route; `actions.ts` holds its server action
     (site)/[lang]/recover/  access recovery, placeholder until the flow is designed
+    (site)/[lang]/home/, listings/  temporary member home and listings (browse, new, [id]), UI only
     (brand-book)/brand-book/   design-system reference, outside the locale, English only
     globals.css           html/body resets only; everything else is theme
   components/
@@ -64,7 +65,7 @@ Ribbon/
 ## i18n
 
 - Routes live under `/[lang]`; `proxy.ts` redirects bare paths using the `NEXT_LOCALE` cookie, then `Accept-Language`. `/brand-book` is excluded.
-- **Folders are the English slug; public slugs per locale live in `src/i18n/routes.ts`** (ADR 0011). A new page adds a folder and a `ROUTES` entry; `next.config.ts` and `proxy.ts` derive the rewrite and the redirect from it. Links never hard-code a path: `localizePath(locale, "signIn")`, or an anchor. Pages set `alternates` with `routeAlternates(id)`.
+- **Folders are the English slug; public slugs per locale live in `src/i18n/routes.ts`** (ADR 0011). A new page adds a folder and a `ROUTES` entry; `next.config.ts` and `proxy.ts` derive the rewrite and the redirect from it. Links never hard-code a path: `localizePath(locale, "signIn")`, or an anchor. A dynamic segment is `:name` in the slug and is filled from the third argument: `localizePath(locale, "listingDetail", { id })`. Pages set `alternates` with `routeAlternates(id)`.
 - `es.json` is the source of truth; `en.json` must have the same shape or the build fails. Keys are camelCase, nested by screen section (`hero.search.submit`).
 - Server components call `getDictionary()` / `getLocale()` from `src/i18n/dictionary.ts`. Both read the root param with `next/root-params`; no locale prop drilling.
 - Variables inside copy use `{name}` and `interpolate()`. Punctuation and separators (`·`) are code, not copy.

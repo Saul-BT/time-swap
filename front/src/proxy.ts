@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { isLocale, LOCALES } from "@/i18n/config";
-import { localizedSlugPairs } from "@/i18n/routes";
+import { localizedSlugPairs, matchPath } from "@/i18n/routes";
 import { negotiateLocale } from "@/lib/i18n/negotiateLocale";
 
 /**
@@ -18,15 +18,18 @@ export function proxy(request: NextRequest) {
   );
 
   if (hasLocale) {
-    const pair = localizedSlugPairs().find(
-      ({ folderPath }) => folderPath === pathname,
-    );
+    for (const { folderPath, publicPath } of localizedSlugPairs()) {
+      const params = matchPath(folderPath, pathname);
 
-    if (pair) {
-      const url = request.nextUrl.clone();
-      url.pathname = pair.publicPath;
+      if (params) {
+        const url = request.nextUrl.clone();
+        url.pathname = publicPath.replace(
+          /:(\w+)/g,
+          (_, name: string) => params[name],
+        );
 
-      return NextResponse.redirect(url, 308);
+        return NextResponse.redirect(url, 308);
+      }
     }
 
     return;
