@@ -61,3 +61,19 @@ export type FooterLink = {
 };
 
 export type SignInErrorId = keyof Dictionary["signIn"]["errors"];
+
+export type BackendError = {
+  error: number;
+  message: string;
+};
+
+export function isBackendError(
+  value: unknown,
+): value is BackendError {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "error" in value &&
+    "message" in value
+  );
+}

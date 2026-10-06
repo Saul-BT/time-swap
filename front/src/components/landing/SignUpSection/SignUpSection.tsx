@@ -6,8 +6,6 @@ import { localizePath } from "@/i18n/routes";
 import Section from "../../layout/Section";
 import { SignUpActions, SignUpCopy, SignUpLayout } from "./SignUpSection.style";
 import { signUpSectionClasses } from "./SignUpSection.util";
-import SignUpButton from "./SignUpButton";
-import SignInButton from "./SignInButton";
 
 export default async function SignUpSection() {
   const { signUp } = await getDictionary();
