@@ -1,5 +1,4 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Box, Typography } from "@mui/material";
 import type { Member } from "@/data/types";
 import { getDictionary } from "@/i18n/dictionary";
 import { interpolate } from "@/lib/i18n/interpolate";

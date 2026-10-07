@@ -1,8 +1,6 @@
 "use client";
 
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import { Container, styled, Typography } from "@mui/material";
 import Eyebrow from "@/components/ui/Eyebrow";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { space } from "@/theme/tokens";

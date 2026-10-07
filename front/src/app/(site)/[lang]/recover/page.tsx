@@ -1,6 +1,4 @@
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import { Button, Container, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import Ribbon from "@/components/ui/Ribbon";
 import { getDictionary, getLocale } from "@/i18n/dictionary";

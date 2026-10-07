@@ -1,9 +1,6 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import InputBase from "@mui/material/InputBase";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import { Box, InputBase, Paper, styled } from "@mui/material";
 import type { WithFormComponent } from "@/lib/mui/polymorphic";
 import { softRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
