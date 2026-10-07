@@ -72,7 +72,7 @@ export class SeederService {
                 // Crear usuarios para cada rol (para entorno de desarrollo)
                 const roleKeys = Object.keys(Role) as Array<keyof typeof Role>;
                 for (const roleKey of roleKeys) {
-                    const password = `${roleKey.charAt(0).toUpperCase()}${roleKey.slice(1).toLowerCase()}${seededUsersPass}`;
+                    const password = seededUsersPass;
                     this.checkUser(roleKey, password);
                     const hashedPassword = await hash(password, APPConstants.PASSWORDS_SALT_ROUNDS);
                     await this.createSqlUser(roleKey, hashedPassword, Role[roleKey]);
@@ -177,7 +177,7 @@ export class SeederService {
      * @param pass          Contraseña sin hashear del usuario
      * @param role          Role para el usuario
      */
-    async createSqlUser(accountName: string, pass: string, role: Role) {
+    async createSqlUser(accountName: string, pass: string, role: Role): Promise<boolean> {
         const user: User = new User();
         const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
         user.mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
@@ -189,6 +189,7 @@ export class SeederService {
         // Si existe el usuario que se quiere crear, se salta
         if (existingUser) {
             this.logger.debug(`SQL: User ${accountName} already exists`);
+            return false;
         } else {
             user.name = accountName;
             user.role = role;
@@ -196,6 +197,7 @@ export class SeederService {
 
             await this.userRepository.save(user);
             this.logger.debug(`SQL: User ${accountName} created`);
+            return true;
         }
     }
 }

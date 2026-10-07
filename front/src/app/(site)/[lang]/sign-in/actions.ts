@@ -16,12 +16,18 @@ export async function signIn(
 ): Promise<void> {
   const target = isLocale(locale) ? locale : DEFAULT_LOCALE;
 
+  const backendUrl = process.env.BACKEND_URL;
+  if (!backendUrl) {
+    console.log("Error: BACKEND_URL undefined in .env");
+    redirect(`${localizePath(target, "signIn")}?error=backendDown`);
+  }
+
   const email = _formData.get('email');
   const password = _formData.get('password');
 
   try {
     const response = await fetch(
-      'http://localhost:8000/api/v1/auth/login',
+      `${backendUrl}/api/v1/auth/login`,
       {
         method: 'POST',
         headers: {
