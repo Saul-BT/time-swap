@@ -24,3 +24,9 @@ goes one way: components read data, never the other way round.
 When a real source of listings arrives, replace the sample modules with the
 fetching layer and keep the types: the components consume the types, not the
 constants.
+
+`logged-home.ts` is the member home's sample source. `getSampleMemberHome(now,
+state)` builds a `MemberHome` relative to the request time, so "today" and the
+week strip always line up with the real date; `state` comes from `?state=` on
+`/inicio` and switches between the data states (first time, up to date,
+unverified, live, offline). The fetch that replaces it must return `MemberHome`.

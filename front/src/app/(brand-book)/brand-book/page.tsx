@@ -9,19 +9,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { Calendar, Clock, Handshake, Hourglass, Scale } from "lucide-react";
 import BrandBookSection from "@/components/brand-book/BrandBookSection";
 import ScaleList from "@/components/brand-book/ScaleList";
+import SegmentedControlDemo from "@/components/brand-book/SegmentedControlDemo";
 import Specimen from "@/components/brand-book/Specimen";
 import SwatchList from "@/components/brand-book/SwatchList";
 import TypeScaleList from "@/components/brand-book/TypeScaleList";
 import Checkbox from "@/components/ui/Checkbox";
+import CountBadge from "@/components/ui/CountBadge";
 import Eyebrow from "@/components/ui/Eyebrow";
 import FormField from "@/components/ui/FormField";
 import FormNotice from "@/components/ui/FormNotice";
+import IconBox from "@/components/ui/IconBox";
 import PasswordField from "@/components/ui/PasswordField";
 import Ribbon from "@/components/ui/Ribbon";
 import SkillChipList from "@/components/ui/SkillChipList";
 import TabularFigure from "@/components/ui/TabularFigure";
+import Tag from "@/components/ui/Tag";
 import { space, structure } from "@/theme/tokens";
 
 const SAMPLE = "Give an hour, get an hour";
@@ -78,6 +83,14 @@ export default function BrandBookPage() {
               ),
             },
             {
+              label: "compactControlHeight",
+              children: (
+                <Typography variant="body2">
+                  {structure.compactControlHeight}px
+                </Typography>
+              ),
+            },
+            {
               label: "cardRibbonHeight",
               children: (
                 <Typography variant="body2">
@@ -94,10 +107,34 @@ export default function BrandBookPage() {
               ),
             },
             {
+              label: "memberRibbonHeight",
+              children: (
+                <Typography variant="body2">
+                  {structure.memberRibbonHeight}px
+                </Typography>
+              ),
+            },
+            {
+              label: "memberHeaderHeight",
+              children: (
+                <Typography variant="body2">
+                  {structure.memberHeaderHeight}px
+                </Typography>
+              ),
+            },
+            {
               label: "contentWidth",
               children: (
                 <Typography variant="body2">
                   {structure.contentWidth}px
+                </Typography>
+              ),
+            },
+            {
+              label: "memberAsideWidth",
+              children: (
+                <Typography variant="body2">
+                  {structure.memberAsideWidth}px
                 </Typography>
               ),
             },
@@ -126,6 +163,14 @@ export default function BrandBookPage() {
               children: (
                 <div style={fullWidth}>
                   <Ribbon variant="page" />
+                </div>
+              ),
+            },
+            {
+              label: 'variant="member"',
+              children: (
+                <div style={fullWidth}>
+                  <Ribbon variant="member" />
                 </div>
               ),
             },
@@ -172,6 +217,19 @@ export default function BrandBookPage() {
             {
               label: 'variant="text"',
               children: <Button variant="text">Action</Button>,
+            },
+            {
+              label: 'size="small"',
+              children: (
+                <>
+                  <Button variant="contained" size="small">
+                    Action
+                  </Button>
+                  <Button variant="outlined" size="small">
+                    Action
+                  </Button>
+                </>
+              ),
             },
             {
               label: "disabled",
@@ -408,6 +466,62 @@ export default function BrandBookPage() {
               label: 'variant="h4"',
               children: <TabularFigure variant="h4">−3 h</TabularFigure>,
             },
+          ]}
+        />
+        <Specimen
+          name="Tag"
+          variants={[
+            {
+              label: 'tone="solid"',
+              children: (
+                <Tag icon={Calendar} tone="solid">
+                  Today
+                </Tag>
+              ),
+            },
+            {
+              label: 'tone="accent"',
+              children: <Tag tone="accent">Today</Tag>,
+            },
+            {
+              label: 'tone="quiet"',
+              children: (
+                <Tag icon={Clock} tone="quiet">
+                  No date
+                </Tag>
+              ),
+            },
+          ]}
+        />
+        <Specimen
+          name="CountBadge"
+          variants={[
+            { label: "count", children: <CountBadge count={3} /> },
+            { label: "count={0}", children: <CountBadge count={0} /> },
+          ]}
+        />
+        <Specimen
+          name="IconBox"
+          variants={[
+            { label: 'tone="plain"', children: <IconBox icon={Handshake} /> },
+            {
+              label: 'tone="quiet" size="sm"',
+              children: <IconBox icon={Clock} tone="quiet" size="sm" />,
+            },
+            {
+              label: 'tone="warning"',
+              children: <IconBox icon={Hourglass} tone="warning" />,
+            },
+            {
+              label: 'tone="brake"',
+              children: <IconBox icon={Scale} tone="brake" />,
+            },
+          ]}
+        />
+        <Specimen
+          name="SegmentedControl"
+          variants={[
+            { label: "toggle · actions", children: <SegmentedControlDemo /> },
           ]}
         />
       </BrandBookSection>

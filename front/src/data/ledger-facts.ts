@@ -6,3 +6,6 @@ export const LEDGER_FACT_IDS: readonly LedgerFactId[] = [
   "debitLimit",
   "noMoney",
 ];
+
+/** How far below zero a balance may go before the member must give (ADR 0002). */
+export const DEBIT_LIMIT_HOURS = 3;

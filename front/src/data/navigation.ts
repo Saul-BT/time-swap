@@ -1,4 +1,5 @@
-import type { FooterLink, NavigationLink } from "./types";
+import type { LinkTarget } from "@/i18n/routes";
+import type { FooterLink, MemberNavId, NavigationLink } from "./types";
 
 /** Anchors within the landing. */
 export const SECTION_ID = {
@@ -19,4 +20,23 @@ export const FOOTER_LINKS: readonly FooterLink[] = [
   { id: "codeOfConduct", href: "#" },
   { id: "privacy", href: "#" },
   { id: "terms", href: "#" },
+];
+
+// TODO(routes): messages and profile have no page yet. Point them at their
+// `ROUTES` entries once the chat and profile screens land.
+export const MEMBER_NAV_TARGET: Record<MemberNavId, LinkTarget> = {
+  home: "loggedHome",
+  discover: "listings",
+  publish: "createAd",
+  messages: "#",
+  profile: "#",
+};
+
+/** Tab order on phones. */
+export const MEMBER_NAV_IDS: readonly MemberNavId[] = [
+  "home",
+  "discover",
+  "publish",
+  "messages",
+  "profile",
 ];

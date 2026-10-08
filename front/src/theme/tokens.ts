@@ -63,9 +63,17 @@ export const structure = {
   borderWidth: 2,
   cardRibbonHeight: 14,
   pageRibbonHeight: 22,
+  /** Thinner band over the member area, where the ribbon frames work rather than announces. */
+  memberRibbonHeight: 10,
+  /** Fixed so the week strip can stick right below it. */
+  memberHeaderHeight: 64,
   /** Minimum height of any interactive control. */
   controlHeight: 52,
+  /** Dense lists and toolbars only. Still a comfortable touch target. */
+  compactControlHeight: 44,
   contentWidth: 1240,
+  /** Side column of the member home: balance, waiting, appointments. */
+  memberAsideWidth: 340,
   focusRingWidth: 3,
 } as const;
 

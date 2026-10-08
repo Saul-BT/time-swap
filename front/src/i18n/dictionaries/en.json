@@ -21,14 +21,232 @@
     "signIn": "Sign in",
     "signUp": "Create account"
   },
-  "loggedHome": {
-    "title": "Your home",
-    "lead": "Temporary interface: this is where you'd see what needs your attention. There is no real session yet.",
-    "balanceLabel": "Balance",
-    "balanceValue": "2 h",
-    "attentionTitle": "Pending",
+  "memberNav": {
+    "label": "Main",
+    "home": "Home",
     "discover": "Discover",
-    "publish": "Post a listing"
+    "publish": "Post",
+    "messages": "Messages",
+    "profile": "Profile",
+    "unread": {
+      "one": "{count} unread",
+      "other": "{count} unread"
+    },
+    "profileLabel": "Your profile and activity"
+  },
+  "loggedHome": {
+    "metadata": {
+      "title": "Your home · Time Swap"
+    },
+    "greeting": "Hi, {name}",
+    "sync": {
+      "upToDate": "Up to date",
+      "live": "Live",
+      "offline": "Offline"
+    },
+    "balance": {
+      "label": "Your balance",
+      "shortLabel": "Balance",
+      "hours": "{hours} h",
+      "canReceive": {
+        "before": "You can receive up to ",
+        "after": " more"
+      },
+      "canReceiveFirstTime": "You can receive up to {hours} before giving any.",
+      "wallet": "Wallet"
+    },
+    "week": {
+      "label": "Your week",
+      "pickDay": "Pick a day. Week of {range}",
+      "change": "Change week",
+      "previous": "Previous week",
+      "next": "Next week",
+      "current": "This",
+      "today": "Today",
+      "free": "Free",
+      "marks": {
+        "one": "{count} thing",
+        "other": "{count} things"
+      }
+    },
+    "pending": {
+      "title": "Your turn",
+      "sort": {
+        "label": "Sort",
+        "urgency": "Urgency",
+        "kind": "Type"
+      },
+      "today": "Today",
+      "undated": "No date",
+      "dueSoon": {
+        "title": "Due soon · {day}",
+        "show": "See {day}"
+      },
+      "emptyDay": "Nothing for this day. Anything without a date shows up here as soon as it arrives.",
+      "upToDate": {
+        "title": "Nothing waiting for you",
+        "body": "We'll let you know here as soon as someone writes or replies."
+      },
+      "isNew": "New · {when}",
+      "waitingYou": "Waiting for your answer",
+      "kinds": {
+        "dispute": {
+          "label": "Open dispute",
+          "title": "{listing} with {name}",
+          "detail": "No hours move until it is resolved. Add your side before {day}.",
+          "mark": "Dispute deadline",
+          "dueSoon": "dispute with {name}",
+          "primary": "Add my side"
+        },
+        "contactRequest": {
+          "label": "Contact request",
+          "title": "{name} wants to talk to you",
+          "detail": "About “{listing}”. Expires on {day}. Declining needs no explanation.",
+          "mark": "Expires: {name}",
+          "dueSoon": "request from {name}",
+          "primary": "Accept",
+          "secondary": "Decline"
+        },
+        "proposal": {
+          "label": "Agreement proposal · version {version}",
+          "title": "{listing} with {name}",
+          "detail": "{when} · {mode} · {hours} in credits.",
+          "mark": "Reply to {name}",
+          "dueSoon": "proposal from {name}",
+          "primary": "Review",
+          "changes": {
+            "time": "The time changed.",
+            "day": "The day changed.",
+            "hours": "The hours changed."
+          },
+          "superseded": {
+            "title": "{name} just changed the proposal",
+            "body": "Now: {now} (was {before}). The version you were about to accept is no longer valid.",
+            "action": "Review version {version}"
+          }
+        },
+        "confirmExchange": {
+          "label": "Confirm exchange",
+          "title": "{name} finished “{listing}”",
+          "detail": {
+            "received": "You received {hours}. No hours move without your confirmation.",
+            "gave": "You gave {hours}. No hours move without your confirmation."
+          },
+          "mark": "Confirm {name}",
+          "dueSoon": "confirm {name}",
+          "primary": "Confirm",
+          "secondary": "Doesn't match"
+        },
+        "messages": {
+          "label": {
+            "one": "{count} unread message",
+            "other": "{count} unread messages"
+          },
+          "title": "{name}: “{excerpt}”",
+          "detail": "Conversation about “{listing}”.",
+          "mark": "Message from {name}",
+          "dueSoon": "messages from {name}",
+          "primary": "Reply"
+        },
+        "rating": {
+          "label": "Rating pending",
+          "title": "How did it go with {name}?",
+          "detail": "“{listing}” closed {when}. Rating helps others decide.",
+          "mark": "Rate {name}",
+          "dueSoon": "rating for {name}",
+          "primary": "Rate"
+        }
+      }
+    },
+    "waiting": {
+      "title": "Waiting on others",
+      "sentRequest": {
+        "title": "Request sent to {name}",
+        "detail": {
+          "one": "{sent} · expires in {count} day",
+          "other": "{sent} · expires in {count} days"
+        },
+        "action": "Withdraw"
+      },
+      "proposalReview": {
+        "title": "{name} is reviewing your proposal",
+        "detail": "“{listing}” · version {version}",
+        "action": "View"
+      }
+    },
+    "appointments": {
+      "title": "Coming up",
+      "with": "With {name}",
+      "give": "you give {hours}",
+      "receive": "you receive {hours}",
+      "awaitingYou": "needs your yes"
+    },
+    "ownListings": {
+      "title": "Your listings",
+      "active": {
+        "one": "{count} active",
+        "other": "{count} active"
+      },
+      "expiresTitled": "“{title}” expires on {day}",
+      "pausedTitled": "“{title}” paused",
+      "expiresCount": {
+        "one": "{count} expires on {day}",
+        "other": "{count} expire on {day}"
+      },
+      "pausedCount": {
+        "one": "{count} paused",
+        "other": "{count} paused"
+      },
+      "manage": "Manage"
+    },
+    "notices": {
+      "unverified": {
+        "title": "You haven't verified your email yet",
+        "body": "Look for the link we sent to {email}. Until then you can look around, but not write to anyone.",
+        "resend": "Resend link",
+        "changeEmail": "Change email",
+        "reason": "Verify your email to reply."
+      },
+      "offline": {
+        "title": "Offline",
+        "body": "We're showing what we last loaded, {when}. Replying works again once you're back online.",
+        "retry": "Retry",
+        "reason": "Offline: you can reply once you're back online."
+      },
+      "live": {
+        "update": "{name} accepted your proposal for “{listing}”.",
+        "action": "See agreement"
+      }
+    },
+    "firstTime": {
+      "lead": "Nothing pending yet. Three steps and people nearby will be able to find you.",
+      "title": "To get started",
+      "progress": "{done} of {total}",
+      "steps": {
+        "area": {
+          "title": "Set your rough area",
+          "body": "Without it you can't post or filter nearby. Only the neighbourhood is shown.",
+          "action": "Add area"
+        },
+        "publish": {
+          "title": "Post what you can do",
+          "body": "One offer is enough for people to find you. No prices: 1 hour is 1 hour.",
+          "action": "Post an offer"
+        },
+        "discover": {
+          "title": "See what's going on nearby",
+          "body": "You can ask for help today, even before you've given any.",
+          "action": "Discover"
+        }
+      },
+      "factsTitle": "How your time works",
+      "facts": {
+        "oneHourOneCredit": "= 1 credit, always",
+        "debitLimit": "you can receive before giving",
+        "noMoney": "nothing is bought or sold"
+      }
+    },
+    "loading": "Loading your home"
   },
   "browseListings": {
     "title": "Listings",
