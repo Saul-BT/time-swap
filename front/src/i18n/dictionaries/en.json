@@ -188,6 +188,10 @@
       "sessionExpired": {
         "title": "Your session has expired",
         "body": "Sign in again to pick up where you left off. Your hours and agreements are still there."
+      },
+      "backendDown": {
+        "title": "The server is unreachable",
+        "body": "The server is currently unavailable. Please contact an administrator or try again later."
       }
     },
     "panel": {

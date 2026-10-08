@@ -188,6 +188,10 @@
       "sessionExpired": {
         "title": "La sesión ha caducado",
         "body": "Vuelve a entrar para seguir donde lo dejaste. Tus horas y tus acuerdos siguen ahí."
+      },
+      "backendDown": {
+        "title": "No se pudo contactar con el servidor",
+        "body": "El servidor no está disponible. Por favor contacta con un administrator o inténtalo después."
       }
     },
     "panel": {
