@@ -10,6 +10,7 @@ import {
 import { Role } from '../../common/enums/role.enum';
 import { UserCompany } from '../../company/entities/user-company.entity';
 import { Language } from '../enums/language.enum';
+import { ProfileVisibility } from '../enums/profile-visibility.enum';
 import { TemporalOtp } from './temporal-2fa.entity';
 import { LoginLog } from 'src/auth/entities/user-login-log.entity';
 
@@ -83,6 +84,31 @@ export class User {
 
     @OneToMany(() => LoginLog, (log) => log.user)
     logins!: LoginLog[];
+
+
+    @Column({ type: 'text', nullable: true })
+    presentation!: string | null;
+
+    @Column({ type: 'text', nullable: true })
+    areaZone!: string | null;
+
+    @Column({ type: 'simple-array', nullable: true })
+    modalities!: string[] | null;
+
+    @Column({ type: 'simple-array', nullable: true })
+    skills!: string[] | null;
+
+    @Column({ type: 'simple-array', nullable: true })
+    interests!: string[] | null;
+
+    @Column({ type: 'boolean', default: false })
+    verified!: boolean;
+
+    @Column({ type: 'enum', enum: ProfileVisibility, default: ProfileVisibility.MEMBERS })
+    profileVisibility!: ProfileVisibility;
+
+    @Column({ type: 'simple-array', nullable: true })
+    hiddenFields!: string[] | null;
 }
 
 export { Role };
