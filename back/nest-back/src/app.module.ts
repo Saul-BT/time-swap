@@ -11,6 +11,7 @@ import { CompanyModule } from './company/company.module';
 //import { ExamplesModule } from './examples/examples.module';
 import MailModule from './mail/mail.module';
 import { NodemailerModule } from './mail/node-transporter.module';
+import { ProfileModule } from './profile/profile.module';
 //import SeederModule from './seeder/seeder.module';
 import { UserModule } from './user/user.module';
 import { APP_INTERCEPTOR, Reflector } from '@nestjs/core';
@@ -90,6 +91,7 @@ dotenv.config({ path: envFile }); // Configurar la variable global para el .env
         //ExamplesModule,
         CompanyModule,
         NodemailerModule,
+        ProfileModule,
         //I18nValidatorModule,
         MailModule,
     ],
