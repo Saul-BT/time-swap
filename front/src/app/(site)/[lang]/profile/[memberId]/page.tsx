@@ -7,7 +7,7 @@ import { MEMBERS } from "@/data/members";
 
 export default async function MemberProfilePage({
   params,
-}: PageProps<"/[lang]/perfil/[memberId]">) {
+}: PageProps<"/[lang]/profile/[memberId]">) {
   const { memberId } = await params;
   const member = MEMBERS.find((candidate) => candidate.id === memberId);
 

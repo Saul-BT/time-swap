@@ -99,10 +99,10 @@
     "skillsLabel": "Skills of {name}"
   },
   "profile": {
-  "skillsLabel": "Skills of {name}",
-  "backLink": "Back to home",
-  "notFoundTitle": "Profile not found",
-  "notFoundBody": "This profile doesn't exist or is no longer available."
+    "skillsLabel": "Skills of {name}",
+    "backLink": "Back to home",
+    "notFoundTitle": "Profile not found",
+    "notFoundBody": "This profile doesn't exist or is no longer available."
   },
   "dispute": {
     "label": "The brake",

@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import SkillChipList from "@/components/ui/SkillChipList";
 import type { Member } from "@/data/types";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { interpolate } from "@/lib/i18n/interpolate";
-import SkillChipList from "@/components/ui/SkillChipList";
 import {
   MemberProfileActions,
   MemberProfileAvatar,
