@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { ScaleBar, ScaleListItem, ScaleListRoot } from "./ScaleList.style";
 import { type ScaleEntry, scaleListClasses } from "./ScaleList.util";
 

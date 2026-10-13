@@ -6,8 +6,8 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import FilterList from "@/components/ui/FilterList";
 import ListingCard from "@/components/ui/ListingCard";
 import { LISTINGS } from "@/data/listings";
-import { PATH } from "@/data/navigation";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
+import { localizePath } from "@/i18n/routes";
 import { bareList } from "@/theme/rules";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -19,8 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function BrowseListingsPage() {
   const { browseListings, common } = await getDictionary();
   const locale = await getLocale();
-  // FIXME(i18n): use `localizePath` (from #20).
-  const loggedHomeHref = `/${locale}${PATH.loggedHome}`;
+  const loggedHomeHref = localizePath(locale, "loggedHome");
 
   return (
     <>

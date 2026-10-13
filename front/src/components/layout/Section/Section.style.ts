@@ -1,7 +1,6 @@
 "use client";
 
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
+import { Container, styled } from "@mui/material";
 import { rule, sectionSpacingY } from "@/theme/rules";
 
 const NAME = "Section";

@@ -1,4 +1,4 @@
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import ListingCard from "@/components/ui/ListingCard";
 import { LISTINGS } from "@/data/listings";
 import { SECTION_ID } from "@/data/navigation";

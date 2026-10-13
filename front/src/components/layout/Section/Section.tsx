@@ -1,4 +1,4 @@
-import type { SxProps, Theme } from "@mui/material/styles";
+import type { SxProps, Theme } from "@mui/material";
 import { SectionInner, SectionRoot, type SectionTone } from "./Section.style";
 import { sectionClasses } from "./Section.util";
 

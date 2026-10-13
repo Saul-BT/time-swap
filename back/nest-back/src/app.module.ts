@@ -13,6 +13,7 @@ import MailModule from './mail/mail.module';
 import { NodemailerModule } from './mail/node-transporter.module';
 //import SeederModule from './seeder/seeder.module';
 import { UserModule } from './user/user.module';
+import SeederModule from './seeder/seeder.module';
 import { APP_INTERCEPTOR, Reflector } from '@nestjs/core';
 //import { WrapperInterceptor } from './common/interceptors/standarized-output.interceptor';
 //import { JwtLanguageResolver } from './common/services/jwt-language-solver';
@@ -86,7 +87,7 @@ dotenv.config({ path: envFile }); // Configurar la variable global para el .env
         AuthModule,
         UserModule,
         //DevicesModule,
-        //SeederModule,
+        SeederModule,
         //ExamplesModule,
         CompanyModule,
         NodemailerModule,

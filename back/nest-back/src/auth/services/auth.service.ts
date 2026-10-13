@@ -249,6 +249,13 @@ export class AuthService {
             language: lang,
         });
 
+        // @TODO: borrar esta parte. se usa solo para debug para crear usuarios directamente sin comprobacion
+        const userEntity = await this.userService.createUser({
+            mail: dto.mail,
+            name: dto.name,
+            password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
+        });
+
         const registerOutput: NewRegisterOutput = {
             mail: userInfo.targetEmail,
             name: userInfo.name,

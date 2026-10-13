@@ -4,8 +4,8 @@ import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
 import { ATTENTION_ITEMS } from "@/data/attention";
-import { PATH } from "@/data/navigation";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
+import { localizePath } from "@/i18n/routes";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { loggedHome } = await getDictionary();
@@ -16,9 +16,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function LoggedHomePage() {
   const { loggedHome } = await getDictionary();
   const locale = await getLocale();
-  // FIXME(i18n): use `localizePath` (from #20).
-  const publishHref = `/${locale}${PATH.createAd}`;
-  const listingsHref = `/${locale}${PATH.listings}`;
+  const publishHref = localizePath(locale, "createAd");
+  const listingsHref = localizePath(locale, "listings");
 
   return (
     <>
