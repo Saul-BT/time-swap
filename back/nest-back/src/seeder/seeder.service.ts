@@ -42,6 +42,7 @@ export class SeederService {
     async seed() {
         await this.seedUsers(true);
         await this.seedCompany(true);
+        //todo seed categories and exchanges
     }
 
     /**

@@ -3,6 +3,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -12,6 +13,8 @@ import { UserCompany } from '../../company/entities/user-company.entity';
 import { Language } from '../enums/language.enum';
 import { TemporalOtp } from './temporal-2fa.entity';
 import { LoginLog } from 'src/auth/entities/user-login-log.entity';
+import { Exchange } from 'src/exchange/entities/exchange.entity';
+import { CategoryRequest } from 'src/category/entities/category-request.entity';
 
 @Entity()
 export class User {
@@ -73,7 +76,6 @@ export class User {
 
     @OneToMany(() => UserCompany, (userCompany) => userCompany.user, { cascade: ['insert', 'update', 'remove'] })
     userCompanies!: UserCompany[];
-
     
     @Column({ type: 'varchar', nullable: true, default: null })
     theme!: string | null;
@@ -83,6 +85,16 @@ export class User {
 
     @OneToMany(() => LoginLog, (log) => log.user)
     logins!: LoginLog[];
+
+    @OneToMany(() => Exchange, (offer) => offer.owner, {
+        cascade: ['insert', 'update']
+    })
+    exchanges!: Exchange[];
+
+    @ManyToMany(() => CategoryRequest, requests => requests.voters, {
+        cascade: ['insert', 'update', 'remove']
+    })
+    requests!: CategoryRequest[];
 }
 
 export { Role };
