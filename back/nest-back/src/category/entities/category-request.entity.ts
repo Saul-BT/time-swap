@@ -23,7 +23,9 @@ export class CategoryRequest {
     description!: string;
 
     @JoinTable({name: "user-category-requests"})
-    @ManyToMany(() => User, voters => voters.requests)
+    @ManyToMany(() => User, voters => voters.requests, {
+        onDelete: 'SET NULL'
+    })
     voters!: User[];
 
     @CreateDateColumn()

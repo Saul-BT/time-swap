@@ -19,6 +19,7 @@ import { Role } from '../common/enums/role.enum';
 import type { UserActiveInterface } from '../common/interfaces/user-active.interface';
 import { CategoryService } from './category.service';
 import { CreateCategoryDTO } from './dto/create-category.dto';
+import { CategoryRequestService } from './category-request.service';
 
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
@@ -26,7 +27,10 @@ import { CreateCategoryDTO } from './dto/create-category.dto';
 @Auth(Role.USER, Role.ADMIN)
 @Controller('category')
 export class CategoryController {
-    constructor(private readonly categoryService: CategoryService) {}
+    constructor(
+        private readonly requestService: CategoryRequestService,
+        private readonly categoryService: CategoryService
+    ) {}
 
     @Post('create-category')
     @Auth(Role.ADMIN) //admin directly creates new category
@@ -45,14 +49,14 @@ export class CategoryController {
     @Auth(Role.USER)
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async requestCategory(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
-        return this.categoryService.requestCategory(user, id);
+        return this.requestService.requestCategory(user, id);
     }
 
     @Get('get-request/:id')
     @Auth(Role.ADMIN, Role.USER)
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async getRequest(@Param('id', ParseIntPipe) id: number) {
-        return this.categoryService.getRequest(id);
+        return this.requestService.getRequest(id);
     }
 
     @Get('get-category/:id')
@@ -66,7 +70,7 @@ export class CategoryController {
     @Auth(Role.ADMIN, Role.USER)
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async searchRequest(@Param('name') name?: string) {
-        return this.categoryService.searchRequest(name);
+        return this.requestService.searchRequest(name);
     }
 
     @Get('search-category/:name')
@@ -76,25 +80,18 @@ export class CategoryController {
         return this.categoryService.searchCategory(name);
     }
 
-    @Get('get-voted/:id')
-    @Auth(Role.USER)
-    @ApiResponse({ status: 500, description: 'Internal server error' })
-    async getVoted(@Param('id', ParseIntPipe) id: number) {
-        return this.categoryService.getVoted(id);
-    }
-
     @Delete('remove-vote/:id')
     @Auth(Role.USER)
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async removeVote(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
-        return this.categoryService.removeVote(user, id);
+        return this.requestService.removeVote(user, id);
     }
 
     @Delete('remove-request/:id')
     @Auth(Role.ADMIN)
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async removeRequest(@Param('id', ParseIntPipe) id: number) {
-        return this.categoryService.removeRequest(id);
+        return this.requestService.removeRequest(id);
     }
 
     @Delete('remove-category/:id')

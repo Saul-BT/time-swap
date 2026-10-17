@@ -6,6 +6,7 @@ import { CategoryRequest } from './entities/category-request.entity';
 import { Category } from './entities/category.entity';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
+import { CategoryRequestService } from './category-request.service';
 
 @Module({
     imports: [
@@ -14,7 +15,7 @@ import { CategoryService } from './category.service';
         TypeOrmModule.forFeature([CategoryRequest, Category]),
     ],
     controllers: [CategoryController],
-    providers: [CategoryService],
-    exports: [CategoryService],
+    providers: [CategoryService, CategoryRequestService],
+    exports: [TypeOrmModule, CategoryService, CategoryRequestService],
 })
 export class CategoryModule {}

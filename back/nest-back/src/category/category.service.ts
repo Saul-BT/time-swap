@@ -17,42 +17,51 @@ export class CategoryService {
         private readonly requestRepository: Repository<CategoryRequest>,
         @InjectRepository(Category)
         private readonly categoryRepository: Repository<Category>,
-        //private readonly entityManager: EntityManager,
-        @Inject(forwardRef(() => UserService))
-        private readonly userService: UserService,
     ) {}
 
     async createCategory(categoryDto: CreateCategoryDTO) {
-    }
-    
-    async createRequest(user: UserActiveInterface, categoryDto: CreateCategoryDTO) {
-    }
-    
-    async requestCategory(user: UserActiveInterface, id: number) {
-    }
-    
-    async getRequest(id: number) {
+        const name = categoryDto.name.trim().toLowerCase();
+        const existingCategory = await this.categoryRepository.findOneBy({ name });
+        if (existingCategory) {
+            throw new ErrorManager('CONFLICT', 'Category name already in use');
+        }
+
+        //if exists, delete request with same name
+        await this.requestRepository.delete({ name });
+
+        const newCategory = this.categoryRepository.create({
+            name,
+            description: categoryDto.description
+        });
+
+        return this.categoryRepository.save(newCategory);
     }
     
     async getCategory(id: number) {
-    }
-    
-    async searchRequest(name?: string) {
+        const category = await this.categoryRepository.findOneBy({ id });
+        if (!category) {
+            throw new ErrorManager('NOT_FOUND', 'Category not found');
+        }
+
+        return category;
     }
 
     async searchCategory(name?: string) {
+        if (!name) //return all if not searching
+            return this.categoryRepository.find();
+
+        name = name.trim().toLowerCase();
+        return this.categoryRepository.findBy({
+            name: ILike(name)
+        });
     }
 
-    async getVoted(id: number) {
-    }
+    async removeCategory(id: number) {
+        const existingCategory = await this.categoryRepository.findOneBy({ id });
+        if (!existingCategory) {
+            throw new ErrorManager('NOT_FOUND', 'Category not found');
+        }
 
-    async removeVote(user: UserActiveInterface, id: number) {            
+        return this.categoryRepository.remove(existingCategory);  
     }
-
-    async removeRequest(id: number) {        
-    }
-
-    async removeCategory(id: number) {        
-    }
-    
 }

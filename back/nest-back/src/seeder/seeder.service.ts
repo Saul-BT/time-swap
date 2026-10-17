@@ -12,6 +12,8 @@ import { ErrorManager } from 'src/common/error-handling/error.manager';
 import { APPConstants } from 'src/common/constants/app-constants';
 import { ConfigService } from '@nestjs/config';
 import { error } from 'console';
+import { CategoryRequest } from 'src/category/entities/category-request.entity';
+import { Category } from 'src/category/entities/category.entity';
 //import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 
 @Injectable()
@@ -29,9 +31,10 @@ export class SeederService {
         private readonly companyRepository: Repository<Company>,
         @InjectRepository(UserCompany)
         private readonly userCompanyRepository: Repository<UserCompany>,
-        //private readonly i18n: I18nService<I18nTranslations>,
-        //@Inject(forwardRef(() => FileService))
-        //private readonly fileService: FileService,
+        @InjectRepository(CategoryRequest)
+        private readonly requestRepository: Repository<CategoryRequest>,
+        @InjectRepository(Category)
+        private readonly categoryRepository: Repository<Category>,
     ) {}
 
     getEnvVar(key: string): string {
@@ -40,9 +43,10 @@ export class SeederService {
     }
 
     async seed() {
-        await this.seedUsers(true);
-        await this.seedCompany(true);
-        //todo seed categories and exchanges
+        await this.seedUsers();
+        await this.seedCompany();
+        await this.seedCategories();
+        //todo seed exchanges
     }
 
     /**
@@ -52,98 +56,87 @@ export class SeederService {
      *
      * @returns     El return se usa para romper la lógica en caso de estar en producción
      */
-    async seedUsers(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding users');
-                const adminAccount = this.getEnvVar('ADMIN_ACCOUNT');
-                const adminPass = this.getEnvVar('ADMIN_PASS');
-                const seededUsersPass = this.getEnvVar('SEEDED_USERS_PASS');
+    async seedUsers() {
+        try {
+            this.logger.debug('Seeding users');
+            const adminAccount = this.getEnvVar('ADMIN_ACCOUNT');
+            const adminPass = this.getEnvVar('ADMIN_PASS');
+            const seededUsersPass = this.getEnvVar('SEEDED_USERS_PASS');
 
-                // Si estamos en producción, solo se creará el usuario administrador del sistema
-                if (process.env.NODE_ENV === 'production') {
-                    await this.createSqlUser(
-                        adminAccount,
-                        await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS),
-                        Role.SUPER_ADMIN,
-                    );
-                    return;
-                }
-
-                // Crear usuarios para cada rol (para entorno de desarrollo)
-                const roleKeys = Object.keys(Role) as Array<keyof typeof Role>;
-                for (const roleKey of roleKeys) {
-                    const password = seededUsersPass;
-                    this.checkUser(roleKey, password);
-                    const hashedPassword = await hash(password, APPConstants.PASSWORDS_SALT_ROUNDS);
-                    await this.createSqlUser(roleKey, hashedPassword, Role[roleKey]);
-                }
-
-                this.checkUser(adminAccount, adminPass);
-                const hashedAdminPass = await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS);
-                await this.createSqlUser(adminAccount, hashedAdminPass, Role.SUPER_ADMIN);
-            } catch (error: unknown) {
-                this.logger.error(error);
+            // Si estamos en producción, solo se creará el usuario administrador del sistema
+            if (process.env.NODE_ENV === 'production') {
+                await this.createSqlUser(
+                    adminAccount,
+                    await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS),
+                    Role.SUPER_ADMIN,
+                );
+                return;
             }
+
+            // Crear usuarios para cada rol (para entorno de desarrollo)
+            const roleKeys = Object.keys(Role) as Array<keyof typeof Role>;
+            for (const roleKey of roleKeys) {
+                const password = seededUsersPass;
+                this.checkUser(roleKey, password);
+                const hashedPassword = await hash(password, APPConstants.PASSWORDS_SALT_ROUNDS);
+                await this.createSqlUser(roleKey, hashedPassword, Role[roleKey]);
+            }
+
+            this.checkUser(adminAccount, adminPass);
+            const hashedAdminPass = await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS);
+            await this.createSqlUser(adminAccount, hashedAdminPass, Role.SUPER_ADMIN);
+        } catch (error: unknown) {
+            this.logger.error(error);
         }
     }
 
-    async seedCompany(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding company');
-                if (process.env.NODE_ENV === 'production') return;
+    async seedCompany() {
+        try {
+            this.logger.debug('Seeding company');
+            if (process.env.NODE_ENV === 'production') return;
 
-                // Se crea un usuario para pasar por el correo para el ticket
-                const accountName = Role.USER;
-                const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
-                const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
+            // Se crea un usuario para pasar por el correo para el ticket
+            const accountName = Role.USER;
+            const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
+            const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
 
-                const user = await this.userRepository.findOneBy({
-                    mail: mail,
-                });
-                if (!user)
-                    throw error('Seeding user ' + mail + ' not found');
+            const user = await this.userRepository.findOneBy({
+                mail: mail,
+            });
+            if (!user)
+                throw error('Seeding user ' + mail + ' not found');
 
-                const companyName = process.env.APP_NAME + ' testing company';
+            const companyName = process.env.APP_NAME + ' testing company';
 
-                // Comprobar si la compañía ya existe
-                const existingCompany = await this.companyRepository.findOneBy({
-                    name: companyName,
-                });
-                if (existingCompany) {
-                    this.logger.debug(`Company ${companyName} already exists`);
-                    return;
-                }
-
-                const newCompany = new Company();
-                newCompany.name = companyName;
-                await this.companyRepository.save(newCompany);
-
-                const company = await this.companyRepository.findOneBy({
-                    name: companyName,
-                });
-                if (!company)
-                    throw error('Seeding company ' + companyName + ' not found');
-
-                const userCompany = new UserCompany();
-                userCompany.user = user;
-                userCompany.company = company;
-                userCompany.companyRole = CompanyRole.OWNER;
-
-                await this.userCompanyRepository.save(userCompany);
-
-                // @TODO no hace falta crear una seccion para cada compañia en cada bucket
-                // const companyPath = await this.fileService.getCompanyPath(
-                //     createdUserCompany.company.id,
-                //     createdUserCompany.company.name,
-                // );
-                //await this.fileInitService.createPathInAllBuckets([companyPath]);
-
-                this.logger.debug(`Company ${companyName} created and associated with user ${user.name}`);
-            } catch (error) {
-                this.logger.error(error);
+            // Comprobar si la compañía ya existe
+            const existingCompany = await this.companyRepository.findOneBy({
+                name: companyName,
+            });
+            if (existingCompany) {
+                this.logger.debug(`Company ${companyName} already exists`);
+                return;
             }
+
+            const newCompany = new Company();
+            newCompany.name = companyName;
+            await this.companyRepository.save(newCompany);
+
+            const company = await this.companyRepository.findOneBy({
+                name: companyName,
+            });
+            if (!company)
+                throw error('Seeding company ' + companyName + ' not found');
+
+            const userCompany = new UserCompany();
+            userCompany.user = user;
+            userCompany.company = company;
+            userCompany.companyRole = CompanyRole.OWNER;
+
+            await this.userCompanyRepository.save(userCompany);
+
+            this.logger.debug(`Company ${companyName} created and associated with user ${user.name}`);
+        } catch (error) {
+            this.logger.error(error);
         }
     }
 
@@ -199,6 +192,72 @@ export class SeederService {
             await this.userRepository.save(user);
             this.logger.debug(`SQL: User ${accountName} created`);
             return true;
+        }
+    }
+
+    async seedCategories() {
+        try {
+            this.logger.debug('Seeding categories');
+            if (process.env.NODE_ENV === 'production') return;
+
+            const accountName = Role.USER;
+            const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
+            const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
+
+            const user = await this.userRepository.findOneBy({
+                mail: mail,
+            });
+            if (!user)
+                throw error('Seeding user ' + mail + ' not found');
+
+            const seededRequests = ['Request 1', 'Request 2', 'Request 3'];
+            for (const name of seededRequests) {
+                const requestName = name.trim().toLowerCase();
+                let existingRequest = await this.requestRepository.findOneBy({
+                    name: requestName
+                });
+                if (existingRequest) {
+                    this.logger.debug(`Request ${requestName} already exists`);
+                    continue;
+                }
+
+                const newRequest = new CategoryRequest();
+                newRequest.name = requestName;
+                newRequest.description = requestName;
+                newRequest.voters = [user];
+                await this.requestRepository.save(newRequest);
+
+                existingRequest = await this.requestRepository.findOneBy({
+                    name: requestName
+                });
+                if (!existingRequest)
+                    throw error('Seeding request ' + requestName + ' not found');
+            }
+
+            const seededCategories = ['Category 1', 'Category 2', 'Category 3'];
+            for (const name of seededCategories) {
+                const categoryName = name.trim().toLowerCase();
+                let existingCategory = await this.categoryRepository.findOneBy({
+                    name: categoryName
+                });
+                if (existingCategory) {
+                    this.logger.debug(`Category ${categoryName} already exists`);
+                    continue;
+                }
+
+                const newCategory = new Category();
+                newCategory.name = categoryName;
+                newCategory.description = categoryName;
+                await this.categoryRepository.save(newCategory);
+
+                existingCategory = await this.categoryRepository.findOneBy({
+                    name: categoryName
+                });
+                if (!existingCategory)
+                    throw error('Seeding category ' + categoryName + ' not found');
+            }
+        } catch (error) {
+            this.logger.error(error);
         }
     }
 }

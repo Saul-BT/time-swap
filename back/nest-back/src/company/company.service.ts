@@ -322,7 +322,7 @@ export class CompanyService {
             },
         });
 
-        // Solo los duseños y los administradores (OWNER y ADMIN) pueden añadir usuarios
+        // Solo los dueños y los administradores (OWNER y ADMIN) pueden añadir usuarios
         if (adminRelation === null || (adminRelation.companyRole != CompanyRole.ADMIN && adminRelation.companyRole != CompanyRole.OWNER)) {
             throw new ErrorManager('CONFLICT', 'COMPANY NOT ADMIN');
         }
