@@ -14,6 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { error } from 'console';
 import { CategoryRequest } from 'src/category/entities/category-request.entity';
 import { Category } from 'src/category/entities/category.entity';
+import { Exchange } from 'src/exchange/entities/exchange.entity';
 //import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 
 @Injectable()
@@ -35,6 +36,8 @@ export class SeederService {
         private readonly requestRepository: Repository<CategoryRequest>,
         @InjectRepository(Category)
         private readonly categoryRepository: Repository<Category>,
+        @InjectRepository(Exchange)
+        private readonly exchangeRepository: Repository<Exchange>,
     ) {}
 
     getEnvVar(key: string): string {
@@ -46,7 +49,7 @@ export class SeederService {
         await this.seedUsers();
         await this.seedCompany();
         await this.seedCategories();
-        //todo seed exchanges
+        await this.seedExchanges();
     }
 
     /**
@@ -256,6 +259,15 @@ export class SeederService {
                 if (!existingCategory)
                     throw error('Seeding category ' + categoryName + ' not found');
             }
+        } catch (error) {
+            this.logger.error(error);
+        }
+    }
+
+    async seedExchanges() {
+        try {
+            this.logger.debug('Seeding categories');
+            //todo
         } catch (error) {
             this.logger.error(error);
         }

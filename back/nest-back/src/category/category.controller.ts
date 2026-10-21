@@ -24,7 +24,6 @@ import { CategoryRequestService } from './category-request.service';
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
 @ApiTags('category - Consultas sobre categorías')
-@Auth(Role.USER, Role.ADMIN)
 @Controller('category')
 export class CategoryController {
     constructor(
@@ -36,13 +35,14 @@ export class CategoryController {
     @Auth(Role.ADMIN) //admin directly creates new category
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async createCategory(@Body() categoryDto: CreateCategoryDTO) {
+        return this.categoryService.createCategory(categoryDto);
     }
 
     @Post('create-request')
     @Auth(Role.USER)
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async createRequest(@ActiveUser() user: UserActiveInterface, @Body() categoryDto: CreateCategoryDTO) {
-        return this.categoryService.createCategory(categoryDto);
+        return this.requestService.createRequest(user, categoryDto);
     }
 
     @Post('request-category/:id')

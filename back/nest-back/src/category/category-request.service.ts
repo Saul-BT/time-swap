@@ -22,7 +22,7 @@ export class CategoryRequestService {
     ) {}
     
     async createRequest(user: UserActiveInterface, categoryDto: CreateCategoryDTO) {
-        const name = categoryDto.name.trim().toLowerCase();
+        const name = categoryDto.categoryName.trim().toLowerCase();
         const existingCategory = await this.categoryRepository.findOneBy({ name });
         if (existingCategory) {
             throw new ErrorManager('CONFLICT', 'Category name already in use');
@@ -40,7 +40,7 @@ export class CategoryRequestService {
 
         const newRequest = this.requestRepository.create({
             name,
-            description: categoryDto.description,
+            description: categoryDto.categoryDescription,
             voters: [userEntity]
         });
 

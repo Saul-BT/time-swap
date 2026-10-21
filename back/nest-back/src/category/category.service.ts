@@ -20,7 +20,7 @@ export class CategoryService {
     ) {}
 
     async createCategory(categoryDto: CreateCategoryDTO) {
-        const name = categoryDto.name.trim().toLowerCase();
+        const name = categoryDto.categoryName.trim().toLowerCase();
         const existingCategory = await this.categoryRepository.findOneBy({ name });
         if (existingCategory) {
             throw new ErrorManager('CONFLICT', 'Category name already in use');
@@ -31,7 +31,7 @@ export class CategoryService {
 
         const newCategory = this.categoryRepository.create({
             name,
-            description: categoryDto.description
+            description: categoryDto.categoryDescription
         });
 
         return this.categoryRepository.save(newCategory);
@@ -39,6 +39,16 @@ export class CategoryService {
     
     async getCategory(id: number) {
         const category = await this.categoryRepository.findOneBy({ id });
+        if (!category) {
+            throw new ErrorManager('NOT_FOUND', 'Category not found');
+        }
+
+        return category;
+    }
+
+    async getCategoryByName(name: string) {
+        name = name.trim().toLowerCase();
+        const category = await this.categoryRepository.findOneBy({ name });
         if (!category) {
             throw new ErrorManager('NOT_FOUND', 'Category not found');
         }

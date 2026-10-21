@@ -42,11 +42,16 @@ export class Exchange {
     @OneToMany(() => Category, category => category.exchanges)
     category!: Category;
 
+    @Column({
+        type: 'timestamptz',
+    })
+    startDateTime!: Date;
+
     @Column({ type: 'smallint', nullable: false })
     durationMinutes!: number;
 
     @Column({ nullable: true, length: 350 })
-    area?: string;
+    location?: string;
 
     @CreateDateColumn()
     createdAt!: Date;
