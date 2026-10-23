@@ -186,7 +186,7 @@
     },
     "account": {
       "title": "Let's create your account",
-      "lead": "Four details and nothing else. Telling us what you know how to do comes in step 3, and you can leave it for another day.",
+      "lead": "",
       "fullNameLabel": "Full name",
       "postalCodeLabel": "Postal code",
       "postalCodePlaceholder": "28080",
@@ -201,6 +201,9 @@
     "password": {
       "title": "Choose a password",
       "lead": "Only you know it. Make it long, and do not reuse it anywhere else.",
+      "rules": "At least 8 characters, no spaces, with at least one uppercase letter, one lowercase letter, one number and one symbol.",
+      "weakTitle": "The password does not meet the requirements",
+      "weakBody": "It needs at least 8 characters, no spaces, with an uppercase letter, a lowercase letter, a number and a symbol (for example ! @ # $ % & * ?).",
       "mismatchTitle": "The passwords do not match",
       "mismatchBody": "Check both fields: they need to be exactly the same.",
       "passwordLabel": "Password",
@@ -228,11 +231,23 @@
       "skip": "Fill in later",
       "save": "Save and finish"
     },
-    "done": {
-      "title": "Account created",
-      "lead": "This is a preview: nothing is connected to the server yet, so nothing was really saved.",
-      "body": "Once sign-up is connected, this step will send your details and take you straight to your account.",
-      "cta": "Go to sign in"
+    "errors": {
+      "mailTaken": {
+        "title": "That email is already registered",
+        "body": "If it is yours, sign in with it or recover access. If not, use a different email."
+      },
+      "invalid": {
+        "title": "Check your details",
+        "body": "Some field does not have the expected format. Your name starts with a capital letter and the password needs an uppercase letter, a lowercase letter, a number and a symbol."
+      },
+      "tooManyAttempts": {
+        "title": "Too many attempts",
+        "body": "Wait a few minutes before trying again."
+      },
+      "backendDown": {
+        "title": "The server is unreachable",
+        "body": "The server is currently unavailable. Please try again later."
+      }
     }
   },
   "recoverAccess": {

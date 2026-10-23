@@ -186,7 +186,7 @@
     },
     "account": {
       "title": "Vamos a crear tu cuenta",
-      "lead": "Cuatro datos y nada más. Lo de contar qué sabes hacer viene en el paso 3, y puedes dejarlo para otro día.",
+      "lead": "",
       "fullNameLabel": "Nombre y apellidos",
       "postalCodeLabel": "Código postal",
       "postalCodePlaceholder": "28080",
@@ -201,6 +201,9 @@
     "password": {
       "title": "Elige una contraseña",
       "lead": "Solo tú la conoces. Que sea larga y que no la uses en ningún otro sitio.",
+      "rules": "Mínimo 8 caracteres, sin espacios, con al menos una mayúscula, una minúscula, un número y un símbolo.",
+      "weakTitle": "La contraseña no cumple los requisitos",
+      "weakBody": "Necesita al menos 8 caracteres, sin espacios, con una mayúscula, una minúscula, un número y un símbolo (por ejemplo ! @ # $ % & * ?).",
       "mismatchTitle": "Las contraseñas no coinciden",
       "mismatchBody": "Revisa los dos campos: tienen que ser exactamente iguales.",
       "passwordLabel": "Contraseña",
@@ -228,11 +231,23 @@
       "skip": "Rellenar más tarde",
       "save": "Guardar y terminar"
     },
-    "done": {
-      "title": "Cuenta creada",
-      "lead": "Esto es una vista previa: todavía no hay nada conectado al servidor, así que no se ha guardado nada de verdad.",
-      "body": "Cuando el registro esté conectado, este paso enviará tus datos y te llevará directamente a tu cuenta.",
-      "cta": "Ir a iniciar sesión"
+    "errors": {
+      "mailTaken": {
+        "title": "Ese correo ya está registrado",
+        "body": "Si es tuyo, entra con él o recupera el acceso. Si no, usa otro correo."
+      },
+      "invalid": {
+        "title": "Revisa los datos",
+        "body": "Algún campo no tiene el formato esperado. El nombre empieza por mayúscula y la contraseña lleva mayúscula, minúscula, número y símbolo."
+      },
+      "tooManyAttempts": {
+        "title": "Demasiados intentos",
+        "body": "Espera unos minutos antes de volver a probar."
+      },
+      "backendDown": {
+        "title": "No se pudo contactar con el servidor",
+        "body": "El servidor no está disponible. Inténtalo de nuevo más tarde."
+      }
     }
   },
   "recoverAccess": {

@@ -7,6 +7,7 @@ import PasswordField from "@/components/ui/PasswordField";
 import type { Dictionary } from "@/i18n/types";
 import PasswordStrengthMeter from "../PasswordStrengthMeter";
 import {
+  RegisterFieldHint,
   RegisterFormLead,
   RegisterFormNav,
   RegisterFormTitle,
@@ -19,6 +20,9 @@ import {
 export type RegisterStepPasswordProps = {
   copy: Dictionary["register"]["password"];
   mismatch: boolean;
+  weak: boolean;
+  error?: { title: string; body: string };
+  pending: boolean;
   onBack: () => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
@@ -31,6 +35,9 @@ export type RegisterStepPasswordProps = {
 export default function RegisterStepPassword({
   copy,
   mismatch,
+  weak,
+  error,
+  pending,
   onBack,
   onSubmit,
 }: RegisterStepPasswordProps) {
@@ -52,9 +59,21 @@ export default function RegisterStepPassword({
       </RegisterFormTitle>
       <RegisterFormLead variant="body1">{copy.lead}</RegisterFormLead>
 
+      {weak ? (
+        <FormNotice tone="error" title={copy.weakTitle}>
+          {copy.weakBody}
+        </FormNotice>
+      ) : null}
+
       {mismatch ? (
         <FormNotice tone="error" title={copy.mismatchTitle}>
           {copy.mismatchBody}
+        </FormNotice>
+      ) : null}
+
+      {error ? (
+        <FormNotice tone="error" title={error.title}>
+          {error.body}
         </FormNotice>
       ) : null}
 
@@ -69,9 +88,12 @@ export default function RegisterStepPassword({
           showLabel={copy.showPassword}
           hideLabel={copy.hidePassword}
           required
-          error={mismatch}
+          error={weak || mismatch}
         />
       </FormField>
+      <RegisterFieldHint variant="caption" color="textSecondary">
+        {copy.rules}
+      </RegisterFieldHint>
       <PasswordStrengthMeter
         password={passwordDraft}
         levels={[
@@ -101,10 +123,15 @@ export default function RegisterStepPassword({
       </FormField>
 
       <RegisterFormNav className={registerWizardClasses.nav}>
-        <Button variant="text" type="button" onClick={onBack}>
+        <Button
+          variant="text"
+          type="button"
+          onClick={onBack}
+          disabled={pending}
+        >
           {copy.back}
         </Button>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" loading={pending}>
           {copy.continue}
         </Button>
       </RegisterFormNav>

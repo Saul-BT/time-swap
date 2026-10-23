@@ -4,7 +4,7 @@ import { CATEGORY_IDS } from "@/data/categories";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
 import Ribbon from "../../ui/Ribbon";
-import RegisterWizard from "../RegisterWizard";
+import RegisterWizard, { type RegisterWizardProps } from "../RegisterWizard";
 import {
   RegisterScreenBrand,
   RegisterScreenBrandName,
@@ -14,7 +14,11 @@ import {
 } from "./RegisterScreen.style";
 import { registerScreenClasses } from "./RegisterScreen.util";
 
-export default async function RegisterScreen() {
+export type RegisterScreenProps = {
+  action: RegisterWizardProps["action"];
+};
+
+export default async function RegisterScreen({ action }: RegisterScreenProps) {
   const { brand, categories, register } = await getDictionary();
   const locale = await getLocale();
 
@@ -52,7 +56,8 @@ export default async function RegisterScreen() {
         <RegisterWizard
           copy={register}
           tagOptions={tagOptions}
-          signInHref={localizePath(locale, "signIn")}
+          homeHref={localizePath(locale, "home")}
+          action={action}
         />
       </RegisterScreenMain>
     </RegisterScreenRoot>

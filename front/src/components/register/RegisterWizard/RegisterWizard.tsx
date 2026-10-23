@@ -1,8 +1,15 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import type {
+  RegisterErrorId,
+  RegisterInput,
+  RegisterResult,
+} from "@/data/types";
 import type { Dictionary } from "@/i18n/types";
+import { meetsPasswordPolicy } from "../PasswordStrengthMeter";
 import RegisterStepper from "../RegisterStepper";
 import RegisterStepAccount from "./RegisterStepAccount";
 import RegisterStepPassword from "./RegisterStepPassword";
@@ -14,31 +21,35 @@ import {
   type RegisterValues,
   registerWizardClasses,
 } from "./RegisterWizard.util";
-import RegisterWizardDone from "./RegisterWizardDone";
 
 export type RegisterWizardProps = {
   copy: Dictionary["register"];
   tagOptions: readonly CategoryOption[];
-  signInHref: string;
+  homeHref: string;
+  action: (input: RegisterInput) => Promise<RegisterResult>;
 };
 
 type Step = 1 | 2 | 3;
 
 /**
- * FIXME(register): `values` never leaves this component's state — there is
- * no back end yet to send it to, and it is discarded on unmount. Wire the
- * real submit once the sign-up endpoint exists.
+ * The account is created when the password step is submitted: the profile
+ * step is optional. FIXME(register): nickname, postal code, skills and
+ * interests are not sent — the sign-up endpoint does not accept them yet.
  */
 
 export default function RegisterWizard({
   copy,
   tagOptions,
-  signInHref,
+  homeHref,
+  action,
 }: RegisterWizardProps) {
+  const router = useRouter();
   const [step, setStep] = useState<Step>(1);
-  const [done, setDone] = useState(false);
   const [values, setValues] = useState<RegisterValues>(INITIAL_REGISTER_VALUES);
   const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [passwordWeak, setPasswordWeak] = useState(false);
+  const [error, setError] = useState<RegisterErrorId>();
+  const [pending, startTransition] = useTransition();
 
   function handleAccountSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -51,6 +62,7 @@ export default function RegisterWizard({
       nickname: String(data.get("nickname") ?? ""),
       email: String(data.get("email") ?? ""),
     }));
+    setError(undefined);
     setStep(2);
   }
 
@@ -60,14 +72,41 @@ export default function RegisterWizard({
     const password = String(data.get("password") ?? "");
     const confirmPassword = String(data.get("confirmPassword") ?? "");
 
-    if (password !== confirmPassword) {
-      setPasswordMismatch(true);
+    const weak = !meetsPasswordPolicy(password);
+    const mismatch = password !== confirmPassword;
+    setPasswordWeak(weak);
+    setPasswordMismatch(mismatch);
+    if (weak || mismatch) {
       return;
     }
 
-    setPasswordMismatch(false);
     setValues((current) => ({ ...current, password }));
-    setStep(3);
+
+    startTransition(async () => {
+      const result = await action({
+        fullName: values.fullName,
+        email: values.email,
+        password,
+        confirmPassword,
+      });
+
+      if (result.ok) {
+        setError(undefined);
+        setStep(3);
+        return;
+      }
+
+      setError(result.error);
+      if (result.error === "mailTaken") {
+        setStep(1);
+      }
+    });
+  }
+
+  // TODO(register): lands on the home page until there is a signed-in area
+  // to send the new account to.
+  function finish() {
+    router.push(homeHref);
   }
 
   function toggleTag(group: "skills" | "interests", id: string) {
@@ -80,10 +119,6 @@ export default function RegisterWizard({
       }
       return { ...current, [group]: next };
     });
-  }
-
-  if (done) {
-    return <RegisterWizardDone copy={copy.done} signInHref={signInHref} />;
   }
 
   const stepLabels = [
@@ -104,6 +139,7 @@ export default function RegisterWizard({
         <RegisterStepAccount
           copy={copy.account}
           defaultValues={values}
+          error={error === "mailTaken" ? copy.errors.mailTaken : undefined}
           onSubmit={handleAccountSubmit}
         />
       ) : null}
@@ -112,6 +148,11 @@ export default function RegisterWizard({
         <RegisterStepPassword
           copy={copy.password}
           mismatch={passwordMismatch}
+          weak={passwordWeak}
+          error={
+            error && error !== "mailTaken" ? copy.errors[error] : undefined
+          }
+          pending={pending}
           onBack={() => setStep(1)}
           onSubmit={handlePasswordSubmit}
         />
@@ -126,8 +167,8 @@ export default function RegisterWizard({
           onToggleSkill={(id) => toggleTag("skills", id)}
           onToggleInterest={(id) => toggleTag("interests", id)}
           onBack={() => setStep(2)}
-          onSkip={() => setDone(true)}
-          onSave={() => setDone(true)}
+          onSkip={finish}
+          onSave={finish}
         />
       ) : null}
     </RegisterWizardRoot>

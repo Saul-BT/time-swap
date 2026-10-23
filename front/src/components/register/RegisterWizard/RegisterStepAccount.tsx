@@ -1,6 +1,7 @@
 import OutlinedInput from "@mui/material/OutlinedInput";
 import type { FormEvent } from "react";
 import FormField from "@/components/ui/FormField";
+import FormNotice from "@/components/ui/FormNotice";
 import type { Dictionary } from "@/i18n/types";
 import {
   RegisterFieldHint,
@@ -17,12 +18,14 @@ import {
 export type RegisterStepAccountProps = {
   copy: Dictionary["register"]["account"];
   defaultValues: RegisterAccountValues;
+  error?: { title: string; body: string };
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
 export default function RegisterStepAccount({
   copy,
   defaultValues,
+  error,
   onSubmit,
 }: RegisterStepAccountProps) {
   return (
@@ -31,6 +34,12 @@ export default function RegisterStepAccount({
         {copy.title}
       </RegisterFormTitle>
       <RegisterFormLead variant="body1">{copy.lead}</RegisterFormLead>
+
+      {error ? (
+        <FormNotice tone="error" title={error.title}>
+          {error.body}
+        </FormNotice>
+      ) : null}
 
       <FormField
         htmlFor={REGISTER_FIELD_ID.fullName}
@@ -93,6 +102,7 @@ export default function RegisterStepAccount({
           placeholder={copy.emailPlaceholder}
           defaultValue={defaultValues.email}
           required
+          error={Boolean(error)}
           fullWidth
         />
       </FormField>

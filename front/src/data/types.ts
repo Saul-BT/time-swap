@@ -61,3 +61,16 @@ export type FooterLink = {
 };
 
 export type SignInErrorId = keyof Dictionary["signIn"]["errors"];
+
+export type RegisterErrorId = keyof Dictionary["register"]["errors"];
+
+export type RegisterInput = {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export type RegisterResult =
+  | { ok: true }
+  | { ok: false; error: RegisterErrorId };
