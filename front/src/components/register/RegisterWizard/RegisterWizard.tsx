@@ -18,6 +18,7 @@ import { RegisterWizardRoot } from "./RegisterWizard.style";
 import {
   type CategoryOption,
   INITIAL_REGISTER_VALUES,
+  meetsFullNamePolicy,
   type RegisterValues,
   registerWizardClasses,
 } from "./RegisterWizard.util";
@@ -46,6 +47,7 @@ export default function RegisterWizard({
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [values, setValues] = useState<RegisterValues>(INITIAL_REGISTER_VALUES);
+  const [nameInvalid, setNameInvalid] = useState(false);
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [passwordWeak, setPasswordWeak] = useState(false);
   const [error, setError] = useState<RegisterErrorId>();
@@ -54,10 +56,17 @@ export default function RegisterWizard({
   function handleAccountSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const fullName = String(data.get("fullName") ?? "").trim();
+
+    const invalid = !meetsFullNamePolicy(fullName);
+    setNameInvalid(invalid);
+    if (invalid) {
+      return;
+    }
 
     setValues((current) => ({
       ...current,
-      fullName: String(data.get("fullName") ?? ""),
+      fullName,
       postalCode: String(data.get("postalCode") ?? ""),
       nickname: String(data.get("nickname") ?? ""),
       email: String(data.get("email") ?? ""),
@@ -139,6 +148,7 @@ export default function RegisterWizard({
         <RegisterStepAccount
           copy={copy.account}
           defaultValues={values}
+          nameInvalid={nameInvalid}
           error={error === "mailTaken" ? copy.errors.mailTaken : undefined}
           onSubmit={handleAccountSubmit}
         />

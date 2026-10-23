@@ -17,6 +17,21 @@ export const REGISTER_FIELD_ID = {
   confirmPassword: "register-confirm-password",
 } as const;
 
+/**
+ * Mirrors the name rules in `back/nest-back` (`new-register.dto.ts`): a
+ * capital first letter, then letters (accents allowed) and spaces only.
+ */
+export const FULL_NAME_MIN_LENGTH = 3;
+export const FULL_NAME_MAX_LENGTH = 30;
+
+export function meetsFullNamePolicy(fullName: string): boolean {
+  return (
+    fullName.length >= FULL_NAME_MIN_LENGTH &&
+    fullName.length <= FULL_NAME_MAX_LENGTH &&
+    /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñA-ZÁÉÍÓÚÜÑ\s]*$/.test(fullName)
+  );
+}
+
 export type CategoryOption = { id: string; label: string };
 
 export type RegisterAccountValues = {

@@ -10,6 +10,7 @@ import {
   RegisterFormTitle,
 } from "./RegisterWizard.style";
 import {
+  FULL_NAME_MAX_LENGTH,
   REGISTER_FIELD_ID,
   type RegisterAccountValues,
   registerWizardClasses,
@@ -18,6 +19,7 @@ import {
 export type RegisterStepAccountProps = {
   copy: Dictionary["register"]["account"];
   defaultValues: RegisterAccountValues;
+  nameInvalid: boolean;
   error?: { title: string; body: string };
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
@@ -25,6 +27,7 @@ export type RegisterStepAccountProps = {
 export default function RegisterStepAccount({
   copy,
   defaultValues,
+  nameInvalid,
   error,
   onSubmit,
 }: RegisterStepAccountProps) {
@@ -34,6 +37,12 @@ export default function RegisterStepAccount({
         {copy.title}
       </RegisterFormTitle>
       <RegisterFormLead variant="body1">{copy.lead}</RegisterFormLead>
+
+      {nameInvalid ? (
+        <FormNotice tone="error" title={copy.fullNameInvalidTitle}>
+          {copy.fullNameInvalidBody}
+        </FormNotice>
+      ) : null}
 
       {error ? (
         <FormNotice tone="error" title={error.title}>
@@ -51,9 +60,14 @@ export default function RegisterStepAccount({
           autoComplete="name"
           defaultValue={defaultValues.fullName}
           required
+          error={nameInvalid}
           fullWidth
+          inputProps={{ maxLength: FULL_NAME_MAX_LENGTH }}
         />
       </FormField>
+      <RegisterFieldHint variant="caption" color="textSecondary">
+        {copy.fullNameHint}
+      </RegisterFieldHint>
 
       <FormField
         htmlFor={REGISTER_FIELD_ID.postalCode}
