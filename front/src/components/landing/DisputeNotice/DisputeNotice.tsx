@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { getDictionary } from "@/i18n/dictionary";
 import Section from "../../layout/Section";
 import Ribbon from "../../ui/Ribbon";

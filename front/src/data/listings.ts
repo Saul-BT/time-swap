@@ -61,3 +61,7 @@ export const LISTINGS: readonly Listing[] = [
     hours: "1 h",
   },
 ];
+
+export function getListingById(id: string): Listing | undefined {
+  return LISTINGS.find((listing) => listing.id === id);
+}

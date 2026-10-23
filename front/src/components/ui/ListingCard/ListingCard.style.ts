@@ -1,9 +1,6 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import { Box, Paper, styled, Typography } from "@mui/material";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TabularFigure from "@/components/ui/TabularFigure";
 import type { WithComponent } from "@/lib/mui/polymorphic";

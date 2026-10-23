@@ -69,6 +69,12 @@ export const structure = {
   focusRingWidth: 3,
 } as const;
 
+/** Lucide icon sizes. `sm` sits inline with text, `md` next to a label or in a control. */
+export const iconSize = {
+  sm: 16,
+  md: 22,
+} as const;
+
 /**
  * Kept as data rather than inline in `createTheme` so it can be read back.
  *

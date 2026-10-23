@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { FormNoticeRoot, FormNoticeTitle } from "./FormNotice.style";
 import { type FormNoticeTone, formNoticeClasses } from "./FormNotice.util";
 

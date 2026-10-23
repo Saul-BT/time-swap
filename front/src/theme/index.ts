@@ -1,8 +1,10 @@
 "use client";
 
-import { inputLabelClasses } from "@mui/material/InputLabel";
-import { outlinedInputClasses } from "@mui/material/OutlinedInput";
-import { createTheme } from "@mui/material/styles";
+import {
+  createTheme,
+  inputLabelClasses,
+  outlinedInputClasses,
+} from "@mui/material";
 import LinkBehavior from "@/lib/mui/LinkBehavior";
 import { color, fontFamily, statusColor, structure, typeScale } from "./tokens";
 

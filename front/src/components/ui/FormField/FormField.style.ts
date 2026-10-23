@@ -1,7 +1,6 @@
 "use client";
 
-import FormLabel, { formLabelClasses } from "@mui/material/FormLabel";
-import { styled } from "@mui/material/styles";
+import { FormLabel, formLabelClasses, styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 const NAME = "FormField";

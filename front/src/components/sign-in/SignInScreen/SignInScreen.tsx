@@ -1,5 +1,4 @@
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
+import { Link, Typography } from "@mui/material";
 import { FOOTER_LINKS } from "@/data/navigation";
 import type { SignInErrorId } from "@/data/types";
 import { getDictionary, getLocale } from "@/i18n/dictionary";

@@ -1,7 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import { styled, Typography } from "@mui/material";
 import NextLink from "next/link";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { space } from "@/theme/tokens";

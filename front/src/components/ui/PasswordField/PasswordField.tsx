@@ -1,8 +1,9 @@
 "use client";
 
-import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import { InputAdornment, OutlinedInput } from "@mui/material";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import Icon from "@/components/ui/Icon";
 import { PasswordFieldToggle } from "./PasswordField.style";
 import { passwordFieldClasses } from "./PasswordField.util";
 
@@ -17,7 +18,7 @@ export type PasswordFieldProps = {
   error?: boolean;
 };
 
-/** Password input with a text toggle that reveals what was typed. */
+/** Password input with an eye toggle that reveals what was typed. */
 export default function PasswordField({
   id,
   name,
@@ -43,12 +44,12 @@ export default function PasswordField({
         <InputAdornment position="end">
           <PasswordFieldToggle
             className={passwordFieldClasses.toggle}
-            type="button"
-            aria-pressed={visible}
+            color="primary"
+            aria-label={visible ? hideLabel : showLabel}
             aria-controls={id}
             onClick={() => setVisible((current) => !current)}
           >
-            {visible ? hideLabel : showLabel}
+            <Icon icon={visible ? EyeOff : Eye} />
           </PasswordFieldToggle>
         </InputAdornment>
       }

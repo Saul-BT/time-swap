@@ -1,8 +1,6 @@
 "use client";
 
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { Chip, Stack, styled } from "@mui/material";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { bareList } from "@/theme/rules";
 

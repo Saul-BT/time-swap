@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { TypeScaleListItem, TypeScaleListRoot } from "./TypeScaleList.style";
 import {
   describeVariant,
