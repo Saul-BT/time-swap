@@ -19,7 +19,7 @@ import { RejectUserDto } from '../dto/reject.dto';
 import { VerifyDto } from '../dto/verify.dto';
 import { Verification } from '../entities/verification.entity';
 import { RejectInterface } from '../interfaces/reject.interface';
-import { PaginatedResponse } from 'src/common/dtos/paginated.dto';
+import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 import { InjectQueue } from '@nestjs/bull';
 import type { Queue } from 'bull';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';

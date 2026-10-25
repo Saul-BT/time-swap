@@ -1,4 +1,4 @@
 export enum ExchangeType {
     OFFER = 'offer',
-    REQUEST = 'request',
+    REQUEST = 'request'
 }

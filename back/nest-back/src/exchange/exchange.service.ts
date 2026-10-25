@@ -10,6 +10,7 @@ import { Role } from "src/common/enums/role.enum";
 import { UserService } from "src/user/user.service";
 import { UpdateExchangeDTO } from "./dto/update-exchange.dto";
 import { CategoryService } from "src/category/category.service";
+import { ExchangeStatus } from "./enums/exchange-status.enum";
 
 
 @Injectable()
@@ -38,7 +39,12 @@ export class ExchangeService {
         exchange.category = category; //cascade save
 
         //string to datetime needs separate logic
-        //todo string to datetime transform and validation
+        exchange.startDateTime = new Date(createDto.startTime);
+
+        const minimumStartTime = new Date;
+        if (exchange.startDateTime < minimumStartTime) {
+            throw new ErrorManager('CONFLICT', 'startTime cannot be in the past');
+        }
 
         //the rest can be copied as is
         Object.assign(exchange, {
@@ -52,7 +58,7 @@ export class ExchangeService {
         
     async updateExchange(user: UserActiveInterface, id: number, updateDto: UpdateExchangeDTO) {
         //all properties in dto are optional, need to check its not empty first
-        if (Object.values(updateDto).some(value => value !== undefined)) {
+        if (!Object.values(updateDto).some(value => value !== undefined)) {
             throw new ErrorManager('BAD_REQUEST', 'Empty DTO');
         }
 
@@ -63,6 +69,10 @@ export class ExchangeService {
 
         if (!exchange) {
             throw new ErrorManager('NOT_FOUND', 'Exchange not found');
+        }
+
+        if (exchange.status !== ExchangeStatus.OPEN) {
+            throw new ErrorManager('FORBIDDEN', 'Exchange is not active');
         }
 
         if (user.role !== Role.SUPER_ADMIN && user.id !== exchange.owner.id) {
@@ -76,7 +86,14 @@ export class ExchangeService {
         }
 
         //string to datetime needs separate logic
-        //todo string to datetime transform and validation
+        if (updateDto.startTime) {
+            exchange.startDateTime = new Date(updateDto.startTime);
+
+            const minimumStartTime = new Date;
+            if (exchange.startDateTime < minimumStartTime) {
+                throw new ErrorManager('CONFLICT', 'startTime cannot be in the past');
+            }
+        }
 
         //the rest can be copied as is
         Object.assign(exchange, {
@@ -102,7 +119,132 @@ export class ExchangeService {
     }
         
     async searchRequest(searchDto: SearchExchangeDTO) {
-        //todo pagination
+        const query = this.exchangeRepository.createQueryBuilder('exchange');
+
+        if (searchDto.title) {
+            query.andWhere(
+                'exchange.title ILIKE :title',
+                { title: `%${searchDto.title}%` },
+            );
+        }
+
+        if (searchDto.description) {
+            query.andWhere(
+                'exchange.description ILIKE :description',
+                { description: `%${searchDto.description}%` },
+            );
+        }
+
+        if (searchDto.type) {
+            query.andWhere(
+                'exchange.type = :type',
+                { type: searchDto.type },
+            );
+        }
+
+        if (searchDto.mode) {
+            query.andWhere(
+                'exchange.mode = :mode',
+                { mode: searchDto.mode },
+            );
+        }
+
+        if (searchDto.status)
+        //todo search by status
+
+        if (searchDto.lowerDurationMinutes) {
+            query.andWhere(
+                'exchange.durationMinutes >= :lowerDurationMinutes',
+                { lowerDurationMinutes: searchDto.lowerDurationMinutes },
+            );
+        }
+
+        if (searchDto.higherDurationMinutes) {
+            query.andWhere(
+                'exchange.durationMinutes <= :higherDurationMinutes',
+                { higherDurationMinutes: searchDto.higherDurationMinutes },
+            );
+        }
+
+        if (searchDto.lowerStartTime) {
+            query.andWhere(
+                'exchange.startTime >= :lowerStartTime',
+                { lowerStartTime: searchDto.lowerStartTime },
+            );
+        }
+
+        if (searchDto.higherStartTime) {
+            query.andWhere(
+                'exchange.startTime <= :higherStartTime',
+                { higherStartTime: searchDto.higherStartTime },
+            );
+        }
+
+        if (searchDto.categoryIds?.length) {
+            query.leftJoin('exchange.category', 'category')
+                .andWhere(
+                    'category.id IN (:...categoryIds)',
+                    { categoryIds: searchDto.categoryIds },
+                );
+       }
+
+        if (!searchDto.page)
+            searchDto.page = 1;
+        if (!searchDto.pageSize)
+            searchDto.pageSize = 20;
+
+        query.skip((searchDto.page - 1) * searchDto.pageSize);
+        query.take(searchDto.pageSize);
+
+        return query.getManyAndCount();
+    }
+
+    async completeExchange(user:UserActiveInterface, id: number) {
+        const exchange = await this.exchangeRepository.findOne({
+            where: { id },
+            relations: { owner: true }
+        })
+
+        if (!exchange) {
+            throw new ErrorManager('NOT_FOUND', 'Exchange not found');
+        }
+
+        if (user.role !== Role.SUPER_ADMIN && user.id !== exchange.owner.id) {
+            throw new ErrorManager('FORBIDDEN', 'Not allowed to modify exchange');
+        }
+
+        if (exchange.status !== ExchangeStatus.OPEN) {
+            throw new ErrorManager('FORBIDDEN', 'Exchange is not active');
+        }
+
+        exchange.status = ExchangeStatus.COMPLETED;
+        exchange.completedTime = new Date();
+
+        return this.exchangeRepository.save(exchange);
+    }
+
+    async cancelExchange(user:UserActiveInterface, id: number) {
+        const exchange = await this.exchangeRepository.findOne({
+            where: { id },
+            relations: { owner: true }
+        })
+
+        if (!exchange) {
+            throw new ErrorManager('NOT_FOUND', 'Exchange not found');
+        }
+
+        if (user.role !== Role.SUPER_ADMIN && user.id !== exchange.owner.id) {
+            throw new ErrorManager('FORBIDDEN', 'Not allowed to modify exchange');
+        }
+
+        if (exchange.status !== ExchangeStatus.OPEN) {
+            throw new ErrorManager('FORBIDDEN', 'Exchange is not active');
+        }
+
+        exchange.status = ExchangeStatus.CANCELLED;
+        exchange.cancelledTime = new Date();
+
+        return this.exchangeRepository.save(exchange);
     }
 
     async removeExchange(user:UserActiveInterface, id: number) {
@@ -117,6 +259,11 @@ export class ExchangeService {
 
         if (user.role !== Role.SUPER_ADMIN && user.id !== exchange.owner.id) {
             throw new ErrorManager('FORBIDDEN', 'Not allowed to delete exchange');
+        }
+
+        //only allow superadmin to delete logs
+        if (user.role !== Role.SUPER_ADMIN && exchange.status !== ExchangeStatus.OPEN) {
+            throw new ErrorManager('FORBIDDEN', 'Exchange is not active');
         }
 
         return this.exchangeRepository.remove(exchange);

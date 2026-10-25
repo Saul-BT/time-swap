@@ -25,7 +25,7 @@ import { LeaveCompanyOutputDTO } from './outputs/leave.output.dto';
 import { RemoveUserCompanyOutputDTO } from './outputs/remove-user.output.dto';
 import { UpdateCompanyOutputDTO } from './outputs/update-company.output.dto';
 import { UpdateUserCompanyOutputDTO } from './outputs/update-user.output.dto';
-import { PaginatedResponse } from 'src/common/dtos/paginated.dto';
+import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 import { CompanyDTO } from './outputs/all-info.output.dto';
 import { OrderCompany } from './enums/order-company.enum';
 //import { SeederService } from 'src/seeder/seeder.service';

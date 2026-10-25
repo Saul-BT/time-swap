@@ -12,16 +12,17 @@ import {
 import { ExchangeType } from '../enums/exchange-type.enum';
 import { ExchangeMode } from '../enums/exchange-mode.enum';
 import { Category } from 'src/category/entities/category.entity';
+import { ExchangeStatus } from '../enums/exchange-status.enum';
 
 @Entity()
 export class Exchange {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ nullable: false, length: 350 })
+    @Column({ type:'varchar', nullable: false, length: 350 })
     title!: string;
 
-    @Column({ nullable: false, length: 1000 })
+    @Column({ type:'varchar', nullable: false, length: 1000 })
     description!: string;
 
     @Column({
@@ -50,8 +51,27 @@ export class Exchange {
     @Column({ type: 'smallint', nullable: false })
     durationMinutes!: number;
 
-    @Column({ nullable: true, length: 350 })
-    location?: string;
+    @Column({ type: 'varchar', nullable: true, length: 350 })
+    location?: string | null;
+
+    @Column({
+        type: 'enum',
+        enum: ExchangeStatus,
+        default: ExchangeStatus.OPEN,
+    })
+    status!: ExchangeStatus;
+
+    @Column({
+        nullable: true,
+        type: 'timestamptz',
+    })
+    completedTime?: Date | null;
+
+    @Column({
+        nullable: true,
+        type: 'timestamptz',
+    })
+    cancelledTime?: Date | null;
 
     @CreateDateColumn()
     createdAt!: Date;

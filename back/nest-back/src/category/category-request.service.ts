@@ -68,7 +68,7 @@ export class CategoryRequestService {
 
         request.voters.push(userEntity);
         
-        await this.categoryRepository.save(request);
+        await this.requestRepository.save(request);
 
         return request; //todo cleanup voters so only email and name is returned
     }
@@ -119,7 +119,7 @@ export class CategoryRequestService {
             voter => voter.id !== user.id,
         );
         
-        await this.categoryRepository.save(request);
+        await this.requestRepository.save(request);
 
         //todo if no voters, delete request?
 

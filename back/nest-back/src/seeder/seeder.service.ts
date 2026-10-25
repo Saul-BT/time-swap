@@ -15,6 +15,9 @@ import { error } from 'console';
 import { CategoryRequest } from 'src/category/entities/category-request.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Exchange } from 'src/exchange/entities/exchange.entity';
+import { ExchangeType } from 'src/exchange/enums/exchange-type.enum';
+import { ExchangeMode } from 'src/exchange/enums/exchange-mode.enum';
+import { ExchangeStatus } from 'src/exchange/enums/exchange-status.enum';
 //import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 
 @Injectable()
@@ -23,6 +26,8 @@ export class SeederService {
      * Objeto para realizar logs en la consola cuando el seeder realiza operaciones
      */
     private readonly logger = new Logger(SeederService.name);
+
+    private static readonly SEEDED_CATEGORIES = ['category 1', 'category 2', 'category 3'];
 
     constructor(
         private readonly configService: ConfigService, //for reading .env values
@@ -200,7 +205,7 @@ export class SeederService {
 
     async seedCategories() {
         try {
-            this.logger.debug('Seeding categories');
+            this.logger.debug('Seeding exchanges');
             if (process.env.NODE_ENV === 'production') return;
 
             const accountName = Role.USER;
@@ -213,7 +218,7 @@ export class SeederService {
             if (!user)
                 throw error('Seeding user ' + mail + ' not found');
 
-            const seededRequests = ['Request 1', 'Request 2', 'Request 3'];
+            const seededRequests = ['request 1', 'request 2', 'request 3'];
             for (const name of seededRequests) {
                 const requestName = name.trim().toLowerCase();
                 let existingRequest = await this.requestRepository.findOneBy({
@@ -237,8 +242,7 @@ export class SeederService {
                     throw error('Seeding request ' + requestName + ' not found');
             }
 
-            const seededCategories = ['Category 1', 'Category 2', 'Category 3'];
-            for (const name of seededCategories) {
+            for (const name of SeederService.SEEDED_CATEGORIES) {
                 const categoryName = name.trim().toLowerCase();
                 let existingCategory = await this.categoryRepository.findOneBy({
                     name: categoryName
@@ -267,7 +271,55 @@ export class SeederService {
     async seedExchanges() {
         try {
             this.logger.debug('Seeding categories');
-            //todo
+
+            const accountName = Role.USER;
+            const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
+            const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
+
+            const user = await this.userRepository.findOneBy({
+                mail: mail,
+            });
+            if (!user)
+                throw error('Seeding user ' + mail + ' not found');
+            
+            const category = await this.categoryRepository.findOneBy({ name: SeederService.SEEDED_CATEGORIES[0] });
+            if (!category)
+                throw error('Seeding category ' + SeederService.SEEDED_CATEGORIES[0] + ' not found');
+            
+            const exchangeData = this.exchangeRepository.create();
+            exchangeData.title = 'Exchange 1';
+            exchangeData.description = 'Example exchange 1';
+            exchangeData.type = ExchangeType.OFFER;
+            exchangeData.mode = ExchangeMode.REMOTE;
+            exchangeData.category = category;
+            exchangeData.startDateTime = new Date('2027-01-01');
+            exchangeData.durationMinutes = 60;
+            exchangeData.location = 'Seeded location';
+            exchangeData.owner = user;
+
+            //create one for each status
+            const exchangeOpen = this.exchangeRepository.create({
+                ...exchangeData,
+                status: ExchangeStatus.OPEN,
+            });
+
+            await this.exchangeRepository.save(exchangeOpen);
+
+            const exchangeCancelled = this.exchangeRepository.create({
+                ...exchangeData,
+                status: ExchangeStatus.CANCELLED,
+                cancelledTime: new Date(),
+            });
+
+            await this.exchangeRepository.save(exchangeCancelled);
+
+            const exchangeCompleted = this.exchangeRepository.create({
+                ...exchangeData,
+                status: ExchangeStatus.COMPLETED,
+                completedTime: new Date(),
+            });
+
+            await this.exchangeRepository.save(exchangeCompleted);
         } catch (error) {
             this.logger.error(error);
         }

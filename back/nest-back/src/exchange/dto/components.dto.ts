@@ -3,6 +3,7 @@ import { Type } from "class-transformer";
 import { IsDateString, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Length, Max, Min } from "class-validator";
 import { ExchangeMode } from "src/category/enums/exchange-mode.enum";
 import { ExchangeType } from "src/category/enums/exchange-type.enum";
+import { ExchangeStatus } from "../enums/exchange-status.enum";
 
 export class ExchangeTitleDto {
     @ApiProperty({ example: 'Exchange 1' })
@@ -44,6 +45,28 @@ export class ExchangeStartTimeDto {
     startTime!: string;
 }
 
+export class ExchangeStatusDto {
+    @IsOptional()
+    @ApiProperty({ example: ExchangeStatus.OPEN })
+    @IsEnum(ExchangeStatus)
+    @IsNotEmpty()
+    status?: ExchangeStatus;
+}
+
+export class ExchangeLowerStartTimeDto {
+    @IsOptional()
+    @IsNotEmpty()
+    @IsDateString()
+    lowerStartTime?: string;
+}
+
+export class ExchangeHigherStartTimeDto {
+    @IsOptional()
+    @IsNotEmpty()
+    @IsDateString()
+    higherStartTime?: string;
+}
+
 export class ExchangeDurationDto {
     @IsNotEmpty()
     @Type(() => Number)
@@ -51,6 +74,26 @@ export class ExchangeDurationDto {
     @Min(15)
     @Max(480)
     durationMinutes!: number;
+}
+
+export class ExchangeLowerDurationDto {
+    @IsOptional()
+    @IsNotEmpty()
+    @Type(() => Number)
+    @IsInt()
+    @Min(15)
+    @Max(480)
+    lowerDurationMinutes?: number;
+}
+
+export class ExchangeHigherDurationDto {
+    @IsOptional()
+    @IsNotEmpty()
+    @Type(() => Number)
+    @IsInt()
+    @Min(15)
+    @Max(480)
+    higherDurationMinutes?: number;
 }
 
 export class ExchangeLocationDto {

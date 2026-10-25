@@ -15,7 +15,7 @@ import { Language } from './enums/language.enum';
 import { AvatarOutput } from './interfaces/avatar.output.interface';
 import { UserOutput } from './interfaces/user.output.interface';
 import { AllUsersOutputDto, UserInfoDTO } from './dto-outputs/all-users.output.dto';
-import { PaginatedResponse } from 'src/common/dtos/paginated.dto';
+import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 import { OrderUsers } from './enums/order-user.enum';
 //import { I18nService } from 'nestjs-i18n';
 import { LoginInterface } from 'src/auth/interfaces/login.interface';

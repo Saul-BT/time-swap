@@ -43,15 +43,26 @@ export class ExchangeController {
     @Get('search-exchange')
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async searchRequest(searchDto: SearchExchangeDTO) {
-        //todo
+        return this.exchangeService.searchRequest(searchDto);
     }
 
     //todo endpoint for revising exchange
-    
+
+    @Post('complete-exchange/:id')
+    @ApiResponse({ status: 500, description: 'Internal server error' })
+    async completeExchange(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
+        return this.exchangeService.removeExchange(user, id);
+    }
+
+    @Post('cancel-exchange/:id')
+    @ApiResponse({ status: 500, description: 'Internal server error' })
+    async cancelExchange(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
+        return this.exchangeService.removeExchange(user, id);
+    }
 
     @Delete('remove-exchange/:id')
     @ApiResponse({ status: 500, description: 'Internal server error' })
-    async removeCategory(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
+    async removeExchange(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
         return this.exchangeService.removeExchange(user, id);
     }
 }
