@@ -1,8 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { ArrayMinSize, IsArray, IsInt, IsNotEmpty, IsString, Length, Min } from "class-validator";
+import { ArrayMinSize, IsArray, IsDefined, IsInt, IsNotEmpty, IsString, Length, Min } from "class-validator";
 
 export class CategoryIdDto {
+    @ApiProperty({ example: 1 })
     @IsNotEmpty()
     @Type(() => Number)
     @IsInt()
@@ -11,6 +12,7 @@ export class CategoryIdDto {
 }
 
 export class CategoryIdArrayDto {
+    @ApiProperty({ example: [1, 2, 3] })
     @IsNotEmpty()
     @IsArray()
     @ArrayMinSize(1)

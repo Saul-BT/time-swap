@@ -11,7 +11,7 @@ export type ListingKind = keyof Dictionary["listings"]["kind"];
 export type ListingMode = keyof Dictionary["listings"]["mode"];
 
 export type Listing = {
-  id: string;
+  id: number;
   kind: ListingKind;
   mode: ListingMode;
   /** Author-written text. Not translated. */

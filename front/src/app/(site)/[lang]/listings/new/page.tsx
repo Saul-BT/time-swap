@@ -1,3 +1,5 @@
+"use server";
+
 import { Button, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import Section from "@/components/layout/Section";
@@ -6,10 +8,51 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import { CATEGORY_IDS } from "@/data/categories";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
+import { cookies } from "next/headers";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { createAd } = await getDictionary();
   return { title: createAd.title };
+}
+
+export async function createExchangeAction(
+    formData: FormData,
+): Promise<void> {
+  console.log("DEBUG!!!");
+  //get jwt token from cookies
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+
+  const response = await fetch(
+    `${process.env.BACKEND_URL}/exchange`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: formData.get('title'),
+        description: formData.get('description'),
+        //type: formData.get('kind'),
+        type: 'offer', //todo get from form
+        //mode: formData.get('mode'),
+        mode: 'any', //todo get from form
+        //categoryId: Number(formData.get('category')),
+        categoryId: 1, //todo get from form
+        startTime: '2030-01-01', //todo get from form
+        duration: formData.get('hours'),
+        location: formData.get('area'),
+      }),
+    },
+  );
+
+    if (!response.ok) {
+        throw new Error('Failed to create exchange');
+    }
+
+    const locale = await getLocale();
+    localizePath(locale, "loggedHome");
 }
 
 // FIXME: Temporary publish screen: UI only, nothing is persisted (revisit).
@@ -31,7 +74,7 @@ export default async function CreateAdPage() {
           </Typography>
 
           {/* Demo only: submit returns to the temporary logged home. */}
-          <form action={loggedHomeHref}>
+          <form action={createExchangeAction}>
             <Stack spacing={3}>
               <TextField
                 required

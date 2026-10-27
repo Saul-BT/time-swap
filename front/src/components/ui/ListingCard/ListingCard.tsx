@@ -23,7 +23,7 @@ import {
 export default async function ListingCard({ listing }: { listing: Listing }) {
   const { listings } = await getDictionary();
   const locale = await getLocale();
-  const href = localizePath(locale, "listingDetail", { id: listing.id });
+  const href = localizePath(locale, "listingDetail", { id: String(listing.id) });
 
   return (
     <NextLink

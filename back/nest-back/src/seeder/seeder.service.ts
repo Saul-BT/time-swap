@@ -270,7 +270,13 @@ export class SeederService {
 
     async seedExchanges() {
         try {
-            this.logger.debug('Seeding categories');
+            this.logger.debug('Seeding exchanges');
+
+            const existingExchange = await this.exchangeRepository.findOneBy({ title: 'Exchange 1' });
+            if (existingExchange) {
+                this.logger.debug('Exchanges already seeded, skipping...');
+                return;
+            }
 
             const accountName = Role.USER;
             const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
@@ -293,7 +299,7 @@ export class SeederService {
             exchangeData.mode = ExchangeMode.REMOTE;
             exchangeData.category = category;
             exchangeData.startDateTime = new Date('2027-01-01');
-            exchangeData.durationMinutes = 60;
+            exchangeData.duration = '1h';
             exchangeData.location = 'Seeded location';
             exchangeData.owner = user;
 

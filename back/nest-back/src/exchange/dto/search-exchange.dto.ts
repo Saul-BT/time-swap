@@ -2,7 +2,7 @@
 
 import { IntersectionType, PartialType } from "@nestjs/swagger";
 import { PaginationDto } from "src/common/dtos/pagination.dto";
-import { ExchangeDescriptionDto, ExchangeHigherDurationDto, ExchangeHigherStartTimeDto, ExchangeLocationDto, ExchangeLowerDurationDto, ExchangeLowerStartTimeDto, ExchangeModeDto, ExchangeStatusDto, ExchangeTitleDto, ExchangeTypeDto } from "./components.dto";
+import { ExchangeHigherStartTimeDto, ExchangeLocationDto, ExchangeLowerStartTimeDto, ExchangeModeDto, ExchangeStatusDto, ExchangeTitleDto, ExchangeTypeDto, ExchangeDurationDto, ExchangeDescriptionDto } from "./components.dto";
 import { CategoryIdArrayDto } from "src/category/dto/components.dto";
 
 export class SearchExchangeDTO extends IntersectionType(
@@ -14,8 +14,7 @@ export class SearchExchangeDTO extends IntersectionType(
     ExchangeStatusDto,
     ExchangeLowerStartTimeDto,
     ExchangeHigherStartTimeDto,
-    ExchangeLowerDurationDto,
-    ExchangeHigherDurationDto,
+    PartialType(ExchangeDurationDto),
     ExchangeLocationDto,
     PartialType(CategoryIdArrayDto)
 ) {

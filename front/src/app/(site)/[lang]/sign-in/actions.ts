@@ -27,7 +27,7 @@ export async function signIn(
 
   try {
     const response = await fetch(
-      `${backendUrl}/api/v1/auth/login`,
+      `${backendUrl}/auth/login`,
       {
         method: 'POST',
         headers: {
@@ -41,27 +41,26 @@ export async function signIn(
 
     const data = await response.json();
 
-  if (!response.ok) {
-    let error: SignInErrorId = "backendDown"; //default to generic error
-    if (isBackendError(data) && data.error === 401 && data.message === "INVALID CREDENTIALS")
-      error = "credentials";
-    redirect(`${localizePath(target, "signIn")}?error=${error}`);
-  }
+    if (!response.ok) {
+      console.log("Login error: " + response.statusText);
+      let error: SignInErrorId = "backendDown"; //default to generic error
+      if (isBackendError(data) && data.error === 401 && data.message === "INVALID CREDENTIALS")
+        error = "credentials";
+      redirect(`${localizePath(target, "signIn")}?error=${error}`);
+    }
 
     //save session cookies and redirect to profile
     const cookieStore = await cookies();
 
     cookieStore.set(
       'accessToken',
-      data.accessToken,
+      data.backend_tokens.access_token,
       {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
       },
     );
-    
-    redirect(`${localizePath(target, "signIn")}`); //todo redirect to profile
   }
   catch (err) {
     console.log("Sign in error: " + err);
@@ -69,4 +68,7 @@ export async function signIn(
       `${localizePath(target, "signIn")}?error=backendDown`,
     );
   };
+
+  //redirect outside the try catch, otherwise it is caught as an exception
+  redirect(`${localizePath(target, "signIn")}`); //todo redirect to profile
 }

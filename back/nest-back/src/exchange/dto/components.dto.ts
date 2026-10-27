@@ -40,6 +40,7 @@ export class ExchangeModeDto {
 }
 
 export class ExchangeStartTimeDto {
+    @ApiProperty({ example: '2030-01-01' })
     @IsNotEmpty()
     @IsDateString()
     startTime!: string;
@@ -68,32 +69,13 @@ export class ExchangeHigherStartTimeDto {
 }
 
 export class ExchangeDurationDto {
-    @IsNotEmpty()
-    @Type(() => Number)
-    @IsInt()
-    @Min(15)
-    @Max(480)
-    durationMinutes!: number;
-}
-
-export class ExchangeLowerDurationDto {
-    @IsOptional()
-    @IsNotEmpty()
-    @Type(() => Number)
-    @IsInt()
-    @Min(15)
-    @Max(480)
-    lowerDurationMinutes?: number;
-}
-
-export class ExchangeHigherDurationDto {
-    @IsOptional()
-    @IsNotEmpty()
-    @Type(() => Number)
-    @IsInt()
-    @Min(15)
-    @Max(480)
-    higherDurationMinutes?: number;
+    @ApiProperty({ example: '1 h' })
+    @IsNotEmpty({
+        message: 'IS EMPTY'
+    })
+    @IsString()
+    @Length(2, 350)
+    duration!: string;
 }
 
 export class ExchangeLocationDto {

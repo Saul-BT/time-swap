@@ -40,7 +40,7 @@ export class Exchange {
     })
     mode!: ExchangeMode;
     
-    @OneToMany(() => Category, category => category.exchanges)
+    @ManyToOne(() => Category, category => category.exchanges)
     category!: Category;
 
     @Column({
@@ -48,8 +48,8 @@ export class Exchange {
     })
     startDateTime!: Date;
 
-    @Column({ type: 'smallint', nullable: false })
-    durationMinutes!: number;
+    @Column({ type: 'varchar', nullable: false })
+    duration!: string;
 
     @Column({ type: 'varchar', nullable: true, length: 350 })
     location?: string | null;

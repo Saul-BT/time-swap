@@ -4,9 +4,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
@@ -22,7 +20,7 @@ export class Category {
     @Column({ nullable: false, length: 1000 })
     description!: string;
 
-    @ManyToOne(() => Exchange, exchanges => exchanges.category, {
+    @OneToMany(() => Exchange, exchanges => exchanges.category, {
         cascade: ['insert', 'update']
     })
     exchanges!: Exchange[];

@@ -11,6 +11,8 @@ import { UserService } from "src/user/user.service";
 import { UpdateExchangeDTO } from "./dto/update-exchange.dto";
 import { CategoryService } from "src/category/category.service";
 import { ExchangeStatus } from "./enums/exchange-status.enum";
+import ExchangeOutputDto from "./dto/exchange-output.dto";
+import { PaginatedResponse } from "src/common/dtos/paginated-output.dto";
 
 
 @Injectable()
@@ -25,6 +27,18 @@ export class ExchangeService {
         @Inject(UserService)
         private readonly userService: UserService,
     ) {}
+
+    mapExchangeOutput (exchange: Exchange): ExchangeOutputDto {
+        return {
+            id: exchange.id,
+            title: exchange.title,
+            summary: exchange.description,
+            kind: exchange.type,
+            mode: exchange.mode,
+            byline: `${exchange.owner.name} · ${exchange.location ?? exchange.category}`,
+            hours: exchange.duration
+        }
+    }
 
     async createExchange(user: UserActiveInterface, createDto: CreateExchangeDTO) {
         const exchange = this.exchangeRepository.create();
@@ -105,7 +119,7 @@ export class ExchangeService {
         return this.exchangeRepository.save(exchange);
     }
 
-    async getExchange(id: number) {
+    async getExchange(id: number): Promise<ExchangeOutputDto> {
         const exchange = await this.exchangeRepository.findOne({
             where: { id },
             relations: { category:true, owner: true } //todo get revisions as well
@@ -115,10 +129,10 @@ export class ExchangeService {
             throw new ErrorManager('NOT_FOUND', 'Exchange not found');
         }
 
-        return exchange;
+        return this.mapExchangeOutput(exchange);
     }
         
-    async searchRequest(searchDto: SearchExchangeDTO) {
+    async searchExchanges(searchDto: SearchExchangeDTO): Promise<PaginatedResponse<ExchangeOutputDto>> {
         const query = this.exchangeRepository.createQueryBuilder('exchange');
 
         if (searchDto.title) {
@@ -152,17 +166,10 @@ export class ExchangeService {
         if (searchDto.status)
         //todo search by status
 
-        if (searchDto.lowerDurationMinutes) {
+        if (searchDto.duration) {
             query.andWhere(
-                'exchange.durationMinutes >= :lowerDurationMinutes',
-                { lowerDurationMinutes: searchDto.lowerDurationMinutes },
-            );
-        }
-
-        if (searchDto.higherDurationMinutes) {
-            query.andWhere(
-                'exchange.durationMinutes <= :higherDurationMinutes',
-                { higherDurationMinutes: searchDto.higherDurationMinutes },
+                'exchange.description ILIKE :duration',
+                { description: `%${searchDto.duration}%` },
             );
         }
 
@@ -181,12 +188,14 @@ export class ExchangeService {
         }
 
         if (searchDto.categoryIds?.length) {
-            query.leftJoin('exchange.category', 'category')
+            query.leftJoinAndSelect('exchange.category', 'category')
                 .andWhere(
                     'category.id IN (:...categoryIds)',
                     { categoryIds: searchDto.categoryIds },
                 );
        }
+
+        query.leftJoinAndSelect('exchange.owner', 'user');
 
         if (!searchDto.page)
             searchDto.page = 1;
@@ -196,7 +205,15 @@ export class ExchangeService {
         query.skip((searchDto.page - 1) * searchDto.pageSize);
         query.take(searchDto.pageSize);
 
-        return query.getManyAndCount();
+        const result = await query.getManyAndCount();
+
+        return {
+            list: result[0].map(exchange => { return this.mapExchangeOutput(exchange)}),
+            page: searchDto.page,
+            pageSize: searchDto.pageSize,
+            total: result[1],
+            totalPages: Math.ceil(result[1] / searchDto.pageSize),
+        };
     }
 
     async completeExchange(user:UserActiveInterface, id: number) {
