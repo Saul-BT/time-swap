@@ -11,6 +11,7 @@ import { CompanyModule } from './company/company.module';
 //import { ExamplesModule } from './examples/examples.module';
 import MailModule from './mail/mail.module';
 import { NodemailerModule } from './mail/node-transporter.module';
+import { ListingModule } from './listing/listing.module';
 //import SeederModule from './seeder/seeder.module';
 import { UserModule } from './user/user.module';
 import SeederModule from './seeder/seeder.module';
@@ -91,6 +92,7 @@ dotenv.config({ path: envFile }); // Configurar la variable global para el .env
         //ExamplesModule,
         CompanyModule,
         NodemailerModule,
+        ListingModule,
         //I18nValidatorModule,
         MailModule,
     ],
