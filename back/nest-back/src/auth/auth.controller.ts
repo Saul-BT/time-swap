@@ -41,7 +41,7 @@ import { RefreshGuard } from './guard/refresh.guard';
 import { AuthService } from './services/auth.service';
 import { ResetService } from './services/reset.service';
 //import { ReturnMessage } from 'src/common/decorators/wrap-endpoint.decorator';
-import { PaginatedResponse } from 'src/common/dtos/paginated.dto';
+import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 //import { I18nService } from 'nestjs-i18n';
 import { ErrorManager } from 'src/common/error-handling/error.manager';
 import { OrderVerification } from './enums/order-verification.enum';

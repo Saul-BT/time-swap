@@ -5,7 +5,7 @@ import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
 import FilterList from "@/components/ui/FilterList";
 import ListingCard from "@/components/ui/ListingCard";
-import { LISTINGS } from "@/data/listings";
+import { getListingsPaged } from "@/data/listings";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
 import { bareList } from "@/theme/rules";
@@ -20,6 +20,8 @@ export default async function BrowseListingsPage() {
   const { browseListings, common } = await getDictionary();
   const locale = await getLocale();
   const loggedHomeHref = localizePath(locale, "loggedHome");
+
+  const listings = await getListingsPaged(1, 3); //todo tweak fetch size by screen size?
 
   return (
     <>
@@ -46,9 +48,9 @@ export default async function BrowseListingsPage() {
           </Box>
 
           <Grid container component="ul" spacing={2.5} sx={bareList}>
-            {LISTINGS.map((listing) => (
+            {listings.map((listing) => (
               <Grid
-                key={listing.id}
+                key={String(listing.id)}
                 component="li"
                 size={{ xs: 12, sm: 6, md: 4 }}
                 sx={{ display: "flex", minWidth: 0 }}

@@ -1,3 +1,5 @@
+"use server";
+
 import { Button, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import Section from "@/components/layout/Section";
@@ -6,17 +8,60 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import { CATEGORY_IDS } from "@/data/categories";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { Locale } from "@/i18n/config";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { createAd } = await getDictionary();
   return { title: createAd.title };
 }
 
-// FIXME: Temporary publish screen: UI only, nothing is persisted (revisit).
+//todo match mode enum names with backend
+export async function createExchangeAction(
+    locale: Locale,
+    formData: FormData,
+): Promise<void> {
+  //get jwt token from cookies
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+
+  const response = await fetch(
+    `${process.env.BACKEND_URL}/exchange`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: formData.get('title'),
+        description: formData.get('description'),
+        type: formData.get('kind'),
+        mode: formData.get('mode'),
+        //categoryId: Number(formData.get('category')),
+        categoryId: 1, //todo get from form
+        startTime: '2030-01-01', //todo remove from backend dto, not necessary at creation
+        duration: formData.get('hours'),
+        location: formData.get('area'),
+      }),
+    },
+  );
+
+    if (!response.ok) {
+        throw new Error('Failed to create exchange');
+    }
+
+    redirect(localizePath(locale, "loggedHome"));
+}
+
 export default async function CreateAdPage() {
   const { createAd, listings, categories } = await getDictionary();
   const locale = await getLocale();
   const loggedHomeHref = localizePath(locale, "loggedHome");
+
+  //pass the locale to the action beforehand
+  const formAction = createExchangeAction.bind(null, locale);
 
   return (
     <>
@@ -31,7 +76,7 @@ export default async function CreateAdPage() {
           </Typography>
 
           {/* Demo only: submit returns to the temporary logged home. */}
-          <form action={loggedHomeHref}>
+          <form action={formAction}>
             <Stack spacing={3}>
               <TextField
                 required
@@ -77,12 +122,12 @@ export default async function CreateAdPage() {
                 select
                 name="mode"
                 label={createAd.modeLabel}
-                defaultValue="inPerson"
+                defaultValue="physical"
                 fullWidth
               >
-                <MenuItem value="inPerson">{listings.mode.inPerson}</MenuItem>
+                <MenuItem value="physical">{listings.mode.inPerson}</MenuItem>
                 <MenuItem value="remote">{listings.mode.remote}</MenuItem>
-                <MenuItem value="both">{listings.mode.both}</MenuItem>
+                <MenuItem value="any">{listings.mode.both}</MenuItem>
               </TextField>
               <TextField name="area" label={createAd.areaLabel} fullWidth />
               <TextField
