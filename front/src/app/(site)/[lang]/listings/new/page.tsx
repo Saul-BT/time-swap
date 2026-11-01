@@ -9,16 +9,19 @@ import { CATEGORY_IDS } from "@/data/categories";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { Locale } from "@/i18n/config";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { createAd } = await getDictionary();
   return { title: createAd.title };
 }
 
+//todo match mode enum names with backend
 export async function createExchangeAction(
+    locale: Locale,
     formData: FormData,
 ): Promise<void> {
-  console.log("DEBUG!!!");
   //get jwt token from cookies
   const cookieStore = await cookies();
   const token = cookieStore.get('accessToken')?.value;
@@ -34,13 +37,11 @@ export async function createExchangeAction(
       body: JSON.stringify({
         title: formData.get('title'),
         description: formData.get('description'),
-        //type: formData.get('kind'),
-        type: 'offer', //todo get from form
-        //mode: formData.get('mode'),
-        mode: 'any', //todo get from form
+        type: formData.get('kind'),
+        mode: formData.get('mode'),
         //categoryId: Number(formData.get('category')),
         categoryId: 1, //todo get from form
-        startTime: '2030-01-01', //todo get from form
+        startTime: '2030-01-01', //todo remove from backend dto, not necessary at creation
         duration: formData.get('hours'),
         location: formData.get('area'),
       }),
@@ -51,15 +52,16 @@ export async function createExchangeAction(
         throw new Error('Failed to create exchange');
     }
 
-    const locale = await getLocale();
-    localizePath(locale, "loggedHome");
+    redirect(localizePath(locale, "loggedHome"));
 }
 
-// FIXME: Temporary publish screen: UI only, nothing is persisted (revisit).
 export default async function CreateAdPage() {
   const { createAd, listings, categories } = await getDictionary();
   const locale = await getLocale();
   const loggedHomeHref = localizePath(locale, "loggedHome");
+
+  //pass the locale to the action beforehand
+  const formAction = createExchangeAction.bind(null, locale);
 
   return (
     <>
@@ -74,7 +76,7 @@ export default async function CreateAdPage() {
           </Typography>
 
           {/* Demo only: submit returns to the temporary logged home. */}
-          <form action={createExchangeAction}>
+          <form action={formAction}>
             <Stack spacing={3}>
               <TextField
                 required
@@ -120,12 +122,12 @@ export default async function CreateAdPage() {
                 select
                 name="mode"
                 label={createAd.modeLabel}
-                defaultValue="inPerson"
+                defaultValue="physical"
                 fullWidth
               >
-                <MenuItem value="inPerson">{listings.mode.inPerson}</MenuItem>
+                <MenuItem value="physical">{listings.mode.inPerson}</MenuItem>
                 <MenuItem value="remote">{listings.mode.remote}</MenuItem>
-                <MenuItem value="both">{listings.mode.both}</MenuItem>
+                <MenuItem value="any">{listings.mode.both}</MenuItem>
               </TextField>
               <TextField name="area" label={createAd.areaLabel} fullWidth />
               <TextField

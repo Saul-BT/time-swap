@@ -7,7 +7,7 @@ export class CreateExchangeDTO extends IntersectionType(
     ExchangeDescriptionDto,
     ExchangeTypeDto,
     ExchangeModeDto,
-    ExchangeStartTimeDto,
+    ExchangeStartTimeDto, //todo not mandatory, instead determined with another person later
     ExchangeDurationDto,
     ExchangeLocationDto,
     CategoryIdDto
