@@ -3,48 +3,79 @@ import { User } from 'src/user/entities/user.entity';
 import { ListingKind } from '../enums/listing-kind.enum';
 import { ListingMode } from '../enums/listing-mode.enum';
 import { ListingStatus } from '../enums/listing-status.enum';
+import { Category } from 'src/category/entities/category.entity';
 
 @Entity()
 export class Listing {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: 'enum', enum: ListingKind })
-    kind!: ListingKind;
-
-    @Column({ type: 'varchar', length: 120 })
+    @Column({ type:'varchar', nullable: false, length: 350 }) //todo match length with dto
     title!: string;
 
-    @Column({ type: 'text' })
+    @Column({ type:'varchar', nullable: false, length: 1000 })
     description!: string;
 
-    /**
-     * Texto libre a propósito: la lista de categorías aún se está decidiendo
-     * con la comunidad y MOD-05 prevé gestionarla, así que no se fija en un enum.
-     */
-    @Column({ type: 'varchar', length: 50 })
-    category!: string;
+    @Column({
+        type: 'enum',
+        nullable: false,
+        enum: ListingKind,
+    })
+    kind!: ListingKind;
 
-    @Column({ type: 'enum', enum: ListingMode })
+    @Column({
+        type: 'enum',
+        nullable: false,
+        default: ListingMode.BOTH,
+        enum: ListingMode,
+    })
     mode!: ListingMode;
+    
+    /**
+     * Entidad gestionada aparte según MOD-05
+     */
+    @ManyToOne(() => Category, category => category.listings)
+    category!: Category;
 
-    /** Zona aproximada, nunca una dirección exacta (ADR 0004). Obligatoria si no es remoto. */
-    @Column({ type: 'varchar', length: 120, nullable: true })
-    area!: string | null;
+    @Column({
+        type: 'timestamptz',
+        nullable: true
+    })
+    startDateTime?: Date;
 
     /** Texto libre, como en el formulario del front (por ejemplo "1 h + material"). */
-    @Column({ type: 'varchar', length: 50 })
-    hours!: string;
+    @Column({ type: 'varchar', nullable: false })
+    duration!: string;
 
-    @Column({ type: 'enum', enum: ListingStatus, default: ListingStatus.ACTIVE })
+    /** Zona aproximada, nunca una dirección exacta (ADR 0004). Obligatoria si no es remoto. */
+    @Column({ type: 'varchar', nullable: true, length: 350 })
+    location?: string;
+
+    @Column({
+        type: 'enum',
+        enum: ListingStatus,
+        default: ListingStatus.ACTIVE,
+    })
     status!: ListingStatus;
 
-    @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
-    author!: User;
+    @Column({
+        nullable: true,
+        type: 'timestamptz',
+    })
+    completedTime?: Date | null;
+
+    @Column({
+        nullable: true,
+        type: 'timestamptz',
+    })
+    cancelledTime?: Date | null;
 
     @CreateDateColumn()
     createdAt!: Date;
 
     @UpdateDateColumn()
     updatedAt!: Date;
+
+    @ManyToOne(() => User, (user) => user.listings)
+    author!: User;
 }

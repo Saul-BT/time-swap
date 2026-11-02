@@ -17,8 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: createAd.title };
 }
 
-//todo match mode enum names with backend
-export async function createExchangeAction(
+export async function createListingAction(
     locale: Locale,
     formData: FormData,
 ): Promise<void> {
@@ -27,7 +26,7 @@ export async function createExchangeAction(
   const token = cookieStore.get('accessToken')?.value;
 
   const response = await fetch(
-    `${process.env.BACKEND_URL}/exchange`,
+    `${process.env.BACKEND_URL}/listing/create`,
     {
       method: 'POST',
       headers: {
@@ -37,11 +36,10 @@ export async function createExchangeAction(
       body: JSON.stringify({
         title: formData.get('title'),
         description: formData.get('description'),
-        type: formData.get('kind'),
+        kind: formData.get('kind'),
         mode: formData.get('mode'),
         //categoryId: Number(formData.get('category')),
         categoryId: 1, //todo get from form
-        startTime: '2030-01-01', //todo remove from backend dto, not necessary at creation
         duration: formData.get('hours'),
         location: formData.get('area'),
       }),
@@ -49,7 +47,7 @@ export async function createExchangeAction(
   );
 
     if (!response.ok) {
-        throw new Error('Failed to create exchange');
+        throw new Error('Failed to create listing');
     }
 
     redirect(localizePath(locale, "loggedHome"));
@@ -61,7 +59,7 @@ export default async function CreateAdPage() {
   const loggedHomeHref = localizePath(locale, "loggedHome");
 
   //pass the locale to the action beforehand
-  const formAction = createExchangeAction.bind(null, locale);
+  const formAction = createListingAction.bind(null, locale);
 
   return (
     <>
@@ -122,12 +120,12 @@ export default async function CreateAdPage() {
                 select
                 name="mode"
                 label={createAd.modeLabel}
-                defaultValue="physical"
+                defaultValue="inPerson"
                 fullWidth
               >
-                <MenuItem value="physical">{listings.mode.inPerson}</MenuItem>
+                <MenuItem value="inPerson">{listings.mode.inPerson}</MenuItem>
                 <MenuItem value="remote">{listings.mode.remote}</MenuItem>
-                <MenuItem value="any">{listings.mode.both}</MenuItem>
+                <MenuItem value="both">{listings.mode.both}</MenuItem>
               </TextField>
               <TextField name="area" label={createAd.areaLabel} fullWidth />
               <TextField

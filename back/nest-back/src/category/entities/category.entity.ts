@@ -1,4 +1,4 @@
-import { Exchange } from 'src/exchange/entities/exchange.entity';
+import { Listing } from 'src/listing/entities/listing.entity';
 import {
     Column,
     CreateDateColumn,
@@ -20,10 +20,10 @@ export class Category {
     @Column({ nullable: false, length: 1000 })
     description!: string;
 
-    @OneToMany(() => Exchange, exchanges => exchanges.category, {
+    @OneToMany(() => Listing, listings => listings.category, {
         cascade: ['insert', 'update']
     })
-    exchanges!: Exchange[];
+    listings!: Listing[];
 
     @CreateDateColumn()
     createdAt!: Date;

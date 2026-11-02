@@ -18,7 +18,7 @@ export async function signIn(
 
   const backendUrl = process.env.BACKEND_URL;
   if (!backendUrl) {
-    console.log("Error: BACKEND_URL undefined in .env");
+    console.log("Error: BACKEND_URL undefined in .env"); //todo dont start the page if backend_url is not defined
     redirect(`${localizePath(target, "signIn")}?error=backendDown`);
   }
 
@@ -70,5 +70,5 @@ export async function signIn(
   };
 
   //redirect outside the try catch, otherwise it is caught as an exception
-  redirect(`${localizePath(target, "signIn")}`); //todo redirect to profile
+  redirect(`${localizePath(target, "loggedHome")}`);
 }

@@ -16,7 +16,7 @@ import { listingsSectionClasses } from "./ListingsSection.util";
 export default async function ListingsSection() {
   const { listings, common, placeholder } = await getDictionary();
 
-  const listingsBack = await getListingsPaged(1, 3); //todo tweak fetch size by screen size?
+  const listingsBack = await getListingsPaged(1, 6); //todo tweak fetch size by screen size?
 
   return (
     // The hero above already carries its bottom padding, so the top edge is flushed.

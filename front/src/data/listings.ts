@@ -65,7 +65,7 @@ import type { Listing } from "./types";
 
 export async function getListingsPaged(page: number, pageSize: number): Promise<Listing[]> {
   const response = await fetch(
-    `${process.env.BACKEND_URL}/exchange/search?page=${page}&pageSize=${pageSize}`,
+    `${process.env.BACKEND_URL}/listing/search?page=${page}&pageSize=${pageSize}`,
     {
       cache: 'no-store',
     },
@@ -81,7 +81,7 @@ export async function getListingsPaged(page: number, pageSize: number): Promise<
 
 export async function getListingById(id: number): Promise<Listing> {
   const response = await fetch(
-    `${process.env.BACKEND_URL}/exchange/${id}`,
+    `${process.env.BACKEND_URL}/listing/${id}`,
     {
       cache: 'no-store',
     },

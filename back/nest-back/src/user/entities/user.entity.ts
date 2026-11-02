@@ -13,8 +13,8 @@ import { UserCompany } from '../../company/entities/user-company.entity';
 import { Language } from '../enums/language.enum';
 import { TemporalOtp } from './temporal-2fa.entity';
 import { LoginLog } from 'src/auth/entities/user-login-log.entity';
-import { Exchange } from 'src/exchange/entities/exchange.entity';
 import { CategoryRequest } from 'src/category/entities/category-request.entity';
+import { Listing } from 'src/listing/entities/listing.entity';
 
 @Entity()
 export class User {
@@ -86,10 +86,10 @@ export class User {
     @OneToMany(() => LoginLog, (log) => log.user)
     logins!: LoginLog[];
 
-    @OneToMany(() => Exchange, (offer) => offer.owner, {
+    @OneToMany(() => Listing, (listing) => listing.author, {
         cascade: ['insert', 'update']
     })
-    exchanges!: Exchange[];
+    listings!: Listing[];
 
     @ManyToMany(() => CategoryRequest, requests => requests.voters, {
         cascade: ['insert', 'update', 'remove']

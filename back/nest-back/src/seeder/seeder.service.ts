@@ -14,11 +14,10 @@ import { ConfigService } from '@nestjs/config';
 import { error } from 'console';
 import { CategoryRequest } from 'src/category/entities/category-request.entity';
 import { Category } from 'src/category/entities/category.entity';
-import { Exchange } from 'src/exchange/entities/exchange.entity';
-import { ExchangeType } from 'src/exchange/enums/exchange-type.enum';
-import { ExchangeMode } from 'src/exchange/enums/exchange-mode.enum';
-import { ExchangeStatus } from 'src/exchange/enums/exchange-status.enum';
-//import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
+import { Listing } from 'src/listing/entities/listing.entity';
+import { ListingKind } from 'src/listing/enums/listing-kind.enum';
+import { ListingMode } from 'src/listing/enums/listing-mode.enum';
+import { ListingStatus } from 'src/listing/enums/listing-status.enum';
 
 @Injectable()
 export class SeederService {
@@ -41,8 +40,8 @@ export class SeederService {
         private readonly requestRepository: Repository<CategoryRequest>,
         @InjectRepository(Category)
         private readonly categoryRepository: Repository<Category>,
-        @InjectRepository(Exchange)
-        private readonly exchangeRepository: Repository<Exchange>,
+        @InjectRepository(Listing)
+        private readonly listingRepository: Repository<Listing>,
     ) {}
 
     getEnvVar(key: string): string {
@@ -54,7 +53,7 @@ export class SeederService {
         await this.seedUsers();
         await this.seedCompany();
         await this.seedCategories();
-        await this.seedExchanges();
+        await this.seedListings();
     }
 
     /**
@@ -205,7 +204,7 @@ export class SeederService {
 
     async seedCategories() {
         try {
-            this.logger.debug('Seeding exchanges');
+            this.logger.debug('Seeding categories');
             if (process.env.NODE_ENV === 'production') return;
 
             const accountName = Role.USER;
@@ -268,13 +267,13 @@ export class SeederService {
         }
     }
 
-    async seedExchanges() {
+    async seedListings() {
         try {
-            this.logger.debug('Seeding exchanges');
+            this.logger.debug('Seeding listings');
 
-            const existingExchange = await this.exchangeRepository.findOneBy({ title: 'Exchange 1' });
-            if (existingExchange) {
-                this.logger.debug('Exchanges already seeded, skipping...');
+            const existingListing = await this.listingRepository.findOneBy({ title: 'Listing 1' });
+            if (existingListing) {
+                this.logger.debug('Listings already seeded, skipping...');
                 return;
             }
 
@@ -292,40 +291,48 @@ export class SeederService {
             if (!category)
                 throw error('Seeding category ' + SeederService.SEEDED_CATEGORIES[0] + ' not found');
             
-            const exchangeData = this.exchangeRepository.create();
-            exchangeData.title = 'Exchange 1';
-            exchangeData.description = 'Example exchange 1';
-            exchangeData.type = ExchangeType.OFFER;
-            exchangeData.mode = ExchangeMode.REMOTE;
-            exchangeData.category = category;
-            exchangeData.startDateTime = new Date('2027-01-01');
-            exchangeData.duration = '1h';
-            exchangeData.location = 'Seeded location';
-            exchangeData.owner = user;
+            const listingData = this.listingRepository.create();
+            listingData.title = 'Listing 1';
+            listingData.description = 'Example seeded listing 1';
+            listingData.kind = ListingKind.OFFER;
+            listingData.mode = ListingMode.REMOTE;
+            listingData.category = category;
+            listingData.startDateTime = new Date('2027-01-01');
+            listingData.duration = '1h';
+            listingData.location = 'Seeded location';
+            listingData.author = user;
 
             //create one for each status
-            const exchangeOpen = this.exchangeRepository.create({
-                ...exchangeData,
-                status: ExchangeStatus.OPEN,
+            const listingActive = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.ACTIVE,
             });
 
-            await this.exchangeRepository.save(exchangeOpen);
+            await this.listingRepository.save(listingActive);
 
-            const exchangeCancelled = this.exchangeRepository.create({
-                ...exchangeData,
-                status: ExchangeStatus.CANCELLED,
+            const listingPaused = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.PAUSED,
                 cancelledTime: new Date(),
             });
 
-            await this.exchangeRepository.save(exchangeCancelled);
+            await this.listingRepository.save(listingPaused);
 
-            const exchangeCompleted = this.exchangeRepository.create({
-                ...exchangeData,
-                status: ExchangeStatus.COMPLETED,
+            const listingWithdrawn = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.WITHDRAWN,
                 completedTime: new Date(),
             });
 
-            await this.exchangeRepository.save(exchangeCompleted);
+            await this.listingRepository.save(listingWithdrawn);
+
+            const listingCompleted = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.COMPLETED,
+                completedTime: new Date(),
+            });
+
+            await this.listingRepository.save(listingWithdrawn);
         } catch (error) {
             this.logger.error(error);
         }

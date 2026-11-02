@@ -21,7 +21,7 @@ export default async function BrowseListingsPage() {
   const locale = await getLocale();
   const loggedHomeHref = localizePath(locale, "loggedHome");
 
-  const listings = await getListingsPaged(1, 3); //todo tweak fetch size by screen size?
+  const listings = await getListingsPaged(1, 6); //todo tweak fetch size by screen size?
 
   return (
     <>
