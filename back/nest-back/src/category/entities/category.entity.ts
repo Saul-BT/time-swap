@@ -30,7 +30,4 @@ export class Category {
 
     @UpdateDateColumn()
     updatedAt!: Date;
-
-    @DeleteDateColumn()
-    deletedAt!: Date | null;
 }

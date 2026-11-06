@@ -6,9 +6,11 @@ import {
     Param,
     ParseIntPipe,
     Post,
+    Query,
 } from '@nestjs/common';
 import {
     ApiBearerAuth,
+    ApiQuery,
     ApiResponse,
     ApiTags,
     ApiUnauthorizedResponse,
@@ -31,7 +33,7 @@ export class CategoryController {
         private readonly categoryService: CategoryService
     ) {}
 
-    @Post('category')
+    @Post()
     @Auth(Role.ADMIN) //admin directly creates new category
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async createCategory(@Body() categoryDto: CreateCategoryDTO) {
@@ -52,6 +54,28 @@ export class CategoryController {
         return this.requestService.requestCategory(user, id);
     }
 
+    @Get('request/search')
+    @ApiQuery({
+        name: 'name',
+        required: false,
+        type: String
+    })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
+    async searchRequest(@Query('name') name?: string) {
+        return this.requestService.searchRequest(name);
+    }
+
+    @Get('search')
+    @ApiQuery({
+        name: 'name',
+        required: false,
+        type: String
+    })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
+    async searchCategory(@Query('name') name?: string) {
+        return this.categoryService.searchCategory(name);
+    }
+
     @Get('request/:id')
     @Auth(Role.ADMIN, Role.USER)
     @ApiResponse({ status: 500, description: 'Internal server error' })
@@ -59,25 +83,10 @@ export class CategoryController {
         return this.requestService.getRequest(id);
     }
 
-    @Get('category/:id')
-    @Auth(Role.ADMIN, Role.USER)
+    @Get(':id')
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async getCategory(@Param('id', ParseIntPipe) id: number) {
         return this.categoryService.getCategory(id);
-    }
-
-    @Get('request/search/:name')
-    @Auth(Role.ADMIN, Role.USER)
-    @ApiResponse({ status: 500, description: 'Internal server error' })
-    async searchRequest(@Param('name') name?: string) {
-        return this.requestService.searchRequest(name);
-    }
-
-    @Get('category/search/:name')
-    @Auth(Role.ADMIN, Role.USER)
-    @ApiResponse({ status: 500, description: 'Internal server error' })
-    async searchCategory(@Param('name') name?: string) {
-        return this.categoryService.searchCategory(name);
     }
 
     @Delete('request/:id/vote')
@@ -94,7 +103,7 @@ export class CategoryController {
         return this.requestService.removeRequest(id);
     }
 
-    @Delete('category/:id')
+    @Delete(':id')
     @Auth(Role.ADMIN)
     @ApiResponse({ status: 500, description: 'Internal server error' })
     async removeCategory(@Param('id', ParseIntPipe) id: number) {

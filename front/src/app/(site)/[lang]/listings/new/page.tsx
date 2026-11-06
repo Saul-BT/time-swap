@@ -5,12 +5,12 @@ import type { Metadata } from "next";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
-import { CATEGORY_IDS } from "@/data/categories";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Locale } from "@/i18n/config";
+import { getCategories } from "@/data/categories";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { createAd } = await getDictionary();
@@ -38,25 +38,26 @@ export async function createListingAction(
         description: formData.get('description'),
         kind: formData.get('kind'),
         mode: formData.get('mode'),
-        //categoryId: Number(formData.get('category')),
-        categoryId: 1, //todo get from form
+        categoryId: formData.get('categoryId'),
         duration: formData.get('hours'),
         location: formData.get('area'),
       }),
     },
   );
 
-    if (!response.ok) {
-        throw new Error('Failed to create listing');
-    }
+  if (!response.ok) {
+      throw new Error('Failed to create listing: ' + response.statusText);
+  }
 
-    redirect(localizePath(locale, "loggedHome"));
+  redirect(localizePath(locale, "loggedHome"));
 }
 
 export default async function CreateAdPage() {
   const { createAd, listings, categories } = await getDictionary();
   const locale = await getLocale();
   const loggedHomeHref = localizePath(locale, "loggedHome");
+
+  const categoryList = await getCategories();
 
   //pass the locale to the action beforehand
   const formAction = createListingAction.bind(null, locale);
@@ -104,14 +105,14 @@ export default async function CreateAdPage() {
               <TextField
                 required
                 select
-                name="category"
+                name="categoryId"
                 label={createAd.categoryLabel}
-                defaultValue={CATEGORY_IDS[0]}
+                defaultValue={categoryList[0]?.id}
                 fullWidth
               >
-                {CATEGORY_IDS.map((id) => (
-                  <MenuItem key={id} value={id}>
-                    {categories.items[id]}
+                {categoryList.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
                   </MenuItem>
                 ))}
               </TextField>

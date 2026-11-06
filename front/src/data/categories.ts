@@ -1,19 +1,17 @@
-import type { CategoryId } from "./types";
+import { notFound } from "next/navigation";
 
-/** Display order. The list itself is still being decided with the community. */
-export const CATEGORY_IDS: readonly CategoryId[] = [
-  "tech",
-  "languages",
-  "companionship",
-  "pets",
-  "repairs",
-  "cooking",
-  "moving",
-  "sewing",
-  "tutoring",
-  "paperwork",
-  "music",
-  "gardening",
-  "writing",
-  "photography",
-];
+export async function getCategories(): Promise<Array<{id: number, name: string}>> {
+  const response = await fetch(
+      `${process.env.BACKEND_URL}/category/search`,
+      {
+        cache: 'no-store',
+      },
+    );
+  
+    if (!response.ok) {
+      console.log("Error while fetching categories: ", response.statusText);
+      notFound();
+    }
+  
+    return (await response.json());
+}

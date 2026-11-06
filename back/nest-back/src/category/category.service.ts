@@ -62,7 +62,7 @@ export class CategoryService {
 
         name = name.trim().toLowerCase();
         return this.categoryRepository.findBy({
-            name: ILike(name)
+            name: ILike(`%${name}%`)
         });
     }
 

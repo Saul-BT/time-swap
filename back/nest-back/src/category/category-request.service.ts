@@ -91,7 +91,7 @@ export class CategoryRequestService {
 
         name = name.trim().toLowerCase();
         return this.requestRepository.find({
-            where: { name: ILike(name) },
+            where: { name: ILike(`%${name}%`) },
             relations: { voters: true }
         });
     }
