@@ -10,23 +10,19 @@ import {
 } from "@/components/ui/ListingCard/ListingCard.util";
 import Ribbon from "@/components/ui/Ribbon";
 import TabularFigure from "@/components/ui/TabularFigure";
-import { getListingById, LISTINGS } from "@/data/listings";
+import { getListingById } from "@/data/listings";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
 
 type ListingDetailPageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 };
-
-export function generateStaticParams() {
-  return LISTINGS.map((listing) => ({ id: listing.id }));
-}
 
 export async function generateMetadata({
   params,
 }: ListingDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const listing = getListingById(id);
+  const listing = await getListingById(id);
   return { title: listing?.title ?? "Anuncio" };
 }
 
@@ -35,7 +31,7 @@ export default async function ListingDetailPage({
   params,
 }: ListingDetailPageProps) {
   const { id } = await params;
-  const listing = getListingById(id);
+  const listing = await getListingById(id);
 
   if (!listing) {
     notFound();
