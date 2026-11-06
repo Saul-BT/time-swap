@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import { bareList } from "@/theme/rules";
 
 const NAME = "MembersSection";

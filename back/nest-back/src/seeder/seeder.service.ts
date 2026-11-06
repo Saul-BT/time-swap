@@ -7,13 +7,17 @@ import { CompanyRole } from 'src/company/enums/company-role.enum';
 //import FileService from 'src/files/services/file-service.service';
 import { Role, User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
-import * as fs from 'fs';
-import * as path from 'path';
-import type { StreamableFile } from '@nestjs/common';
 import { ErrorManager } from 'src/common/error-handling/error.manager';
 //import { I18nService } from 'nestjs-i18n';
 import { APPConstants } from 'src/common/constants/app-constants';
-//import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
+import { ConfigService } from '@nestjs/config';
+import { error } from 'console';
+import { CategoryRequest } from 'src/category/entities/category-request.entity';
+import { Category } from 'src/category/entities/category.entity';
+import { Listing } from 'src/listing/entities/listing.entity';
+import { ListingKind } from 'src/listing/enums/listing-kind.enum';
+import { ListingMode } from 'src/listing/enums/listing-mode.enum';
+import { ListingStatus } from 'src/listing/enums/listing-status.enum';
 
 @Injectable()
 export class SeederService {
@@ -22,123 +26,34 @@ export class SeederService {
      */
     private readonly logger = new Logger(SeederService.name);
 
-    // Rutas de las imagenes
-    private readonly DEFAULT_LOGO_PATH = path.join(process.cwd(), 'assets', 'img', APPConstants.DEFAULT_LOGO_IMG);
-
-    private getEnvVar(key: string, fallback = ''): string {
-        const value = process.env[key];
-        if (value === undefined || value === null) {
-            if (!fallback) {
-                this.logger.warn(`Environment variable ${key} is not defined. Using fallback value.`);
-            }
-            return fallback;
-        }
-        return value;
-    }
+    private static readonly SEEDED_CATEGORIES = ['category 1', 'category 2', 'category 3'];
 
     constructor(
+        private readonly configService: ConfigService, //for reading .env values
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
         @InjectRepository(Company)
         private readonly companyRepository: Repository<Company>,
         @InjectRepository(UserCompany)
         private readonly userCompanyRepository: Repository<UserCompany>,
-        //private readonly i18n: I18nService<I18nTranslations>,
-        //@Inject(forwardRef(() => FileService))
-        //private readonly fileService: FileService,
+        @InjectRepository(CategoryRequest)
+        private readonly requestRepository: Repository<CategoryRequest>,
+        @InjectRepository(Category)
+        private readonly categoryRepository: Repository<Category>,
+        @InjectRepository(Listing)
+        private readonly listingRepository: Repository<Listing>,
     ) {}
 
+    getEnvVar(key: string): string {
+        let value: string|undefined = this.configService.get(key);
+        return value != undefined? value : '';
+    }
+
     async seed() {
-        await this.seedBucketsMinIO(true);
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        await this.setDefaultPolicyBuckets(true);
-
-        await this.seedDefaultImages(true);
-        await this.seedUsers(true);
-        await this.seedTicket(true);
-        await this.seedCompany(true);
-    }
-
-    /**
-     * Método para añadir los buckets a MinIO de los enums FileBuckets y DocumentsBuckets.
-     *
-     * @returns     El return se usa para romper la lógica en caso de estar en producción
-     */
-    async seedBucketsMinIO(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding Buckets in MinIO');
-                const allBuckets: string[] = Object.values(FileBuckets);
-                for (const bucket of allBuckets) {
-                    this.logger.debug(`Seeding bucket ${bucket} into MinIO`);
-                    await this.fileService.createBucket(bucket);
-                }
-            } catch (error) {
-                this.logger.error(error);
-            }
-        }
-    }
-
-    /**
-     * Método que cambia la politica de los buckets y los hace publicos
-     *
-     * @returns     El return se usa para romper la lógica en caso de estar en producción
-     */
-    async setDefaultPolicyBuckets(force: boolean = false) {
-        if (force) {
-            try {
-                await this.fileService.makeBucketPublic(FileBuckets.PUBLIC_BUCKET);
-            } catch (error) {
-                this.logger.error(error);
-            }
-        }
-    }
-
-    async seedDefaultImages(force = false) {
-        if (force) {
-            try {
-                // Verificar si las imágenes ya existen
-                const logoExist = await this.fileService.fileExists(FileBuckets.PUBLIC_BUCKET, [
-                    APPConstants.DEFAULT_LOGO_IMG,
-                ]);
-
-                if (!logoExist) {
-                    try {
-                        // Leer el archivo del sistema de archivos
-                        const imageBuffer = fs.readFileSync(this.DEFAULT_LOGO_PATH);
-
-                        // Subir a MinIO
-                        await this.fileService.uploadFile(
-                            FileBuckets.PUBLIC_BUCKET,
-                            [APPConstants.DEFAULT_LOGO_IMG],
-                            imageBuffer,
-                            'image/png',
-                            false,
-                        );
-                    } catch (error: unknown) {
-                        const message = error instanceof Error ? error.message : 'Unexpected error';
-                        this.logger.error(`Error uploading default logo image: ${message}`);
-                    }
-                }
-            } catch (error: unknown) {
-                const message = error instanceof Error ? error.message : 'Unexpected error';
-                this.logger.error(`Error seeding default images: ${message}`);
-            }
-        }
-    }
-
-    async getDefaultLogoFile(): Promise<StreamableFile> {
-        try {
-            return await this.fileService.retrieveFileByPath(
-                FileBuckets.PUBLIC_BUCKET,
-                [APPConstants.DEFAULT_LOGO_IMG],
-                false,
-            );
-        } catch (error: unknown) {
-            const message = error instanceof Error ? error.message : 'Unexpected error';
-            this.logger.error(`Error getting default logo: ${message}`);
-            throw new ErrorManager('NOT_FOUND', this.i18n.t('error.FILE.DEFAULT_LOGO_NOT_FOUND'));
-        }
+        await this.seedUsers();
+        await this.seedCompany();
+        await this.seedCategories();
+        await this.seedListings();
     }
 
     /**
@@ -148,168 +63,87 @@ export class SeederService {
      *
      * @returns     El return se usa para romper la lógica en caso de estar en producción
      */
-    async seedUsers(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding users');
-                const adminAccount = this.getEnvVar('ADMIN_ACCOUNT');
-                const adminPass = this.getEnvVar('ADMIN_PASS');
-                const seededUsersPass = this.getEnvVar('SEEDED_USERS_PASS');
+    async seedUsers() {
+        try {
+            this.logger.debug('Seeding users');
+            const adminAccount = this.getEnvVar('ADMIN_ACCOUNT');
+            const adminPass = this.getEnvVar('ADMIN_PASS');
+            const seededUsersPass = this.getEnvVar('SEEDED_USERS_PASS');
 
-                // Si estamos en producción, solo se creará el usuario administrador del sistema
-                if (process.env.NODE_ENV === 'production') {
-                    await this.createSqlUser(
-                        adminAccount,
-                        await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS),
-                        Role.SUPER_ADMIN,
-                    );
-                    return;
-                }
-
-                // Crear usuarios para cada rol (para entorno de desarrollo)
-                const roleKeys = Object.keys(Role) as Array<keyof typeof Role>;
-                for (const roleKey of roleKeys) {
-                    const password = `${roleKey.charAt(0).toUpperCase()}${roleKey.slice(1).toLowerCase()}${seededUsersPass}`;
-                    this.checkUser(roleKey, password);
-                    const hashedPassword = await hash(password, APPConstants.PASSWORDS_SALT_ROUNDS);
-                    await this.createSqlUser(roleKey, hashedPassword, Role[roleKey]);
-                }
-
-                this.checkUser(adminAccount, adminPass);
-                const hashedAdminPass = await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS);
-                await this.createSqlUser(adminAccount, hashedAdminPass, Role.SUPER_ADMIN);
-            } catch (error: unknown) {
-                this.logger.error(error);
+            // Si estamos en producción, solo se creará el usuario administrador del sistema
+            if (process.env.NODE_ENV === 'production') {
+                await this.createSqlUser(
+                    adminAccount,
+                    await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS),
+                    Role.SUPER_ADMIN,
+                );
+                return;
             }
+
+            // Crear usuarios para cada rol (para entorno de desarrollo)
+            const roleKeys = Object.keys(Role) as Array<keyof typeof Role>;
+            for (const roleKey of roleKeys) {
+                const password = seededUsersPass;
+                this.checkUser(roleKey, password);
+                const hashedPassword = await hash(password, APPConstants.PASSWORDS_SALT_ROUNDS);
+                await this.createSqlUser(roleKey, hashedPassword, Role[roleKey]);
+            }
+
+            this.checkUser(adminAccount, adminPass);
+            const hashedAdminPass = await hash(adminPass, APPConstants.PASSWORDS_SALT_ROUNDS);
+            await this.createSqlUser(adminAccount, hashedAdminPass, Role.SUPER_ADMIN);
+        } catch (error: unknown) {
+            this.logger.error(error);
         }
     }
 
-    async seedTicket(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding tickets');
-                if (process.env.NODE_ENV === 'production') return;
+    async seedCompany() {
+        try {
+            this.logger.debug('Seeding company');
+            if (process.env.NODE_ENV === 'production') return;
 
-                // Se crea un usuario para pasar por el correo para el ticket
-                const accountName = Role.USER.toString();
-                const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
-                const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
+            // Se crea un usuario para pasar por el correo para el ticket
+            const accountName = Role.USER;
+            const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
+            const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
 
-                const user = await this.userRepository.findOneBy({
-                    mail: mail,
-                });
+            const user = await this.userRepository.findOneBy({
+                mail: mail,
+            });
+            if (!user)
+                throw error('Seeding user ' + mail + ' not found');
 
-                if (!user) {
-                    this.logger.debug(`No user with email ${mail} and USER role found`);
-                    return;
-                }
+            const companyName = process.env.APP_NAME + ' testing company';
 
-                // Crea 6 tickets con diferentes categorias
-                const ticketData = [
-                    { title: 'Help with company setup', category: TicketCategory.COMPANY, notes: 0 },
-                    { title: 'Dashboard not loading correctly', category: TicketCategory.DASHBOARD, notes: 0 },
-                    { title: 'Need assistance with asset inventory', category: TicketCategory.ASSET, notes: 1 },
-                    { title: 'Alert configuration issue', category: TicketCategory.ALERTS, notes: 1 },
-                    { title: 'General question about the platform', category: TicketCategory.OTHER, notes: 2 },
-                    { title: 'Problem with user permissions', category: TicketCategory.USER, notes: 4 },
-                ];
-
-                for (const data of ticketData) {
-                    // comprobar si el ticket ya existe
-                    const existingTicket = await this.ticketRepository.findOneBy({
-                        title: data.title,
-                        user: { id: user.id },
-                    });
-
-                    if (existingTicket) {
-                        this.logger.debug(`Ticket "${data.title}" already exists for user ${user.name}`);
-                        continue;
-                    }
-
-                    // Aqui se crea el ticket
-                    const newTicket = new Ticket();
-                    newTicket.title = data.title;
-                    newTicket.category = data.category;
-                    newTicket.status = TicketStatus.OPEN;
-                    newTicket.user = user;
-                    newTicket.notes = [];
-
-                    // Crear notas y añadirlas al ticket
-                    if (data.notes > 0) {
-                        for (let i = 0; i < data.notes; i++) {
-                            const ticketNote = new TicketNote();
-                            ticketNote.text = `Note ${i + 1} for ticket: ${data.title}`;
-                            ticketNote.createdBy = user;
-                            ticketNote.ticket = newTicket;
-
-                            // Añadir la nota al array de notas del ticket
-                            newTicket.notes.push(ticketNote);
-                        }
-                    }
-
-                    // Guardar el ticket con sus notas
-                    await this.ticketRepository.save(newTicket);
-
-                    this.logger.debug(`Created ticket "${data.title}" for user ${user.name} with ${data.notes} notes`);
-                }
-
-                this.logger.debug('Finished seeding tickets');
-            } catch (error) {
-                this.logger.error(error);
+            // Comprobar si la compañía ya existe
+            const existingCompany = await this.companyRepository.findOneBy({
+                name: companyName,
+            });
+            if (existingCompany) {
+                this.logger.debug(`Company ${companyName} already exists`);
+                return;
             }
-        }
-    }
 
-    async seedCompany(force: boolean = false) {
-        if (force) {
-            try {
-                this.logger.debug('Seeding company');
-                if (process.env.NODE_ENV === 'production') return;
+            const newCompany = new Company();
+            newCompany.name = companyName;
+            await this.companyRepository.save(newCompany);
 
-                // Se crea un usuario para pasar por el correo para el ticket
-                const accountName = Role.USER;
-                const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
-                const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
+            const company = await this.companyRepository.findOneBy({
+                name: companyName,
+            });
+            if (!company)
+                throw error('Seeding company ' + companyName + ' not found');
 
-                const user = await this.userRepository.findOneBy({
-                    mail: mail,
-                });
-                const companyName = process.env.APP_NAME + ' testing company';
+            const userCompany = new UserCompany();
+            userCompany.user = user;
+            userCompany.company = company;
+            userCompany.companyRole = CompanyRole.OWNER;
 
-                // Comprobar si la compañía ya existe
-                const existingCompany = await this.companyRepository.findOneBy({
-                    name: companyName,
-                });
-                if (existingCompany) {
-                    this.logger.debug(`Company ${companyName} already exists`);
-                    return;
-                }
+            await this.userCompanyRepository.save(userCompany);
 
-                const newCompany = new Company();
-                newCompany.name = companyName;
-                await this.companyRepository.save(newCompany);
-
-                const company = await this.companyRepository.findOneBy({
-                    name: companyName,
-                });
-                const userCompany = new UserCompany();
-                userCompany.user = user;
-                userCompany.company = company;
-                userCompany.companyRole = CompanyRole.OWNER;
-
-                await this.userCompanyRepository.save(userCompany);
-
-                // @TODO no hace falta crear una seccion para cada compañia en cada bucket
-                // const companyPath = await this.fileService.getCompanyPath(
-                //     createdUserCompany.company.id,
-                //     createdUserCompany.company.name,
-                // );
-                //await this.fileInitService.createPathInAllBuckets([companyPath]);
-
-                this.logger.debug(`Company ${companyName} created and associated with user ${user.name}`);
-            } catch (error) {
-                this.logger.error(error);
-            }
+            this.logger.debug(`Company ${companyName} created and associated with user ${user.name}`);
+        } catch (error) {
+            this.logger.error(error);
         }
     }
 
@@ -344,7 +178,7 @@ export class SeederService {
      * @param pass          Contraseña sin hashear del usuario
      * @param role          Role para el usuario
      */
-    async createSqlUser(accountName: string, pass: string, role: Role) {
+    async createSqlUser(accountName: string, pass: string, role: Role): Promise<boolean> {
         const user: User = new User();
         const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
         user.mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
@@ -356,6 +190,7 @@ export class SeederService {
         // Si existe el usuario que se quiere crear, se salta
         if (existingUser) {
             this.logger.debug(`SQL: User ${accountName} already exists`);
+            return false;
         } else {
             user.name = accountName;
             user.role = role;
@@ -363,11 +198,143 @@ export class SeederService {
 
             await this.userRepository.save(user);
             this.logger.debug(`SQL: User ${accountName} created`);
+            return true;
+        }
+    }
 
-            // Crear sección de minio del usuario para todos los buckets de documentos y archivos
-            // @TODO no hace falta crear la seccion de un usuario en cada bucket
-            //const userPath = this.fileService.getUserPath(userData.id, userData.mail);
-            //await this.fileInitService.createPathInAllBuckets([userPath]);
+    async seedCategories() {
+        try {
+            this.logger.debug('Seeding categories');
+            if (process.env.NODE_ENV === 'production') return;
+
+            const accountName = Role.USER;
+            const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
+            const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
+
+            const user = await this.userRepository.findOneBy({
+                mail: mail,
+            });
+            if (!user)
+                throw error('Seeding user ' + mail + ' not found');
+
+            const seededRequests = ['request 1', 'request 2', 'request 3'];
+            for (const name of seededRequests) {
+                const requestName = name.trim().toLowerCase();
+                let existingRequest = await this.requestRepository.findOneBy({
+                    name: requestName
+                });
+                if (existingRequest) {
+                    this.logger.debug(`Request ${requestName} already exists`);
+                    continue;
+                }
+
+                const newRequest = new CategoryRequest();
+                newRequest.name = requestName;
+                newRequest.description = requestName;
+                newRequest.voters = [user];
+                await this.requestRepository.save(newRequest);
+
+                existingRequest = await this.requestRepository.findOneBy({
+                    name: requestName
+                });
+                if (!existingRequest)
+                    throw error('Seeding request ' + requestName + ' not found');
+            }
+
+            for (const name of SeederService.SEEDED_CATEGORIES) {
+                const categoryName = name.trim().toLowerCase();
+                let existingCategory = await this.categoryRepository.findOneBy({
+                    name: categoryName
+                });
+                if (existingCategory) {
+                    this.logger.debug(`Category ${categoryName} already exists`);
+                    continue;
+                }
+
+                const newCategory = new Category();
+                newCategory.name = categoryName;
+                newCategory.description = categoryName;
+                await this.categoryRepository.save(newCategory);
+
+                existingCategory = await this.categoryRepository.findOneBy({
+                    name: categoryName
+                });
+                if (!existingCategory)
+                    throw error('Seeding category ' + categoryName + ' not found');
+            }
+        } catch (error) {
+            this.logger.error(error);
+        }
+    }
+
+    async seedListings() {
+        try {
+            this.logger.debug('Seeding listings');
+
+            const existingListing = await this.listingRepository.findOneBy({ title: 'Listing 1' });
+            if (existingListing) {
+                this.logger.debug('Listings already seeded, skipping...');
+                return;
+            }
+
+            const accountName = Role.USER;
+            const companyDomain = this.getEnvVar('COMPANY_DOMAIN');
+            const mail = `${accountName.toLowerCase()}@${companyDomain.toLowerCase()}.es`;
+
+            const user = await this.userRepository.findOneBy({
+                mail: mail,
+            });
+            if (!user)
+                throw error('Seeding user ' + mail + ' not found');
+            
+            const category = await this.categoryRepository.findOneBy({ name: SeederService.SEEDED_CATEGORIES[0] });
+            if (!category)
+                throw error('Seeding category ' + SeederService.SEEDED_CATEGORIES[0] + ' not found');
+            
+            const listingData = this.listingRepository.create();
+            listingData.title = 'Listing 1';
+            listingData.description = 'Example seeded listing 1';
+            listingData.kind = ListingKind.OFFER;
+            listingData.mode = ListingMode.REMOTE;
+            listingData.category = category;
+            listingData.startDateTime = new Date('2027-01-01');
+            listingData.duration = '1h';
+            listingData.location = 'Seeded location';
+            listingData.author = user;
+
+            //create one for each status
+            const listingActive = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.ACTIVE,
+            });
+
+            await this.listingRepository.save(listingActive);
+
+            const listingPaused = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.PAUSED,
+                cancelledTime: new Date(),
+            });
+
+            await this.listingRepository.save(listingPaused);
+
+            const listingWithdrawn = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.WITHDRAWN,
+                completedTime: new Date(),
+            });
+
+            await this.listingRepository.save(listingWithdrawn);
+
+            const listingCompleted = this.listingRepository.create({
+                ...listingData,
+                status: ListingStatus.COMPLETED,
+                completedTime: new Date(),
+            });
+
+            await this.listingRepository.save(listingWithdrawn);
+        } catch (error) {
+            this.logger.error(error);
         }
     }
 }

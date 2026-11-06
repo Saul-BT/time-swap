@@ -1,9 +1,6 @@
 "use client";
 
-import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { Avatar, Paper, Stack, styled } from "@mui/material";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { space } from "@/theme/tokens";
 

@@ -1,8 +1,6 @@
 "use client";
 
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { Container, Stack, styled } from "@mui/material";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { bareList, rule } from "@/theme/rules";
 import { space } from "@/theme/tokens";

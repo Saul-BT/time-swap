@@ -1,7 +1,6 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
+import { Box, styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 const NAME = "ScaleList";

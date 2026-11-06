@@ -1,4 +1,3 @@
-import { LISTINGS } from "./listings";
 import type { Conversation } from "./types";
 
 const SEEDED: Readonly<
@@ -34,14 +33,15 @@ const SEEDED: Readonly<
   },
 };
 
-export const CONVERSATIONS: readonly Conversation[] = LISTINGS.map(
+/*export const CONVERSATIONS: readonly Conversation[] = LISTINGS.map(
   (listing) => ({
     id: listing.id,
     peerName: SEEDED[listing.id]?.peerName ?? "[Nombre]",
     messages: SEEDED[listing.id]?.messages ?? [],
   }),
-);
+);*/
 
-export function getConversationById(id: string): Conversation | undefined {
-  return CONVERSATIONS.find((conversation) => conversation.id === id);
+export async function getConversationById(id: number): Promise<Conversation | undefined> {
+  return undefined; //todo fetch from backend
+  //return CONVERSATIONS.find((conversation) => conversation.id === id);
 }

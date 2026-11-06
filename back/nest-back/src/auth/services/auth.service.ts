@@ -19,7 +19,7 @@ import { RejectUserDto } from '../dto/reject.dto';
 import { VerifyDto } from '../dto/verify.dto';
 import { Verification } from '../entities/verification.entity';
 import { RejectInterface } from '../interfaces/reject.interface';
-import { PaginatedResponse } from 'src/common/dtos/paginated.dto';
+import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 import { InjectQueue } from '@nestjs/bull';
 import type { Queue } from 'bull';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
@@ -247,6 +247,13 @@ export class AuthService {
             name: dto.name,
             password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
             language: lang,
+        });
+
+        // @TODO: borrar esta parte. se usa solo para debug para crear usuarios directamente sin comprobacion
+        const userEntity = await this.userService.createUser({
+            mail: dto.mail,
+            name: dto.name,
+            password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
         });
 
         const registerOutput: NewRegisterOutput = {

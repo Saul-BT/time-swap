@@ -1,3 +1,4 @@
+import type { LinkTarget } from "@/i18n/routes";
 import type { Dictionary } from "@/i18n/types";
 
 /**
@@ -10,7 +11,7 @@ export type ListingKind = keyof Dictionary["listings"]["kind"];
 export type ListingMode = keyof Dictionary["listings"]["mode"];
 
 export type Listing = {
-  id: string;
+  id: number;
   kind: ListingKind;
   mode: ListingMode;
   /** Author-written text. Not translated. */
@@ -50,7 +51,8 @@ export type FooterLinkId = keyof Dictionary["footer"]["links"];
 
 export type NavigationLink = {
   id: Exclude<NavigationLinkId, "label" | "signUp">;
-  href: string;
+  /** Resolved per locale with `localizePath`. */
+  target: LinkTarget;
 };
 
 export type FooterLink = {
@@ -66,7 +68,25 @@ export type ChatMessage = {
 };
 
 export type Conversation = {
-  id: string;
+  id: number;
   peerName: string;
   messages: readonly ChatMessage[];
 };
+
+export type SignInErrorId = keyof Dictionary["signIn"]["errors"];
+
+export type BackendError = {
+  error: number;
+  message: string;
+};
+
+export function isBackendError(
+  value: unknown,
+): value is BackendError {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "error" in value &&
+    "message" in value
+  );
+}

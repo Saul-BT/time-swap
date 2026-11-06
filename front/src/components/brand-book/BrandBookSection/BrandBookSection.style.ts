@@ -1,8 +1,6 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import { Box, styled, Typography } from "@mui/material";
 import { rule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 
