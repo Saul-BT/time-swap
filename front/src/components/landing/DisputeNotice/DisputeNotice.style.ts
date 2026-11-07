@@ -1,8 +1,6 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import { Box, Paper, styled } from "@mui/material";
 import Eyebrow from "@/components/ui/Eyebrow";
 import { brakeRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";

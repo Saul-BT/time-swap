@@ -1,4 +1,4 @@
-import type { TypographyProps } from "@mui/material/Typography";
+import type { TypographyProps } from "@mui/material";
 import { joinClasses } from "@/lib/mui/componentClasses";
 import { TabularFigureRoot } from "./TabularFigure.style";
 import { tabularFigureClasses } from "./TabularFigure.util";

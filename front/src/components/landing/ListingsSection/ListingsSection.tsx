@@ -1,11 +1,11 @@
-import Button from "@mui/material/Button";
-import { LISTINGS } from "@/data/listings";
+import { Button } from "@mui/material";
+import ListingCard from "@/components/ui/ListingCard";
+import { getListingsPaged } from "@/data/listings";
 import { SECTION_ID } from "@/data/navigation";
 import { getDictionary } from "@/i18n/dictionary";
 import { interpolate } from "@/lib/i18n/interpolate";
 import Section from "../../layout/Section";
 import SectionHeader from "../../ui/SectionHeader";
-import ListingCard from "../ListingCard";
 import {
   ListingsSectionGrid,
   ListingsSectionItem,
@@ -15,6 +15,8 @@ import { listingsSectionClasses } from "./ListingsSection.util";
 
 export default async function ListingsSection() {
   const { listings, common, placeholder } = await getDictionary();
+
+  const listingsBack = await getListingsPaged(1, 6); //todo tweak fetch size by screen size?
 
   return (
     // The hero above already carries its bottom padding, so the top edge is flushed.
@@ -26,7 +28,7 @@ export default async function ListingsSection() {
       />
 
       <ListingsSectionGrid className={listingsSectionClasses.grid}>
-        {LISTINGS.map((listing) => (
+        {listingsBack.map((listing) => (
           <ListingsSectionItem
             className={listingsSectionClasses.item}
             key={listing.id}

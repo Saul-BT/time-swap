@@ -37,7 +37,7 @@ import { MailDto } from './dto/mail.dto';
 import { UpdatePasswordDto } from './dto/update-pass.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
-import { PaginatedResponse } from 'src/common/dtos/paginated.dto';
+import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 import { OrderUsers } from './enums/order-user.enum';
 //import { ReturnMessage } from 'src/common/decorators/wrap-endpoint.decorator';
 import { EnableLogging } from 'src/common/decorators/loggin.decorator';

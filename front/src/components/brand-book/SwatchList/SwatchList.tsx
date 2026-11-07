@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { contrastRatio, formatContrastRatio } from "@/lib/color/contrast";
 import { color } from "@/theme/tokens";
 import { SwatchListRoot, SwatchSample } from "./SwatchList.style";

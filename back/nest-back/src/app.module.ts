@@ -11,8 +11,10 @@ import { CompanyModule } from './company/company.module';
 //import { ExamplesModule } from './examples/examples.module';
 import MailModule from './mail/mail.module';
 import { NodemailerModule } from './mail/node-transporter.module';
+import { ListingModule } from './listing/listing.module';
 //import SeederModule from './seeder/seeder.module';
 import { UserModule } from './user/user.module';
+import SeederModule from './seeder/seeder.module';
 import { APP_INTERCEPTOR, Reflector } from '@nestjs/core';
 //import { WrapperInterceptor } from './common/interceptors/standarized-output.interceptor';
 //import { JwtLanguageResolver } from './common/services/jwt-language-solver';
@@ -48,14 +50,16 @@ dotenv.config({ path: envFile }); // Configurar la variable global para el .env
                     port: configService.getOrThrow<number>('POSTGRESQL_DOCKER_PORT'),
                     username: configService.getOrThrow<string>('POSTGRESQL_DOCKER_USER'),
                     password: configService.getOrThrow<string>('POSTGRESQL_DOCKER_ROOT_PASSWORD'),
-                    database: `db_back_${process.env.APP_NAME}`,
+                    database: configService.getOrThrow<string>('POSTGRESQL_DATABASE_NAME'),
                     autoLoadEntities: true,
                     synchronize: configService.getOrThrow<string>('BBDD_SYNCHRONIZE') === 'development', // Valor comparado contra el .env
-                    ssl: configService.getOrThrow<boolean>('BBDD_SSL'), // Valor comparado contra el .env
+                    //ssl: configService.getOrThrow<boolean>('BBDD_SSL'), // Valor comparado contra el .env
+                    ssl: false, //todo support ssl with certificate in deployment
                     extra: {
-                        ssl: configService.getOrThrow<boolean>('BBDD_SSL') // Valor comparado contra el .env
+                        /*ssl: configService.getOrThrow<boolean>('BBDD_SSL') // Valor comparado contra el .env
                             ? { rejectUnauthorized: false }
-                            : null,
+                            : null,*/
+                        ssl: false //todo support ssl with certificate in deployment
                     },
                     //logging: ['query', 'error', 'schema'], // Logs detallados
                 };
@@ -84,9 +88,10 @@ dotenv.config({ path: envFile }); // Configurar la variable global para el .env
         AuthModule,
         UserModule,
         //DevicesModule,
-        //SeederModule,
+        SeederModule,
         //ExamplesModule,
         CompanyModule,
+        ListingModule,
         NodemailerModule,
         //I18nValidatorModule,
         MailModule,

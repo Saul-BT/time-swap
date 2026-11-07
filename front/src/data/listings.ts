@@ -1,7 +1,8 @@
+import { notFound } from "next/navigation";
 import type { Listing } from "./types";
 
 /** Sample content, standing in for author-written text. Not translated. */
-export const LISTINGS: readonly Listing[] = [
+/*export const LISTINGS: readonly Listing[] = [
   {
     id: "companionship",
     kind: "offer",
@@ -60,4 +61,36 @@ export const LISTINGS: readonly Listing[] = [
     byline: "[Nombre] · [Barrio]",
     hours: "1 h",
   },
-];
+];*/
+
+export async function getListingsPaged(page: number, pageSize: number): Promise<Listing[]> {
+  const response = await fetch(
+    `${process.env.BACKEND_URL}/listing/search?page=${page}&pageSize=${pageSize}`,
+    {
+      cache: 'no-store',
+    },
+  );
+
+  if (!response.ok) {
+    console.log("Error while fetching listings: ", response.statusText);
+    notFound();
+  }
+
+  return (await response.json()).list;
+}
+
+export async function getListingById(id: number): Promise<Listing> {
+  const response = await fetch(
+    `${process.env.BACKEND_URL}/listing/${id}`,
+    {
+      cache: 'no-store',
+    },
+  );
+
+  if (!response.ok) {
+    console.log("Error while fetching listings: ", response.statusText);
+    notFound();
+  }
+
+  return response.json();
+}

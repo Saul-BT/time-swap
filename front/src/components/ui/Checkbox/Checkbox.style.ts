@@ -1,11 +1,12 @@
 "use client";
 
-import { buttonBaseClasses } from "@mui/material/ButtonBase";
-import MuiCheckbox from "@mui/material/Checkbox";
-import FormControlLabel, {
+import {
+  buttonBaseClasses,
+  FormControlLabel,
   formControlLabelClasses,
-} from "@mui/material/FormControlLabel";
-import { styled } from "@mui/material/styles";
+  Checkbox as MuiCheckbox,
+  styled,
+} from "@mui/material";
 import { rule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 
@@ -47,7 +48,7 @@ export const CheckboxLabel = styled(FormControlLabel, {
   name: NAME,
   slot: "Label",
 })(({ theme }) => ({
-  marginLeft: -theme.spacing(space.xs),
+  marginLeft: theme.spacing(-space.xs),
   marginRight: 0,
   minHeight: 44,
   gap: theme.spacing(space.xs / 2),

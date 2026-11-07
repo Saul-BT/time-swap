@@ -1,8 +1,6 @@
 "use client";
 
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import { Paper, styled, Typography } from "@mui/material";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { space } from "@/theme/tokens";
 import type { FormNoticeTone } from "./FormNotice.util";

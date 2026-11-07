@@ -1,6 +1,4 @@
-import Link from "@mui/material/Link";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Typography from "@mui/material/Typography";
+import { Link, OutlinedInput, Typography } from "@mui/material";
 import Checkbox from "@/components/ui/Checkbox";
 import FormField from "@/components/ui/FormField";
 import FormNotice from "@/components/ui/FormNotice";

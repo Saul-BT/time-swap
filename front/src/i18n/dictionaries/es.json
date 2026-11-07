@@ -21,6 +21,39 @@
     "signIn": "Entrar",
     "signUp": "Crear cuenta"
   },
+  "loggedHome": {
+    "title": "Tu inicio",
+    "lead": "Interfaz temporal: aquí verías lo que pide tu atención. No hay sesión real todavía.",
+    "balanceLabel": "Saldo",
+    "balanceValue": "2 h",
+    "attentionTitle": "Pendiente",
+    "discover": "Descubrir",
+    "publish": "Publicar anuncio"
+  },
+  "browseListings": {
+    "title": "Anuncios",
+    "lead": "Interfaz temporal: un listado de ejemplo. La búsqueda real todavía no está.",
+    "back": "Volver al inicio"
+  },
+  "listingDetail": {
+    "lead": "Interfaz temporal: detalle de ejemplo. El contacto no hace nada todavía.",
+    "hoursLabel": "Duración orientativa",
+    "contact": "Solicitar contacto (demo)",
+    "back": "Volver"
+  },
+  "createAd": {
+    "title": "Publicar un anuncio",
+    "lead": "Interfaz temporal: los campos están, pero no se guarda nada.",
+    "kindLabel": "Tipo",
+    "titleLabel": "Título",
+    "descriptionLabel": "Descripción",
+    "categoryLabel": "Categoría",
+    "modeLabel": "Modalidad",
+    "areaLabel": "Zona aproximada",
+    "hoursLabel": "Duración orientativa",
+    "submit": "Publicar (demo)",
+    "cancel": "Volver"
+  },
   "hero": {
     "eyebrow": "{city} · el tiempo no se guarda, circula",
     "title": "¿Con qué necesitas ayuda esta semana?",
@@ -98,6 +131,12 @@
     "title": "Personas que ya participan",
     "skillsLabel": "Habilidades de {name}"
   },
+  "profile": {
+    "skillsLabel": "Habilidades de {name}",
+    "backLink": "Volver al inicio",
+    "notFoundTitle": "Perfil no encontrado",
+    "notFoundBody": "Este perfil no existe o ya no está disponible."
+  },
   "dispute": {
     "label": "El freno",
     "title": "Si algo se tuerce, el relevo se para.",
@@ -123,8 +162,8 @@
       "emailPlaceholder": "nombre@correo.com",
       "passwordLabel": "Contraseña",
       "forgotPassword": "No la recuerdo",
-      "showPassword": "Ver",
-      "hidePassword": "Ocultar",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
       "remember": "No cerrar sesión en este dispositivo",
       "submit": "Entrar"
     },
@@ -155,6 +194,10 @@
       "sessionExpired": {
         "title": "La sesión ha caducado",
         "body": "Vuelve a entrar para seguir donde lo dejaste. Tus horas y tus acuerdos siguen ahí."
+      },
+      "backendDown": {
+        "title": "No se pudo contactar con el servidor",
+        "body": "El servidor no está disponible. Por favor contacta con un administrator o inténtalo después."
       }
     },
     "panel": {

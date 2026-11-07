@@ -1,4 +1,4 @@
-import { PaginatedResponse } from '../dtos/paginated.dto';
+import { PaginatedResponse } from '../dtos/paginated-output.dto';
 
 export interface ICrudService<T, CreateDto, UpdateDto> {
     create(createDto: CreateDto, ...args: any[]): Promise<any>;

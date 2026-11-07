@@ -1,8 +1,6 @@
 "use client";
 
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import { Button, styled, Typography } from "@mui/material";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { space } from "@/theme/tokens";
 

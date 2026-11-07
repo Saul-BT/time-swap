@@ -7,6 +7,7 @@ export const SIGN_IN_ERROR_TONE: Record<SignInErrorId, "error" | "info"> = {
   suspended: "error",
   unverified: "info",
   sessionExpired: "info",
+  backendDown: "error",
 };
 
 export function isSignInErrorId(value: unknown): value is SignInErrorId {

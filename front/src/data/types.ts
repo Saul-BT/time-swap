@@ -11,7 +11,7 @@ export type ListingKind = keyof Dictionary["listings"]["kind"];
 export type ListingMode = keyof Dictionary["listings"]["mode"];
 
 export type Listing = {
-  id: string;
+  id: number;
   kind: ListingKind;
   mode: ListingMode;
   /** Author-written text. Not translated. */
@@ -74,3 +74,19 @@ export type RegisterInput = {
 export type RegisterResult =
   | { ok: true }
   | { ok: false; error: RegisterErrorId };
+
+export type BackendError = {
+  error: number;
+  message: string;
+};
+
+export function isBackendError(
+  value: unknown,
+): value is BackendError {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "error" in value &&
+    "message" in value
+  );
+}

@@ -1,5 +1,4 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Box, Typography } from "@mui/material";
 import { LEDGER_FACT_IDS } from "@/data/ledger-facts";
 import { SECTION_ID } from "@/data/navigation";
 import { getDictionary } from "@/i18n/dictionary";

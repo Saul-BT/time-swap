@@ -1,6 +1,6 @@
+import FilterList from "@/components/ui/FilterList";
 import { getDictionary } from "@/i18n/dictionary";
 import { interpolate } from "@/lib/i18n/interpolate";
-import FilterList from "../FilterList";
 import SearchForm from "../SearchForm";
 import {
   HeroSectionEyebrow,
