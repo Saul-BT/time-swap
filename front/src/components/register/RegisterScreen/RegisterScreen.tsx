@@ -59,7 +59,7 @@ export default async function RegisterScreen({ action }: RegisterScreenProps) {
         <RegisterWizard
           copy={register}
           tagOptions={tagOptions}
-          homeHref={localizePath(locale, "home")}
+          homeHref={localizePath(locale, "loggedHome")}
           action={action}
         />
       </RegisterScreenMain>

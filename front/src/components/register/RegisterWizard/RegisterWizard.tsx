@@ -103,8 +103,6 @@ export default function RegisterWizard({
     });
   }
 
-  // TODO(register): lands on the home page until there is a signed-in area
-  // to send the new account to.
   function finish() {
     router.push(homeHref);
   }

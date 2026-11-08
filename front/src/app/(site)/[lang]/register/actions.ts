@@ -2,6 +2,7 @@
 
 import { isBackendError, type RegisterInput, type RegisterResult } from "@/data/types";
 import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
+import { cookies } from "next/headers";
 
 /**
  * Returns a result instead of redirecting: the wizard keeps the typed values
@@ -74,8 +75,19 @@ export async function register(
       }
     }
 
-    console.log('Succesful output!!!:', data);
-    return { ok: true }; //todo save cookies and redirect to loggedHome from parent function
+    //save session cookies
+    const cookieStore = await cookies();
+
+    cookieStore.set(
+      'accessToken',
+      data.backend_tokens.access_token,
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+      },
+    );
+    return { ok: true }; //todo redirect to loggedHome from parent function
   }
   catch (err) {
     console.log("Register error: " + err);
