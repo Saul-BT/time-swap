@@ -86,6 +86,7 @@ export default function RegisterWizard({
       const result = await action({
         fullName: values.fullName,
         email: values.email,
+        nickname: values.nickname,
         password,
         confirmPassword,
       });

@@ -1,9 +1,12 @@
 import { Listing } from 'src/listing/entities/listing.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinTable,
+    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -24,6 +27,14 @@ export class Category {
         cascade: ['insert', 'update']
     })
     listings!: Listing[];
+
+    @ManyToMany(() => User, user => (user.skills))
+    @JoinTable({ name: 'user_skills' })
+    teachers!: User[];
+
+    @ManyToMany(() => User, user => (user.interests))
+    @JoinTable({ name: 'user_interests' })
+    students!: User[];
 
     @CreateDateColumn()
     createdAt!: Date;

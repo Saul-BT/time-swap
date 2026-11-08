@@ -246,6 +246,7 @@ export class AuthService {
             targetEmail: dto.mail,
             verificationToken,
             name: dto.name,
+            nickname: dto.nickname,
             password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
             language: lang,
         });
@@ -254,6 +255,7 @@ export class AuthService {
         const userEntity = await this.userService.createUser({
             mail: dto.mail,
             name: dto.name,
+            nickname: dto.nickname,
             password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
         });
 
@@ -331,6 +333,7 @@ export class AuthService {
         targetUser = await this.userService.createUser({
             mail: dto.mail,
             name: register.name,
+            nickname: register.nickname,
             password: register.password,
             role: Role.USER,
             language: register.language,

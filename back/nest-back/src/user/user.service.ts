@@ -98,6 +98,7 @@ export class UserService {
         const newUser = new User();
         newUser.mail = dto.mail;
         newUser.name = dto.name;
+        newUser.nickname = dto.nickname;
         newUser.password = dto.password;
         newUser.role = dto.role;
         newUser.language = dto.language ?? Language.EN;
@@ -413,7 +414,7 @@ export class UserService {
      */
     async updateUser(original: UserActiveInterface, updateUserDto: UpdateUserDto): Promise<LoginInterface> {
         try {
-            const { mail, name, role, twoFactorCode, language } = updateUserDto;
+            const { mail, name, nickname, role, twoFactorCode, language } = updateUserDto;
             const user = await this.userRepository.findOne({
                 where: { mail: original.mail },
             });
@@ -440,6 +441,7 @@ export class UserService {
              */
             if (typeof mail === 'string') user.mail = mail;
             if (typeof name === 'string') user.name = name;
+            if (typeof nickname === 'string') user.nickname = nickname;
             if (role !== undefined) user.role = role;
             if (twoFactorCode !== undefined) user.twoFactorCode = twoFactorCode;
             if (language !== undefined) user.language = language;

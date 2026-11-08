@@ -15,6 +15,7 @@ import { TemporalOtp } from './temporal-2fa.entity';
 import { LoginLog } from 'src/auth/entities/user-login-log.entity';
 import { CategoryRequest } from 'src/category/entities/category-request.entity';
 import { Listing } from 'src/listing/entities/listing.entity';
+import { Category } from 'src/category/entities/category.entity';
 
 @Entity()
 export class User {
@@ -23,6 +24,9 @@ export class User {
 
     @Column({ unique: true })
     mail!: string;
+
+    @Column({ type: 'text', nullable: false })
+    nickname!: string;
 
     @Column({ type: 'text', nullable: true })
     name!: string | null;
@@ -85,6 +89,12 @@ export class User {
 
     @OneToMany(() => LoginLog, (log) => log.user)
     logins!: LoginLog[];
+
+    @ManyToMany(() => Category, (category) => category.teachers)
+    skills!: Category[];
+
+    @ManyToMany(() => Category, (category) => category.students)
+    interests!: Category[];
 
     @OneToMany(() => Listing, (listing) => listing.author, {
         cascade: ['insert', 'update']

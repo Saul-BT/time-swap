@@ -41,6 +41,20 @@ export class CreateUserDto {
     })
     name!: string;
 
+    //todo repeated, use components.dto.ts structure here too
+    @ApiProperty({ example: 'Nickname de Usuario', required: true })
+    @IsString()
+    @IsNotEmpty({
+        message: 'IS EMPTY'
+    })
+    @MinLength(APPConstants.USER_NAME_MIN_LENGTH, {
+        message: 'NAME MIN LENGTH'
+    })
+    @MaxLength(APPConstants.USER_NAME_MAX_LENGTH, {
+        message: 'NAME MAX LENGTH'
+    })
+    nickname!: string;
+
     /**
      * La contraseña debe cumplir las siguientes reglas:
      *  - Al menos una letra mayúscula

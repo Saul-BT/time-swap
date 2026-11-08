@@ -33,6 +33,7 @@ export async function register(
         body: JSON.stringify({
           mail: _input.email,
           name: _input.fullName,
+          nickname: _input.nickname,
           password: _input.password,
           repeatPassword: _input.confirmPassword
         }),

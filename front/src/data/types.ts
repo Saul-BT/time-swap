@@ -66,6 +66,7 @@ export type RegisterErrorId = keyof Dictionary["register"]["errors"];
 
 export type RegisterInput = {
   fullName: string;
+  nickname: string;
   email: string;
   password: string;
   confirmPassword: string;

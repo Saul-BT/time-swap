@@ -6,6 +6,7 @@ import { APPConstants } from 'src/common/constants/app-constants';
 //import { i18nValidationMessage } from 'nestjs-i18n';
 //import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 
+//todo use partial types and components here instead of redefinition
 export class UpdateUserDto {
     @ApiProperty({ example: 'correo1@hosting.com', required: false })
     @IsEmail(
@@ -40,6 +41,19 @@ export class UpdateUserDto {
         message: 'NAME FORMAT',
     })
     name?: string;
+
+    @ApiProperty({ example: 'Nickname de Usuario', required: false })
+    @IsOptional()
+    @IsString()
+    @MinLength(APPConstants.USER_NAME_MIN_LENGTH, {
+        message: 'NAME MIN LENGTH'
+    })
+    @MaxLength(APPConstants.USER_NAME_MAX_LENGTH, {
+        message: 'NAME MAX LENGTH'
+    })
+    nickname?: string;
+
+    //todo add update for interests/skills
 
     @ApiProperty({ example: Role.ADMIN, required: false })
     @IsEnum(Role)

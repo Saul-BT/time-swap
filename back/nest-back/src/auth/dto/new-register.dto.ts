@@ -47,6 +47,19 @@ export class NewRegisterDto {
     })
     readonly name!: string;
 
+    @ApiProperty({ example: 'Nickname de Usuario', required: true })
+    @IsString()
+    @IsNotEmpty({
+        message: 'IS EMPTY',
+    })
+    @MinLength(APPConstants.USER_NAME_MIN_LENGTH, {
+        message: 'NAME_MIN_LENGTH'
+    })
+    @MaxLength(APPConstants.USER_NAME_MAX_LENGTH, {
+        message: 'NAME MAX LENGTH'
+    })
+    readonly nickname!: string;
+
     /**
      * La contraseña debe cumplir las siguientes reglas:
      *  - No debe contener espacios
