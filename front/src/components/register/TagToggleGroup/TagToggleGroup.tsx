@@ -6,13 +6,13 @@ import {
 } from "./TagToggleGroup.style";
 import { tagToggleGroupClasses } from "./TagToggleGroup.util";
 
-export type TagToggleGroupOption = { id: string; label: string };
+export type TagToggleGroupOption = { id: number; label: string };
 
 export type TagToggleGroupProps = {
   legend: string;
   options: readonly TagToggleGroupOption[];
-  selected: ReadonlySet<string>;
-  onToggle: (id: string) => void;
+  selected: ReadonlySet<number>;
+  onToggle: (id: number) => void;
 };
 
 /** Multi-select chip picker: every chip toggles on its own, no limit on how many. */

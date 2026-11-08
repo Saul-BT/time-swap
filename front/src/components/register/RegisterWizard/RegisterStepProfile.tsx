@@ -16,10 +16,10 @@ import {
 export type RegisterStepProfileProps = {
   copy: Dictionary["register"]["profile"];
   tagOptions: readonly CategoryOption[];
-  skills: ReadonlySet<string>;
-  interests: ReadonlySet<string>;
-  onToggleSkill: (id: string) => void;
-  onToggleInterest: (id: string) => void;
+  skills: ReadonlySet<number>;
+  interests: ReadonlySet<number>;
+  onToggleSkill: (id: number) => void;
+  onToggleInterest: (id: number) => void;
   onBack: () => void;
   onSkip: () => void;
   onSave: () => void;

@@ -17,7 +17,7 @@ export const REGISTER_FIELD_ID = {
   confirmPassword: "register-confirm-password",
 } as const;
 
-export type CategoryOption = { id: string; label: string };
+export type CategoryOption = { id: number; label: string };
 
 export type RegisterAccountValues = {
   fullName: string;
@@ -28,8 +28,8 @@ export type RegisterAccountValues = {
 
 export type RegisterValues = RegisterAccountValues & {
   password: string;
-  skills: ReadonlySet<string>;
-  interests: ReadonlySet<string>;
+  skills: ReadonlySet<number>;
+  interests: ReadonlySet<number>;
 };
 
 export const INITIAL_REGISTER_VALUES: RegisterValues = {

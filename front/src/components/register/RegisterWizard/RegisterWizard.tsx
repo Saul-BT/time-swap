@@ -109,7 +109,7 @@ export default function RegisterWizard({
     router.push(homeHref);
   }
 
-  function toggleTag(group: "skills" | "interests", id: string) {
+  function toggleTag(group: "skills" | "interests", id: number) {
     setValues((current) => {
       const next = new Set(current[group]);
       if (next.has(id)) {
