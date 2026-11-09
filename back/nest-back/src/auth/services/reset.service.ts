@@ -118,7 +118,7 @@ export class ResetService {
         // Modificar la contraseña del usuarioO
         const dto: UpdatePasswordDto = {
             oldPassword: user.password!,
-            newPassword: newPassword,
+            password: newPassword,
         };
 
         return await this.userService.updatePassword(user.mail, dto);

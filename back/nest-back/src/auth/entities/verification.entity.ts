@@ -28,6 +28,9 @@ export class Verification {
     nickname!: string;
 
     @Column({ nullable: true })
+    postalCode?: string;
+
+    @Column({ nullable: true })
     password!: string;
 
     @Column({

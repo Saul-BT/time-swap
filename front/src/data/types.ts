@@ -70,6 +70,12 @@ export type RegisterInput = {
   email: string;
   password: string;
   confirmPassword: string;
+  postalCode: string;
+};
+
+export type PreferencesInput = {
+  interests: Array<Number>;
+  skills: Array<Number>;
 };
 
 export type RegisterResult =

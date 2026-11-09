@@ -247,6 +247,7 @@ export class AuthService {
             verificationToken,
             name: dto.name,
             nickname: dto.nickname,
+            postalCode: dto.postalCode,
             password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
             language: lang,
         });
@@ -256,6 +257,7 @@ export class AuthService {
             mail: dto.mail,
             name: dto.name,
             nickname: dto.nickname,
+            postalCode: dto.postalCode,
             password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
         });
 

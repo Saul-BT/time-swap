@@ -193,6 +193,7 @@ export class SeederService {
             return false;
         } else {
             user.name = accountName;
+            user.nickname = accountName;
             user.role = role;
             user.password = pass;
 

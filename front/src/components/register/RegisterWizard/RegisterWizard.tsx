@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
 import { useState, useTransition } from "react";
 import type {
+  PreferencesInput,
   RegisterErrorId,
   RegisterInput,
   RegisterResult,
@@ -26,7 +27,8 @@ export type RegisterWizardProps = {
   copy: Dictionary["register"];
   tagOptions: readonly CategoryOption[];
   homeHref: string;
-  action: (input: RegisterInput) => Promise<RegisterResult>;
+  registerAction: (input: RegisterInput) => Promise<RegisterResult>;
+  preferencesAction: (input: PreferencesInput) => Promise<RegisterResult>;
 };
 
 type Step = 1 | 2 | 3;
@@ -41,7 +43,8 @@ export default function RegisterWizard({
   copy,
   tagOptions,
   homeHref,
-  action,
+  registerAction,
+  preferencesAction
 }: RegisterWizardProps) {
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
@@ -83,10 +86,11 @@ export default function RegisterWizard({
     setValues((current) => ({ ...current, password }));
 
     startTransition(async () => {
-      const result = await action({
+      const result = await registerAction({
         fullName: values.fullName,
         email: values.email,
         nickname: values.nickname,
+        postalCode: values.postalCode,
         password,
         confirmPassword,
       });
@@ -102,6 +106,20 @@ export default function RegisterWizard({
         setStep(1);
       }
     });
+  }
+
+  async function handleOptionalSubmit() {
+    const result = await preferencesAction({
+      interests: [...values.interests],
+      skills: [...values.skills]
+    });
+
+
+    if (result.ok) {
+      router.push(homeHref);
+    }
+
+    //todo error handling?
   }
 
   function finish() {
@@ -167,7 +185,7 @@ export default function RegisterWizard({
           onToggleInterest={(id) => toggleTag("interests", id)}
           onBack={() => setStep(2)}
           onSkip={finish}
-          onSave={finish}
+          onSave={handleOptionalSubmit}
         />
       ) : null}
     </RegisterWizardRoot>

@@ -1,9 +1,7 @@
-import { forwardRef, Inject, Injectable, Logger, } from '@nestjs/common';
+import { Injectable, Logger, } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, FindOptionsOrder, FindOptionsOrderValue, FindOptionsWhere, ILike, Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 import { ErrorManager } from '../common/error-handling/error.manager';
-import { UserActiveInterface } from '../common/interfaces/user-active.interface';
-import { UserService } from '../user/user.service';
 import { Category } from './entities/category.entity';
 import { CategoryRequest } from './entities/category-request.entity';
 import { CreateCategoryDTO } from './dto/create-category.dto';
@@ -44,6 +42,15 @@ export class CategoryService {
         }
 
         return category;
+    }
+
+    async getCategories(ids: number[]) {
+        const categories = await this.categoryRepository.findBy({ id: In(ids) });
+        if (!categories || categories.length === 0) {
+            throw new ErrorManager('NOT_FOUND', 'Category not found');
+        }
+
+        return categories;
     }
 
     async getCategoryByName(name: string) {

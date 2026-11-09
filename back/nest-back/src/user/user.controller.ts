@@ -31,18 +31,15 @@ import { ActiveUser } from '../common/decorators/active-user.decorator';
 import { Role } from '../common/enums/role.enum';
 import type { UserActiveInterface } from '../common/interfaces/user-active.interface';
 import { AllUsersOutputDto, UserInfoDTO } from './dto-outputs/all-users.output.dto';
-import { AvatarOutputDTO } from './dto-outputs/avatar.output.dto';
 import { UserOutputDto } from './dto-outputs/user.output.dto';
-import { MailDto } from './dto/mail.dto';
 import { UpdatePasswordDto } from './dto/update-pass.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 import { OrderUsers } from './enums/order-user.enum';
-//import { ReturnMessage } from 'src/common/decorators/wrap-endpoint.decorator';
-import { EnableLogging } from 'src/common/decorators/loggin.decorator';
 import { OrderPipe } from 'src/common/pipes/order.pipe';
 import { OrderDTO } from 'src/common/dtos/order.dto';
+import { UserMailDto } from './dto/components.dto';
 
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
@@ -249,7 +246,7 @@ export class UserController {
     @ApiResponse({ status: 404, description: 'User not found' })
     @ApiResponse({ status: 500, description: 'Internal server error' })
     //@ReturnMessage('valid.USER.DELETED')
-    async deleteUser(@Body() mail: MailDto) {
+    async deleteUser(@Body() mail: UserMailDto) {
         await this.usersService.deleteUser(mail.mail);
         return { message: 'User deleted successfully' };
     }

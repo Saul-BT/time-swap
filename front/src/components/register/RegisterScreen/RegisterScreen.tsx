@@ -16,10 +16,11 @@ import { getCategories } from "@/data/categories";
 import { CategoryOption } from "../RegisterWizard/RegisterWizard.util";
 
 export type RegisterScreenProps = {
-  action: RegisterWizardProps["action"];
+  registerAction: RegisterWizardProps["registerAction"];
+  preferencesAction: RegisterWizardProps["preferencesAction"];
 };
 
-export default async function RegisterScreen({ action }: RegisterScreenProps) {
+export default async function RegisterScreen({ registerAction, preferencesAction }: RegisterScreenProps) {
   const { brand, register } = await getDictionary();
   const locale = await getLocale();
 
@@ -60,7 +61,8 @@ export default async function RegisterScreen({ action }: RegisterScreenProps) {
           copy={register}
           tagOptions={tagOptions}
           homeHref={localizePath(locale, "loggedHome")}
-          action={action}
+          registerAction={registerAction}
+          preferencesAction={preferencesAction}
         />
       </RegisterScreenMain>
     </RegisterScreenRoot>

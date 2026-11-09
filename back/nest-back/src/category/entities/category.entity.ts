@@ -28,11 +28,11 @@ export class Category {
     })
     listings!: Listing[];
 
-    @ManyToMany(() => User, user => (user.skills))
+    @ManyToMany(() => User, user => (user.skills), { cascade: ['insert', 'update']})
     @JoinTable({ name: 'user_skills' })
     teachers!: User[];
 
-    @ManyToMany(() => User, user => (user.interests))
+    @ManyToMany(() => User, user => (user.interests), { cascade: ['insert', 'update']})
     @JoinTable({ name: 'user_interests' })
     students!: User[];
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RegisterScreen from "@/components/register/RegisterScreen";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath, routeAlternates } from "@/i18n/routes";
-import { register } from "./actions";
+import { register, updatePreferences } from "./actions";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { register: copy } = await getDictionary();
@@ -21,5 +21,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RegisterPage() {
   const locale = await getLocale();
 
-  return <RegisterScreen action={register.bind(null, locale)} />;
+  return <
+          RegisterScreen 
+          registerAction={register.bind(null, locale)}
+          preferencesAction={updatePreferences.bind(null, locale)}
+        />;
 }

@@ -84,16 +84,19 @@ export class User {
     @Column({ type: 'varchar', nullable: true, default: null })
     theme!: string | null;
 
+    @Column({ type: 'varchar', nullable: true, default: null })
+    postalCode!: string | null;
+
     @Column({ type: 'timestamp', nullable: true })
     lastLogIn!: Date;
 
     @OneToMany(() => LoginLog, (log) => log.user)
     logins!: LoginLog[];
 
-    @ManyToMany(() => Category, (category) => category.teachers)
+    @ManyToMany(() => Category, (category) => category.teachers, { cascade: ['insert', 'update'] })
     skills!: Category[];
 
-    @ManyToMany(() => Category, (category) => category.students)
+    @ManyToMany(() => Category, (category) => category.students, { cascade: ['insert', 'update'] })
     interests!: Category[];
 
     @OneToMany(() => Listing, (listing) => listing.author, {
