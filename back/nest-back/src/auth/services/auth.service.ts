@@ -232,6 +232,7 @@ export class AuthService {
         const user = await this.userService.findByMail(dto.mail); // Comprobar si ya existe user para el email
         if (user) throw new ErrorManager('CONFLICT', 'MAIL DUPLICATED');
 
+        // @TODO: remove verification token? its not being used currently
         const verifyExpiredTime = parseInt((process.env.INVITE_EXPIRATION ?? '60m').replace('m', '')) * 60; // Valores de expiración procedentes del .env
         const verificationToken = await this.jwtService.signAsync(
             // Nuevo token de verificación
@@ -245,6 +246,8 @@ export class AuthService {
             targetEmail: dto.mail,
             verificationToken,
             name: dto.name,
+            nickname: dto.nickname,
+            postalCode: dto.postalCode,
             password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
             language: lang,
         });
@@ -253,8 +256,20 @@ export class AuthService {
         const userEntity = await this.userService.createUser({
             mail: dto.mail,
             name: dto.name,
+            nickname: dto.nickname,
+            postalCode: dto.postalCode,
             password: await hash(dto.password, APPConstants.PASSWORDS_SALT_ROUNDS),
         });
+
+        const payload_user: UserActiveInterface = {
+            id: userEntity.id,
+            mail: userEntity.mail,
+            name: userEntity.name ?? '',
+            role: userEntity.role,
+            validated: !userEntity.twoFactorCode,
+            language: userEntity.language
+        }
+        const backEndTokens = await this.createBackendTokens(payload_user);
 
         const registerOutput: NewRegisterOutput = {
             mail: userInfo.targetEmail,
@@ -265,6 +280,7 @@ export class AuthService {
             acceptedAt: userInfo.acceptedAt,
             verificationToken: userInfo.verificationToken,
             language: userInfo.language,
+            backend_tokens : backEndTokens
         };
         return registerOutput;
     }
@@ -319,6 +335,7 @@ export class AuthService {
         targetUser = await this.userService.createUser({
             mail: dto.mail,
             name: register.name,
+            nickname: register.nickname,
             password: register.password,
             role: Role.USER,
             language: register.language,

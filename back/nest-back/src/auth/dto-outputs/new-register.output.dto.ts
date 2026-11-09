@@ -2,6 +2,7 @@ import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { Language } from '../../user/enums/language.enum';
 import { NewRegisterDto } from '../dto/new-register.dto';
+import { BackendTokensDTO } from './login.output.dto';
 
 export class NewRegisterOutput extends PartialType(PickType(NewRegisterDto, ['mail', 'name'] as const)) {
     @ApiProperty({ example: 'sender@hosting.com', required: false })
@@ -26,4 +27,7 @@ export class NewRegisterOutput extends PartialType(PickType(NewRegisterDto, ['ma
 
     @ApiProperty({ example: '2022-01-01T00:00:00Z', required: false })
     deletedAt?: Date;
+
+    @ApiProperty({ type: BackendTokensDTO })
+    backend_tokens!: BackendTokensDTO;
 }

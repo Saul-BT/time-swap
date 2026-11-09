@@ -172,7 +172,6 @@ export class AuthController {
             'es-CU',
         ],
     })
-    @ApiResponse({ status: 500, description: 'Internal server error' })
     //@ReturnMessage('valid.AUTH.REGISTERED')
     async register(@Body() registerDto: NewRegisterDto, @Headers('accept-language') acceptLanguage: string) {
         return await this.authService.register(registerDto, Language.fromHeader(acceptLanguage));

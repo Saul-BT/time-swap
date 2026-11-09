@@ -12,7 +12,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { TemporalOtp } from './entities/temporal-2fa.entity';
 import { User } from './entities/user.entity';
 import { Language } from './enums/language.enum';
-import { AvatarOutput } from './interfaces/avatar.output.interface';
 import { UserOutput } from './interfaces/user.output.interface';
 import { AllUsersOutputDto, UserInfoDTO } from './dto-outputs/all-users.output.dto';
 import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
@@ -25,6 +24,7 @@ import { AuthService } from 'src/auth/services/auth.service';
 import { APPConstants } from 'src/common/constants/app-constants';
 import { OrderDTO } from 'src/common/dtos/order.dto';
 import { orderIntoFindOptions } from 'src/common/utils';
+import { CategoryService } from 'src/category/category.service';
 //import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 
 @Injectable()
@@ -46,7 +46,7 @@ export class UserService {
         //private readonly i18n: I18nService<I18nTranslations>,
         private readonly companyService: CompanyService,
         private readonly authService: AuthService,
-        //private readonly seederService: SeederService,
+        private readonly categoryService: CategoryService,
     ) {}
 
     /**
@@ -98,9 +98,11 @@ export class UserService {
         const newUser = new User();
         newUser.mail = dto.mail;
         newUser.name = dto.name;
+        newUser.nickname = dto.nickname;
         newUser.password = dto.password;
         newUser.role = dto.role;
         newUser.language = dto.language ?? Language.EN;
+        newUser.postalCode = dto.postalCode ?? null;
 
         const fullResult = await this.userRepository.save(newUser);
         const { ...result } = fullResult;
@@ -413,7 +415,7 @@ export class UserService {
      */
     async updateUser(original: UserActiveInterface, updateUserDto: UpdateUserDto): Promise<LoginInterface> {
         try {
-            const { mail, name, role, twoFactorCode, language } = updateUserDto;
+            const { mail, name, nickname, role, twoFactorCode, language, postalCode, skills, interests } = updateUserDto;
             const user = await this.userRepository.findOne({
                 where: { mail: original.mail },
             });
@@ -440,9 +442,14 @@ export class UserService {
              */
             if (typeof mail === 'string') user.mail = mail;
             if (typeof name === 'string') user.name = name;
+            if (typeof nickname === 'string') user.nickname = nickname;
             if (role !== undefined) user.role = role;
             if (twoFactorCode !== undefined) user.twoFactorCode = twoFactorCode;
             if (language !== undefined) user.language = language;
+            if (postalCode !== undefined) user.postalCode = postalCode;
+
+            if (skills !== undefined) user.skills = await this.categoryService.getCategories(skills);
+            if (interests !== undefined) user.interests = await this.categoryService.getCategories(interests);
 
             const updatedUser = await this.userRepository.save(user);
 
@@ -552,7 +559,7 @@ export class UserService {
      *                              de errores
      */
     async updatePassword(userMail: string, updatePasswordDto: UpdatePasswordDto) {
-        const { oldPassword, newPassword } = updatePasswordDto;
+        const { oldPassword, password: newPassword } = updatePasswordDto;
 
         // El findOne devuelve también la contraseña antigua
         const user = await this.userRepository.findOne({
