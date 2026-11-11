@@ -60,6 +60,19 @@ export type FooterLink = {
   href: string;
 };
 
+export type ChatMessage = {
+  id: string;
+  body: string;
+  sentAt: string;
+  from: "self" | "peer";
+};
+
+export type Conversation = {
+  id: number;
+  peerName: string;
+  messages: readonly ChatMessage[];
+};
+
 export type SignInErrorId = keyof Dictionary["signIn"]["errors"];
 
 export type RegisterErrorId = keyof Dictionary["register"]["errors"];

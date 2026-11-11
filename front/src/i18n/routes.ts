@@ -14,6 +14,7 @@ export const ROUTES = {
   register: { es: "/crear-cuenta", en: "/register" },
   recoverAccess: { es: "/recuperar", en: "/recover" },
   loggedHome: { es: "/inicio", en: "/home" },
+  chats: { es: "/conversaciones", en: "/chats" },
   listings: { es: "/anuncios", en: "/listings" },
   // Before `listingDetail`, or `:id` would swallow the slug in rewrites and redirects.
   createAd: { es: "/anuncios/nuevo", en: "/listings/new" },

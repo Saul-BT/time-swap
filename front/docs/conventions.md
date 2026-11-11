@@ -17,6 +17,7 @@ src/
     ui/        presentational primitives, no data, no domain (Ribbon, Eyebrow, TabularFigure…)
     layout/    page chrome and providers (SiteHeader, Section, AppProviders…)
     landing/   sections of the landing; read data + dictionary
+    chat/      listing-scoped conversation UI (inbox + thread)
     sign-in/   the sign-in screen: form, editorial panel, split layout
     brand-book/  components used only by /brand-book
   data/      content structure (ids, order) and sample content — see its README

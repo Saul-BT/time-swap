@@ -2,10 +2,11 @@
 
 Two kinds of thing live here, and the difference matters:
 
-- **Sample content** (`listings.ts`, `members.ts`). Placeholder stand-ins for
-  user-written text. It is **not** translated and does not belong in the
-  dictionary: a listing title is whatever its author typed, so an English page
-  showing `[Nombre] · [Barrio]` in a sample card is correct, not a bug.
+- **Sample content** (`listings.ts`, `members.ts`, `conversations.ts`).
+  Placeholder stand-ins for user-written text. It is **not** translated and does
+  not belong in the dictionary: a listing title is whatever its author typed, so
+  an English page showing `[Nombre] · [Barrio]` in a sample card is correct, not
+  a bug.
 - **Content structure** (`filters.ts`, `categories.ts`, `ledger-facts.ts`,
   `navigation.ts`). Ids and ordering only. Every user-facing label for these
   comes from `src/i18n/dictionaries`, and the id *is* the dictionary key.
