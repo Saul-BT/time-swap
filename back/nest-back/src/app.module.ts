@@ -21,6 +21,8 @@ import { APP_INTERCEPTOR, Reflector } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { validateEnv } from './common/validator/env.validator';
 //import { AuditLogService } from 'src/common/services/logging.service';
+import { ConversationModule } from './conversation/conversation.module';
+import { AgreementModule } from './agreement/agreement.module';
 
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`; // Recuperar el nombre del .env
 dotenv.config({ path: envFile }); // Configurar la variable global para el .env
@@ -92,6 +94,8 @@ dotenv.config({ path: envFile }); // Configurar la variable global para el .env
         //ExamplesModule,
         CompanyModule,
         ListingModule,
+        ConversationModule,
+        AgreementModule,
         NodemailerModule,
         //I18nValidatorModule,
         MailModule,
