@@ -3,9 +3,6 @@ import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsString } from 'clas
 import { Role } from '../../common/enums/role.enum';
 import { Language } from '../../user/enums/language.enum';
 
-/**
- * Clase privada para declarar datos de ejemplo. NO EXPORTAR.
- */
 class UserDTO {
     @ApiProperty({ example: 'correo@hosting.com' })
     @IsEmail()
@@ -38,10 +35,7 @@ class UserDTO {
     language!: Language;
 }
 
-/**
- * Clase privada para declarar datos de ejemplo. NO EXPORTAR.
- */
-class BackendTokensDTO {
+export class BackendTokensDTO {
     @ApiProperty({
         example:
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvcnJlb0Bob3N0aW5nLmNvbSIsInJvbGUiOiJmcmVlIiwiaWF0IjoxNzI4MDc3NzEzLCJleHAiOjE3MjgwNzc4MzN9.Dh2Erof1boThJcO3fh_Prh4AJf4TftYWoYsw_Dm65Yo',
@@ -56,7 +50,7 @@ class BackendTokensDTO {
     })
     @IsString()
     @IsNotEmpty()
-    refres_token!: string;
+    refresh_token!: string;
 
     @ApiProperty({ example: 1728077833614 })
     @IsNumber()

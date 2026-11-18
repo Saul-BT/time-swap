@@ -9,6 +9,7 @@ import { CompanyModule } from 'src/company/company.module';
 //import SeederModule from 'src/seeder/seeder.module';
 import { UserLoginService } from './services/user-login.service';
 import { LoginLog } from '../auth/entities/user-login-log.entity';
+import { CategoryModule } from 'src/category/category.module';
 
 @Module({
     imports: [
@@ -17,7 +18,7 @@ import { LoginLog } from '../auth/entities/user-login-log.entity';
         TypeOrmModule.forFeature([LoginLog]), // Tabla para logs de login
         forwardRef(() => AuthModule),
         forwardRef(() => CompanyModule),
-        //forwardRef(() => SeederModule),
+        forwardRef(() => CategoryModule),
     ],
     controllers: [UserController],
     providers: [UserService, UserLoginService],

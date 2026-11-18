@@ -24,6 +24,12 @@ export class Verification {
     @Column({ nullable: true })
     name!: string;
 
+    @Column({ nullable: false })
+    nickname!: string;
+
+    @Column({ nullable: true })
+    postalCode?: string;
+
     @Column({ nullable: true })
     password!: string;
 

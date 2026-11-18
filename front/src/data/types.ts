@@ -11,7 +11,7 @@ export type ListingKind = keyof Dictionary["listings"]["kind"];
 export type ListingMode = keyof Dictionary["listings"]["mode"];
 
 export type Listing = {
-  id: string;
+  id: number;
   kind: ListingKind;
   mode: ListingMode;
   /** Author-written text. Not translated. */
@@ -61,6 +61,26 @@ export type FooterLink = {
 };
 
 export type SignInErrorId = keyof Dictionary["signIn"]["errors"];
+
+export type RegisterErrorId = keyof Dictionary["register"]["errors"];
+
+export type RegisterInput = {
+  fullName: string;
+  nickname: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  postalCode: string;
+};
+
+export type PreferencesInput = {
+  interests: Array<Number>;
+  skills: Array<Number>;
+};
+
+export type RegisterResult =
+  | { ok: true }
+  | { ok: false; error: RegisterErrorId };
 
 export type BackendError = {
   error: number;

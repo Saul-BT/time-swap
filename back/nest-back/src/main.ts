@@ -30,14 +30,14 @@ async function bootstrap() {
 
     app.setGlobalPrefix('api/v1'); // Ruta general para end-points
     app.useGlobalInterceptors(new GlobalErrorInterceptor()); // Configura un interceptor global para manejar y centralizar el control de errores en toda la aplicación
-    /*app.useGlobalPipes(
+    app.useGlobalPipes(
         new ValidationPipe({
             whitelist: true,
             forbidNonWhitelisted: true,
             transform: true,
             stopAtFirstError: true,
             //personalizar el mensaje de error que lanza la validación
-            exceptionFactory: (errors: ValidationError[]) => {
+            /*exceptionFactory: (errors: ValidationError[]) => {
                 const messages = errors.map((err) => {
                     // se obtiene cada mensaje fallido
                     const constraints = Object.values(err.constraints || {}).map((msg) => {
@@ -64,9 +64,9 @@ async function bootstrap() {
 
                 // Devolvemos un error usando tu clase personalizada ErrorManager
                 return new ErrorManager('BAD_REQUEST', messages.join('; '));
-            },
+            },*/
         }),
-    );*/
+    );
     app.use(helmet());
     app.enableCors({
         origin: 'http://localhost:3000', //todo get frontend url from .env

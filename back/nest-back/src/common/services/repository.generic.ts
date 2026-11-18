@@ -1,7 +1,7 @@
 import { Repository, FindManyOptions, DeepPartial, EntityTarget, EntityManager, QueryRunner, ObjectLiteral } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { ErrorManager } from '../error-handling/error.manager';
-import { PaginatedResponse } from '../dtos/paginated.dto';
+import { PaginatedResponse } from '../dtos/paginated-output.dto';
 //import { I18nService } from 'nestjs-i18n';
 //import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 

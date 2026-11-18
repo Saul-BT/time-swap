@@ -41,7 +41,7 @@ import { RefreshGuard } from './guard/refresh.guard';
 import { AuthService } from './services/auth.service';
 import { ResetService } from './services/reset.service';
 //import { ReturnMessage } from 'src/common/decorators/wrap-endpoint.decorator';
-import { PaginatedResponse } from 'src/common/dtos/paginated.dto';
+import { PaginatedResponse } from 'src/common/dtos/paginated-output.dto';
 //import { I18nService } from 'nestjs-i18n';
 import { ErrorManager } from 'src/common/error-handling/error.manager';
 import { OrderVerification } from './enums/order-verification.enum';
@@ -172,7 +172,6 @@ export class AuthController {
             'es-CU',
         ],
     })
-    @ApiResponse({ status: 500, description: 'Internal server error' })
     //@ReturnMessage('valid.AUTH.REGISTERED')
     async register(@Body() registerDto: NewRegisterDto, @Headers('accept-language') acceptLanguage: string) {
         return await this.authService.register(registerDto, Language.fromHeader(acceptLanguage));

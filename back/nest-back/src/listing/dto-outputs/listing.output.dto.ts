@@ -9,15 +9,17 @@ import { ListingStatus } from '../enums/listing-status.enum';
  */
 export class ListingOutputDto {
     @ApiProperty() id!: number;
-    @ApiProperty({ enum: ListingKind }) kind!: ListingKind;
     @ApiProperty() title!: string;
-    @ApiProperty() description!: string;
-    @ApiProperty() category!: string;
-    @ApiProperty({ enum: ListingMode }) mode!: ListingMode;
-    @ApiProperty({ nullable: true, type: String }) area!: string | null;
+    @ApiProperty() summary!: string;
+    @ApiProperty({ enum: ListingKind }) kind!: string;
+    @ApiProperty({ enum: ListingMode }) mode!: string;
+    @ApiProperty() byline!: string;
     @ApiProperty() hours!: string;
-    @ApiProperty({ enum: ListingStatus }) status!: ListingStatus;
+    @ApiProperty() categoryId!: number;
+    @ApiProperty() categoryName!: string;
     @ApiProperty() authorId!: number;
     @ApiProperty() authorName!: string;
+    @ApiProperty({ nullable: true, type: String }) area?: string;
+    @ApiProperty({ enum: ListingStatus }) status!: ListingStatus;
     @ApiProperty() createdAt!: Date;
 }
