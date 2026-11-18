@@ -13,6 +13,8 @@ import { CategoryService } from "src/category/category.service";
 import { ListingOutputDto } from "./dto-outputs/listing.output.dto";
 import { ListingStatus } from "./enums/listing-status.enum";
 import { PaginatedResponse } from "src/common/dtos/paginated-output.dto";
+import { Review } from "./entities/review.entity";
+import { mapListingOutput } from "./utils";
 
 
 @Injectable()
@@ -22,29 +24,13 @@ export class ListingService {
     constructor (
         @InjectRepository(Listing)
         private readonly listingRepository: Repository<Listing>,
+        @InjectRepository(Review)
+        private readonly reviewRepository: Repository<Review>,
         @Inject(CategoryService)
         private readonly categoryService: CategoryService,
         @Inject(UserService)
         private readonly userService: UserService,
     ) {}
-
-    mapListingOutput (listing: Listing): ListingOutputDto {
-        return {
-            id: listing.id,
-            title: listing.title,
-            summary: listing.description,
-            kind: listing.kind,
-            mode: listing.mode,
-            byline: `${listing.author.name} · ${listing.location ?? listing.category.name}`,
-            hours: listing.duration,
-            authorId: listing.author.id,
-            authorName: listing.author.name ?? '',
-            categoryId: listing.category.id,
-            categoryName: listing.category.name,
-            status: listing.status,
-            createdAt: listing.createdAt
-        }
-    }
 
     async create(user: UserActiveInterface, createDto: CreateListingDTO) {
         const listing = this.listingRepository.create();
@@ -73,9 +59,7 @@ export class ListingService {
             categoryId: undefined
         });
 
-        //todo if location is absent from any type other than remote, reject
-
-        return this.mapListingOutput(await this.listingRepository.save(listing));
+        return mapListingOutput(await this.listingRepository.save(listing));
     }
         
     async update(user: UserActiveInterface, id: number, updateDto: UpdateListingDTO) {
@@ -86,7 +70,7 @@ export class ListingService {
 
         const listing = await this.listingRepository.findOne({
             where: { id },
-            relations: { category: true, author: true } //todo get revisions as well
+            relations: { category: true, author: true }
         })
 
         if (!listing) {
@@ -98,7 +82,7 @@ export class ListingService {
         }
 
         if (user.role !== Role.SUPER_ADMIN && user.id !== listing.author.id) {
-            throw new ErrorManager('FORBIDDEN', 'Not allowed to delete listing');
+            throw new ErrorManager('FORBIDDEN', 'Not allowed to modify listing');
         }
 
         //entity relation needs separate logic
@@ -124,20 +108,33 @@ export class ListingService {
             categoryId: undefined
         });
 
-        return this.mapListingOutput(await this.listingRepository.save(listing));
+        return mapListingOutput(await this.listingRepository.save(listing));
     }
 
     async getById(id: number): Promise<ListingOutputDto> {
         const listing = await this.listingRepository.findOne({
             where: { id },
-            relations: { category:true, author: true } //todo get revisions as well
+            relations: { category:true, author: true, reviews: true }
         })
 
         if (!listing) {
             throw new ErrorManager('NOT_FOUND', 'Listing not found');
         }
 
-        return this.mapListingOutput(listing);
+        return mapListingOutput(listing);
+    }
+
+    async getByIdRaw(id: number): Promise<Listing> {
+        const listing = await this.listingRepository.findOne({
+            where: { id },
+            relations: { category:true, author: true, reviews: true }
+        })
+
+        if (!listing) {
+            throw new ErrorManager('NOT_FOUND', 'Listing not found');
+        }
+
+        return listing;
     }
 
     async search(searchDto: SearchListingDTO): Promise<PaginatedResponse<ListingOutputDto>> {
@@ -172,7 +169,10 @@ export class ListingService {
         }
 
         if (searchDto.status) {
-            //todo search by status
+            query.andWhere(
+                'listing.status = :status',
+                { status: searchDto.status },
+            );
         }
 
         if (searchDto.duration) {
@@ -210,6 +210,9 @@ export class ListingService {
 
         query.leftJoinAndSelect('listing.author', 'user');
 
+        query.leftJoinAndSelect('listing.reviews', 'review')
+            .leftJoinAndSelect('review.author', 'author');
+
         if (!searchDto.page)
             searchDto.page = 1;
         if (!searchDto.pageSize)
@@ -221,7 +224,7 @@ export class ListingService {
         const result = await query.getManyAndCount();
 
         return {
-            list: result[0].map(listing => { return this.mapListingOutput(listing)}),
+            list: result[0].map(listing => { return mapListingOutput(listing)}),
             page: searchDto.page,
             pageSize: searchDto.pageSize,
             total: result[1],

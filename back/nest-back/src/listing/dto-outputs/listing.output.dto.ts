@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ListingKind } from '../enums/listing-kind.enum';
 import { ListingMode } from '../enums/listing-mode.enum';
 import { ListingStatus } from '../enums/listing-status.enum';
+import { ReviewOutputDto } from './review.output.dto';
 
 /**
  * Respuesta pública de un anuncio. A propósito NO incluye la entidad `author`
@@ -22,4 +23,6 @@ export class ListingOutputDto {
     @ApiProperty({ nullable: true, type: String }) area?: string;
     @ApiProperty({ enum: ListingStatus }) status!: ListingStatus;
     @ApiProperty() createdAt!: Date;
+    @ApiProperty({ nullable: true, type: ReviewOutputDto }) reviewByAuthor?: ReviewOutputDto;
+    @ApiProperty({ nullable: true, type: ReviewOutputDto }) reviewByOther?: ReviewOutputDto;
 }

@@ -1,9 +1,10 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { ListingKind } from '../enums/listing-kind.enum';
 import { ListingMode } from '../enums/listing-mode.enum';
 import { ListingStatus } from '../enums/listing-status.enum';
 import { Category } from 'src/category/entities/category.entity';
+import { Review } from './review.entity';
 
 @Entity()
 export class Listing {
@@ -76,6 +77,12 @@ export class Listing {
     @UpdateDateColumn()
     updatedAt!: Date;
 
-    @ManyToOne(() => User, (user) => user.listings)
+    @ManyToOne(() => User, (user) => user.listingsBy)
     author!: User;
+
+    @ManyToOne(() => User, (user) => user.listingsFor)
+    other!: User;
+
+    @OneToMany(() => Review, (review) => review.listing, { cascade: ['insert', 'update', 'remove']})
+    reviews!: Review[];
 }

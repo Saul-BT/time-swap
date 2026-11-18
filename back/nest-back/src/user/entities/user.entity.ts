@@ -16,6 +16,7 @@ import { LoginLog } from 'src/auth/entities/user-login-log.entity';
 import { CategoryRequest } from 'src/category/entities/category-request.entity';
 import { Listing } from 'src/listing/entities/listing.entity';
 import { Category } from 'src/category/entities/category.entity';
+import { Review } from 'src/listing/entities/review.entity';
 
 @Entity()
 export class User {
@@ -99,15 +100,26 @@ export class User {
     @ManyToMany(() => Category, (category) => category.students, { cascade: ['insert', 'update'] })
     interests!: Category[];
 
-    @OneToMany(() => Listing, (listing) => listing.author, {
-        cascade: ['insert', 'update']
-    })
-    listings!: Listing[];
-
     @ManyToMany(() => CategoryRequest, requests => requests.voters, {
         cascade: ['insert', 'update', 'remove']
     })
     requests!: CategoryRequest[];
+
+    @OneToMany(() => Listing, (listing) => listing.author, {
+        cascade: ['insert', 'update']
+    })
+    listingsBy!: Listing[];
+
+    @OneToMany(() => Listing, (listing) => listing.author, {
+        cascade: ['insert', 'update']
+    })
+    listingsFor!: Listing[];
+
+    @OneToMany(() => Review, (review) => review.author, { cascade: ['insert', 'update', 'remove']})
+    reviewsBy!: [];
+
+    @OneToMany(() => Review, (review) => review.reviewedUser, { cascade: ['insert', 'update', 'remove']})
+    reviewsFor!: [];
 }
 
 export { Role };

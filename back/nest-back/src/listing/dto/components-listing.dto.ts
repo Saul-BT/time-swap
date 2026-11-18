@@ -1,8 +1,18 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+import { IsDateString, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Length, Min } from "class-validator";
 import { ListingKind } from "../enums/listing-kind.enum";
 import { ListingMode } from "../enums/listing-mode.enum";
-import { ListingStatus } from "../../listing/enums/listing-status.enum";
+import { ListingStatus } from "../enums/listing-status.enum";
+import { Type } from "class-transformer";
+
+export class ListingIdDto {
+    @ApiProperty({ example: 1 })
+    @IsNotEmpty()
+    @Type(() => Number)
+    @IsInt()
+    @Min(1) //always starts at 1
+    readonly listingId!: number;
+}
 
 export class ListingTitleDto {
     @ApiProperty({ example: 'Listing 1' })

@@ -3,7 +3,7 @@
 import { IntersectionType, PartialType } from "@nestjs/swagger";
 import { PaginationDto } from "src/common/dtos/pagination.dto";
 import { CategoryIdArrayDto } from "src/category/dto/components.dto";
-import { ListingDescriptionDto, ListingDurationDto, ListingHigherStartTimeDto, ListingKindDto, ListingLowerStartTimeDto, ListingModeDto, ListingStatusDto, ListingTitleDto } from "./components.dto";
+import { ListingDescriptionDto, ListingDurationDto, ListingHigherStartTimeDto, ListingKindDto, ListingLowerStartTimeDto, ListingModeDto, ListingStatusDto, ListingTitleDto } from "./components-listing.dto";
 
 export class SearchListingDTO extends IntersectionType(
     PaginationDto,

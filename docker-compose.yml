@@ -4,7 +4,7 @@
 # docker compose  --env-file .env.development down -v
 
 services:
-    front:
+    frontend:
         container_name: 'front_${APP_NAME}'
         build:
             context: ./front

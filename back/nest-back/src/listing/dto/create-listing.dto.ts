@@ -1,6 +1,6 @@
 import { IntersectionType } from "@nestjs/swagger";
 import { CategoryIdDto } from "src/category/dto/components.dto";
-import { ListingDescriptionDto, ListingDurationDto, ListingKindDto, ListingLocationDto, ListingModeDto, ListingStartTimeDto, ListingTitleDto } from "./components.dto";
+import { ListingDescriptionDto, ListingDurationDto, ListingKindDto, ListingLocationDto, ListingModeDto, ListingStartTimeDto, ListingTitleDto } from "./components-listing.dto";
 
 export class CreateListingDTO extends IntersectionType(
     ListingTitleDto,

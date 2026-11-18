@@ -23,6 +23,7 @@ RUN bun install --frozen-lockfile --production
 
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/src ./src
 
 EXPOSE 3000
 
