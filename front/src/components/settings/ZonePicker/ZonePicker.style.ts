@@ -1,7 +1,6 @@
 "use client";
 
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import { Paper, styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 const NAME = "ZonePicker";

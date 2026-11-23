@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import { useEffect, useRef } from "react";
 import FormNotice from "../../ui/FormNotice";
 import { ServerErrorNoticeRoot } from "./ServerErrorNotice.style";

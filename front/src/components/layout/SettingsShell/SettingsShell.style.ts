@@ -1,8 +1,6 @@
 "use client";
 
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
+import { Button, Container, styled } from "@mui/material";
 import NextLink from "next/link";
 import type { WithComponent } from "@/lib/mui/polymorphic";
 import { rule } from "@/theme/rules";
@@ -35,9 +33,13 @@ export const SettingsShellMain = styled(Container, {
     paddingBlock: theme.spacing(space.md),
     ...(ownerState.detail ? { paddingInline: 0, paddingTop: 0 } : {}),
     [theme.breakpoints.up("md")]: {
-      gap: theme.spacing(space.md),
       paddingBlock: theme.spacing(space.lg),
-      ...(ownerState.detail ? { paddingInline: 56, paddingTop: 56 } : {}),
+      ...(ownerState.detail
+        ? {
+            paddingInline: theme.spacing(space.lg),
+            paddingTop: theme.spacing(space.lg),
+          }
+        : {}),
     },
   }),
 );

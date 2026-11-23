@@ -1,12 +1,12 @@
 "use client";
 
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useErrorCopy } from "@/components/layout/ErrorCopy";
 import Section from "@/components/layout/Section";
 import FormNotice from "@/components/ui/FormNotice";
-import { isLocale } from "@/i18n/config";
+import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
 import { localizePath } from "@/i18n/routes";
 import { reportError } from "@/lib/observability/reportError";
 
@@ -26,7 +26,7 @@ export default function SiteError({ error, retry }: SiteErrorProps) {
 
   const { page } = useErrorCopy();
   const { lang } = useParams<{ lang: string }>();
-  const home = localizePath(isLocale(lang) ? lang : "es", "home");
+  const home = localizePath(isLocale(lang) ? lang : DEFAULT_LOCALE, "home");
 
   return (
     <Section>

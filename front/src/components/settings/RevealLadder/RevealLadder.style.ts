@@ -1,6 +1,6 @@
 "use client";
 
-import { keyframes, styled } from "@mui/material/styles";
+import { keyframes, styled } from "@mui/material";
 import { accentRule, rule, visuallyHidden } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 import { ARRIVAL_MS, revealLadderClasses } from "./RevealLadder.util";

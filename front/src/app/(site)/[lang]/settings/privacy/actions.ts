@@ -1,7 +1,7 @@
 "use server";
 
 import type { PrivacyActionState } from "@/components/settings/PrivacyForm";
-import { finishSave } from "@/lib/forms/actionState";
+import { finishSave } from "@/lib/api/mock";
 
 // FIXME(api): pretends to save. Replace `finishSave` with
 // PATCH /profile/me { visibleToVisitors, searchable } (#5).

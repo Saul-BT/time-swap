@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import { rule } from "@/theme/rules";
 import type { WeekGridOrientation } from "./WeekGrid.util";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 export const AvailabilityFormHint = styled("p", {
@@ -9,6 +9,6 @@ export const AvailabilityFormHint = styled("p", {
 })(({ theme }) => ({
   ...theme.typography.body2,
   margin: 0,
-  marginTop: -theme.spacing(space.sm),
+  marginTop: theme.spacing(-space.sm),
   color: theme.palette.text.secondary,
 }));

@@ -1,11 +1,11 @@
 "use client";
 
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import { Autocomplete, createFilterOptions } from "@mui/material";
 import { Plus, X } from "lucide-react";
-import { useId, useMemo } from "react";
+import { useMemo } from "react";
 import type { CatalogEntry } from "@/data/types";
 import { interpolate } from "@/lib/i18n/interpolate";
+import AutocompleteInput from "@/lib/mui/AutocompleteInput";
 import Icon from "../../ui/Icon";
 import {
   CatalogPickerChip,
@@ -56,7 +56,6 @@ export default function CatalogPicker({
   disabled,
   describedBy,
 }: CatalogPickerProps) {
-  const listId = useId();
   // Identity matters: Autocomplete resets its input whenever `value` changes.
   const chosen = useMemo(
     () =>
@@ -90,27 +89,13 @@ export default function CatalogPicker({
         disabled={disabled}
         noOptionsText={copy.noMatch}
         autoHighlight
-        renderInput={(params) => {
-          // InputBase only chains focus, blur and change from `inputProps`;
-          // `slotProps.input` is merged after, so the handlers would be lost.
-          const { ref: htmlInputRef, ...htmlInput } =
-            params.slotProps.htmlInput;
-
-          return (
-            <OutlinedInput
-              ref={params.slotProps.input.ref}
-              className={params.slotProps.input.className}
-              startAdornment={params.slotProps.input.startAdornment}
-              endAdornment={params.slotProps.input.endAdornment}
-              onMouseDown={params.slotProps.input.onMouseDown}
-              disabled={params.disabled}
-              inputRef={htmlInputRef}
-              inputProps={{ ...htmlInput, "aria-describedby": describedBy }}
-              placeholder={copy.search}
-              fullWidth
-            />
-          );
-        }}
+        renderInput={(params) => (
+          <AutocompleteInput
+            params={params}
+            placeholder={copy.search}
+            describedBy={describedBy}
+          />
+        )}
       />
       <input type="hidden" name={name} value={value.join(",")} />
 
@@ -149,7 +134,6 @@ export default function CatalogPicker({
 
       {suggestions.length > 0 ? (
         <CatalogPickerList
-          id={listId}
           className={catalogPickerClasses.suggestions}
           aria-label={copy.suggestionsLabel}
         >

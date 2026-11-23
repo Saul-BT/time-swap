@@ -1,8 +1,7 @@
 "use client";
 
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import { rule } from "@/theme/rules";
+import { Button, styled } from "@mui/material";
+import { rule, softRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 
 const NAME = "PanelFooter";
@@ -18,7 +17,7 @@ export const PanelFooterRoot = styled("footer", { name: NAME, slot: "Root" })(
     alignItems: "center",
     gap: theme.spacing(space.sm),
     marginTop: theme.spacing(space.md),
-    marginInline: -theme.spacing(space.sm + 1),
+    marginInline: theme.spacing(-(space.sm + 1)),
     padding: theme.spacing(space.sm, space.sm + 1),
     borderTop: rule(theme),
     backgroundColor: theme.palette.background.paper,
@@ -27,24 +26,18 @@ export const PanelFooterRoot = styled("footer", { name: NAME, slot: "Root" })(
       marginInline: 0,
       padding: 0,
       paddingTop: theme.spacing(space.md),
-      borderTop: `${theme.system.borderWidth}px solid ${theme.palette.divider}`,
+      borderTop: softRule(theme),
     },
   }),
 );
 
-export const PanelFooterSave = styled(Button, { name: NAME, slot: "Save" })(
-  ({ theme }) => ({
-    flex: "1 1 auto",
-    [theme.breakpoints.up("md")]: { flex: "0 0 auto" },
-  }),
-);
-
-export const PanelFooterNext = styled(Button, { name: NAME, slot: "Next" })(
-  ({ theme }) => ({
-    flex: "1 1 auto",
-    [theme.breakpoints.up("md")]: { flex: "0 0 auto" },
-  }),
-);
+export const PanelFooterAction = styled(Button, {
+  name: NAME,
+  slot: "Action",
+})(({ theme }) => ({
+  flex: "1 1 auto",
+  [theme.breakpoints.up("md")]: { flex: "0 0 auto" },
+}));
 
 export const PanelFooterFeedback = styled("p", {
   name: NAME,

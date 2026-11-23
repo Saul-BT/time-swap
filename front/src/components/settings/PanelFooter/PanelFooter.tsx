@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import { useUnsavedChanges } from "../UnsavedChanges";
 import {
+  PanelFooterAction,
   PanelFooterFeedback,
-  PanelFooterNext,
   PanelFooterRoot,
-  PanelFooterSave,
 } from "./PanelFooter.style";
 import {
   type PanelFooterCopy,
@@ -48,16 +47,16 @@ export default function PanelFooter({
 
   return (
     <PanelFooterRoot className={panelFooterClasses.root}>
-      <PanelFooterSave
+      <PanelFooterAction
         className={panelFooterClasses.save}
         type="submit"
         variant="contained"
         disabled={pending}
       >
         {pending ? copy.saving : copy.save}
-      </PanelFooterSave>
+      </PanelFooterAction>
       {nextHref && copy.next ? (
-        <PanelFooterNext
+        <PanelFooterAction
           className={panelFooterClasses.next}
           variant="outlined"
           href={nextHref}
@@ -65,7 +64,7 @@ export default function PanelFooter({
           onClick={(event) => guard(nextHref, event)}
         >
           {copy.next}
-        </PanelFooterNext>
+        </PanelFooterAction>
       ) : null}
       <PanelFooterFeedback
         className={panelFooterClasses.feedback}

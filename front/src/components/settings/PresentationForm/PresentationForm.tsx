@@ -1,8 +1,11 @@
 "use client";
 
-import Button from "@mui/material/Button";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { BIO_MAX_LENGTH, DISPLAY_NAME_MAX_LENGTH } from "@/data/settings";
+import { Button, OutlinedInput } from "@mui/material";
+import {
+  BIO_MAX_LENGTH,
+  DISPLAY_NAME_MAX_LENGTH,
+  PRONOUNS_MAX_LENGTH,
+} from "@/data/settings";
 import type { PresentationErrorId } from "@/data/types";
 import { interpolate } from "@/lib/i18n/interpolate";
 import CharacterCount from "../../ui/CharacterCount";
@@ -148,7 +151,7 @@ export default function PresentationForm({
           }
           placeholder={copy.pronounsPlaceholder}
           fullWidth
-          slotProps={{ input: { maxLength: 30 } }}
+          slotProps={{ input: { maxLength: PRONOUNS_MAX_LENGTH } }}
         />
       </FormField>
 

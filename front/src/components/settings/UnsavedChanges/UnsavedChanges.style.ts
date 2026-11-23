@@ -1,7 +1,6 @@
 "use client";
 
-import Dialog from "@mui/material/Dialog";
-import { styled } from "@mui/material/styles";
+import { Dialog, styled } from "@mui/material";
 
 const NAME = "UnsavedChanges";
 

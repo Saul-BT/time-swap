@@ -101,8 +101,6 @@ export function usePanelForm<
   const form = useRef<HTMLFormElement>(null);
   const submitted = useRef(initial);
   const { setDirty } = useUnsavedChanges();
-  const focusTargets = useRef(focusOrder);
-  focusTargets.current = focusOrder;
 
   const dirty = isDirty(values, saved);
 
@@ -122,14 +120,12 @@ export function usePanelForm<
       return;
     }
 
-    const first = focusTargets.current?.find(
-      ([field]) => state.fieldErrors[field],
-    );
+    const first = focusOrder?.find(([field]) => state.fieldErrors[field]);
 
     if (first) {
       focusField(first[1]);
     }
-  }, [state]);
+  }, [state, focusOrder]);
 
   return {
     state,

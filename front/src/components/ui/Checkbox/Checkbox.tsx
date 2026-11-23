@@ -7,12 +7,9 @@ import { checkboxClasses } from "./Checkbox.util";
 export type CheckboxProps = {
   id: string;
   name: string;
-  /** Visible text, or the accessible name when `hideLabel` is set. */
-  label: string;
+  label: React.ReactNode;
   /** Decoration placed before the label text. */
   icon?: React.ReactNode;
-  /** Renders only the box; `label` becomes the `aria-label`. For grids and matrices. */
-  hideLabel?: boolean;
   checked?: boolean;
   defaultChecked?: boolean;
   onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
@@ -26,7 +23,6 @@ export default function Checkbox({
   name,
   label,
   icon,
-  hideLabel = false,
   checked,
   defaultChecked,
   onChange,
@@ -44,7 +40,6 @@ export default function Checkbox({
       onChange={onChange}
       disabled={disabled}
       disableRipple
-      slotProps={hideLabel ? { input: { "aria-label": label } } : undefined}
       icon={
         <CheckboxBox
           className={checkboxClasses.box}
@@ -59,10 +54,6 @@ export default function Checkbox({
       }
     />
   );
-
-  if (hideLabel) {
-    return control;
-  }
 
   return (
     <CheckboxLabel

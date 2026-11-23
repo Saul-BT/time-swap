@@ -32,6 +32,8 @@ export const BIO_MAX_LENGTH = 600;
 
 export const DISPLAY_NAME_MAX_LENGTH = 60;
 
+export const PRONOUNS_MAX_LENGTH = 30;
+
 export const WEEKDAYS: readonly Weekday[] = [
   "mon",
   "tue",

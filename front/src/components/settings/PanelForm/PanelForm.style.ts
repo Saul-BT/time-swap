@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import { bareFieldset } from "@/theme/rules";
 
 export const PanelFormRoot = styled("form", {

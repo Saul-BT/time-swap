@@ -2,6 +2,7 @@
 
 import { SUGGESTION_COUNT } from "@/data/settings";
 import type { CatalogEntry, SkillsErrorId } from "@/data/types";
+import { sameItems } from "@/lib/forms/sameItems";
 import { space } from "@/theme/tokens";
 import FormField, { formFieldIds } from "../../ui/FormField";
 import CatalogPicker from "../CatalogPicker";
@@ -29,14 +30,10 @@ export type SkillsFormProps = PanelSectionFormProps<
 
 const FOCUS_ORDER = [["skills", SKILLS_FIELD.skills]] as const;
 
-function sameIds(a: readonly string[], b: readonly string[]): boolean {
-  return a.length === b.length && a.every((id, index) => id === b[index]);
-}
-
 function isDirty(values: SkillsValues, saved: SkillsValues): boolean {
   return (
-    !sameIds(values.skills, saved.skills) ||
-    !sameIds(values.interests, saved.interests) ||
+    !sameItems(values.skills, saved.skills) ||
+    !sameItems(values.interests, saved.interests) ||
     values.skillsReveal !== saved.skillsReveal ||
     values.interestsReveal !== saved.interestsReveal
   );

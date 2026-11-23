@@ -1,9 +1,6 @@
 "use client";
 
-import Link from "@mui/material/Link";
-import { styled } from "@mui/material/styles";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
+import { Link, styled, TableCell, TableContainer } from "@mui/material";
 import { visuallyHidden } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 

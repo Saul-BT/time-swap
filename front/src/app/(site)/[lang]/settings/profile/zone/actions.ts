@@ -6,7 +6,8 @@ import {
 } from "@/components/settings/ZoneForm";
 import type { Modality } from "@/data/types";
 import { findZone } from "@/data/zones";
-import { type FieldErrors, finishSave } from "@/lib/forms/actionState";
+import { finishSave } from "@/lib/api/mock";
+import type { FieldErrors } from "@/lib/forms/actionState";
 
 // FIXME(api): checks the rule that crosses two fields — in person needs a zone —
 // then pretends to save. Replace `finishSave` with PATCH /profile/me

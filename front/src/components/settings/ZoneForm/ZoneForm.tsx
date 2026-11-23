@@ -1,10 +1,12 @@
 "use client";
 
-import ToggleButton from "@mui/material/ToggleButton";
+import { ToggleButton } from "@mui/material";
 import { Building2, MapIcon, MapPin, Users, Wifi } from "lucide-react";
 import type { Modality, Zone, ZoneErrorId, ZonePrecision } from "@/data/types";
+import { sameItems } from "@/lib/forms/sameItems";
 import Checkbox from "../../ui/Checkbox";
 import FieldError from "../../ui/FieldError";
+import { formFieldIds } from "../../ui/FormField";
 import Icon from "../../ui/Icon";
 import PanelForm from "../PanelForm";
 import RevealLadder from "../RevealLadder";
@@ -50,13 +52,9 @@ const FOCUS_ORDER = [
   ["zone", ZONE_FIELD.zone],
 ] as const;
 
-function sameModalities(a: readonly Modality[], b: readonly Modality[]) {
-  return a.length === b.length && a.every((m) => b.includes(m));
-}
-
 function isDirty(values: ZoneValues, saved: ZoneValues): boolean {
   return (
-    !sameModalities(values.modalities, saved.modalities) ||
+    !sameItems(values.modalities, saved.modalities) ||
     values.zoneId !== saved.zoneId ||
     values.precision !== saved.precision ||
     values.reveal !== saved.reveal
@@ -86,6 +84,8 @@ export default function ZoneForm({
   const zoneError = fieldErrors.zone
     ? copy.errors[fieldErrors.zone]
     : undefined;
+  const modalityIds = formFieldIds(ZONE_FIELD.modality);
+  const zoneIds = formFieldIds(ZONE_FIELD.zone);
   const zone =
     zones.find((candidate) => candidate.id === values.zoneId) ?? null;
 
@@ -102,9 +102,7 @@ export default function ZoneForm({
       <ZoneFormGroup
         id={ZONE_FIELD.modality}
         className={zoneFormClasses.group}
-        aria-describedby={
-          modalityError ? `${ZONE_FIELD.modality}-error` : undefined
-        }
+        aria-describedby={modalityError ? modalityIds.error : undefined}
         aria-invalid={Boolean(modalityError)}
       >
         <ZoneFormLegend className={zoneFormClasses.legend}>
@@ -125,9 +123,7 @@ export default function ZoneForm({
           ))}
         </ZoneFormOptions>
         {modalityError ? (
-          <FieldError id={`${ZONE_FIELD.modality}-error`}>
-            {modalityError}
-          </FieldError>
+          <FieldError id={modalityIds.error}>{modalityError}</FieldError>
         ) : null}
         <ZoneFormHint className={zoneFormClasses.hint}>
           {copy.modalityHint}
@@ -145,10 +141,10 @@ export default function ZoneForm({
           }
           copy={copy.picker}
           disabled={pending}
-          describedBy={zoneError ? `${ZONE_FIELD.zone}-error` : undefined}
+          describedBy={zoneError ? zoneIds.error : undefined}
         />
         {zoneError ? (
-          <FieldError id={`${ZONE_FIELD.zone}-error`}>{zoneError}</FieldError>
+          <FieldError id={zoneIds.error}>{zoneError}</FieldError>
         ) : null}
       </ZoneFormField>
 

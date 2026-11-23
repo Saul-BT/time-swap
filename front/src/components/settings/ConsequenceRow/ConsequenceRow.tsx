@@ -1,6 +1,6 @@
 "use client";
 
-import Switch from "@mui/material/Switch";
+import { Switch } from "@mui/material";
 import { useId } from "react";
 import {
   ConsequenceRowBody,

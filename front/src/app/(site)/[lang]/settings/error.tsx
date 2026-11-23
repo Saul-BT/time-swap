@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import { useEffect } from "react";
 import { useErrorCopy } from "@/components/layout/ErrorCopy";
 import FormNotice from "@/components/ui/FormNotice";

@@ -7,7 +7,7 @@ import PublicProfile from "@/components/member/PublicProfile";
 import { findZone } from "@/data/zones";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath, routeAlternates } from "@/i18n/routes";
-import { getMember } from "@/lib/api/profile";
+import { getMember, getSessionMemberId } from "@/lib/api/profile";
 import { interpolate } from "@/lib/i18n/interpolate";
 import { toPublicProfile } from "@/lib/profile/publicView";
 
@@ -41,7 +41,10 @@ export default async function MemberProfilePage({
   params,
 }: PageProps<"/[lang]/members/[id]">) {
   const { id } = await params;
-  const member = await getMember(id);
+  const [member, viewerId] = await Promise.all([
+    getMember(id),
+    getSessionMemberId(),
+  ]);
 
   if (!member) {
     notFound();
@@ -58,7 +61,7 @@ export default async function MemberProfilePage({
       <SiteHeader />
       <main>
         <Section>
-          <PublicProfile profile={profile} own={id === member.userId} />
+          <PublicProfile profile={profile} own={member.userId === viewerId} />
         </Section>
       </main>
       <SiteFooter />

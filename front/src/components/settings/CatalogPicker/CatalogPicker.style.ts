@@ -1,7 +1,6 @@
 "use client";
 
-import Chip, { chipClasses } from "@mui/material/Chip";
-import { styled } from "@mui/material/styles";
+import { Chip, chipClasses, styled } from "@mui/material";
 import { bareList } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 
@@ -47,11 +46,10 @@ export const CatalogPickerSuggestion = styled(Chip, {
   name: NAME,
   slot: "Suggestion",
 })(({ theme }) => ({
-  cursor: "pointer",
   [`& .${chipClasses.icon}`]: {
     color: theme.palette.text.primary,
     marginLeft: theme.spacing(space.xs),
-    marginRight: -theme.spacing(space.xs / 2),
+    marginRight: theme.spacing(-space.xs / 2),
   },
   "&:hover": { backgroundColor: theme.palette.divider },
   [`&.${chipClasses.focusVisible}`]: {

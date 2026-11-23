@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 export const FieldErrorRoot = styled("p", { name: "FieldError", slot: "Root" })(

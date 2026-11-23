@@ -1,12 +1,15 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { Check } from "lucide-react";
 import { REVEALABLE_FIELDS } from "@/data/settings";
 import { REVEAL_ORDER, type RevealableField } from "@/data/types";
 import { interpolate } from "@/lib/i18n/interpolate";
+import { canSee } from "@/lib/profile/publicView";
 import Icon from "../../ui/Icon";
 import MatrixEditLink from "./MatrixEditLink";
 import {
@@ -22,7 +25,6 @@ import {
   VisibilityMatrixRowHead,
 } from "./VisibilityMatrix.style";
 import {
-  isVisibleAt,
   type RevealMap,
   type VisibilityMatrixCopy,
   visibilityMatrixClasses,
@@ -124,7 +126,7 @@ export default function VisibilityMatrix({
                     key={moment}
                     className={visibilityMatrixClasses.cell}
                   >
-                    {isVisibleAt(value[field], moment) ? (
+                    {canSee(moment, value, field) ? (
                       <Icon
                         icon={Check}
                         size="sm"

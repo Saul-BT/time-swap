@@ -2,7 +2,8 @@
 
 import type { PresentationActionState } from "@/components/settings/PresentationForm";
 import { BIO_MAX_LENGTH, DISPLAY_NAME_MAX_LENGTH } from "@/data/settings";
-import { type FieldErrors, finishSave } from "@/lib/forms/actionState";
+import { finishSave } from "@/lib/api/mock";
+import type { FieldErrors } from "@/lib/forms/actionState";
 import { containsContactData } from "@/lib/profile/validation";
 
 // FIXME(api): validates and pretends to save. Replace `finishSave` with

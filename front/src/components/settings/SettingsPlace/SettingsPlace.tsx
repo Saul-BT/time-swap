@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelectedLayoutSegments } from "next/navigation";
-import { createContext, type ReactNode, useContext, useMemo } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 import { type SettingsPlace, settingsPlace } from "@/lib/settings/segment";
 
 const PlaceContext = createContext<SettingsPlace>({
@@ -18,7 +18,7 @@ const PlaceContext = createContext<SettingsPlace>({
  */
 export function SettingsPlaceProvider({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
-  const place = useMemo(() => settingsPlace(segments), [segments]);
+  const place = settingsPlace(segments);
 
   return (
     <PlaceContext.Provider value={place}>{children}</PlaceContext.Provider>

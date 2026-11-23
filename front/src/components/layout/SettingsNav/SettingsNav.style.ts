@@ -1,6 +1,6 @@
 "use client";
 
-import { styled, type Theme } from "@mui/material/styles";
+import { styled, type Theme } from "@mui/material";
 import NextLink from "next/link";
 import { bareList, rule, softRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";

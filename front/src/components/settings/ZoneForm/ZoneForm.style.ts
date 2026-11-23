@@ -1,7 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { styled, ToggleButtonGroup } from "@mui/material";
 import { fieldErrorClasses } from "@/components/ui/FieldError";
 import { bareFieldset } from "@/theme/rules";
 import { space } from "@/theme/tokens";

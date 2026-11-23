@@ -1,4 +1,4 @@
-import Skeleton from "@mui/material/Skeleton";
+import { Skeleton } from "@mui/material";
 import { structure } from "@/theme/tokens";
 import {
   PanelSkeletonFoot,

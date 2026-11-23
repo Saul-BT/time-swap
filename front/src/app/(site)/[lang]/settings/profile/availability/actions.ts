@@ -1,7 +1,7 @@
 "use server";
 
 import type { AvailabilityActionState } from "@/components/settings/AvailabilityForm";
-import { finishSave } from "@/lib/forms/actionState";
+import { finishSave } from "@/lib/api/mock";
 
 // FIXME(api): pretends to save. Replace `finishSave` with
 // PATCH /profile/me { availability, privacySettings.reveal.availability } (#5).

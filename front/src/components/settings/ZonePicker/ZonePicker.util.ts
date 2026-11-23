@@ -36,6 +36,20 @@ export function phaseFor(zone: Zone | null): ZonePickerPhase {
   return zone ? "set" : "empty";
 }
 
+/** Title and body of the warning card for the phases that show it. */
+export function noticeCopy(
+  copy: ZonePickerCopy,
+  phase: ZonePickerPhase,
+): { title: string; body: string } {
+  if (phase === "denied") {
+    return { title: copy.deniedTitle, body: copy.deniedBody };
+  }
+  if (phase === "unsupported") {
+    return { title: copy.unsupportedTitle, body: copy.unsupportedBody };
+  }
+  return { title: copy.emptyTitle, body: copy.emptyBody };
+}
+
 export const zonePickerClasses = createComponentClasses("ZonePicker", [
   "root",
   "notice",

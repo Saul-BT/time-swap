@@ -1,13 +1,12 @@
 "use client";
 
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import Button from "@mui/material/Button";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import { Autocomplete, Button, createFilterOptions } from "@mui/material";
 import { LocateFixed, MapPin } from "lucide-react";
 import { useState } from "react";
 import type { Zone } from "@/data/types";
 import { nearestZone } from "@/data/zones";
 import { interpolate } from "@/lib/i18n/interpolate";
+import AutocompleteInput from "@/lib/mui/AutocompleteInput";
 import Eyebrow from "../../ui/Eyebrow";
 import FormField from "../../ui/FormField";
 import Icon from "../../ui/Icon";
@@ -21,6 +20,7 @@ import {
   ZonePickerRoot,
 } from "./ZonePicker.style";
 import {
+  noticeCopy,
   phaseFor,
   type ZonePickerCopy,
   type ZonePickerPhase,
@@ -61,7 +61,7 @@ export default function ZonePicker({
   const [phase, setPhase] = useState<ZonePickerPhase>(() => phaseFor(value));
 
   const approximate = () => {
-    if (typeof navigator === "undefined" || !navigator.geolocation) {
+    if (!navigator.geolocation) {
       setPhase("unsupported");
       return;
     }
@@ -150,27 +150,14 @@ export default function ZonePicker({
             openOnFocus
             autoHighlight
             disabled={disabled}
-            renderInput={(params) => {
-              // InputBase only chains focus, blur and change from `inputProps`.
-              const { ref: htmlInputRef, ...htmlInput } =
-                params.slotProps.htmlInput;
-
-              return (
-                <OutlinedInput
-                  ref={params.slotProps.input.ref}
-                  className={params.slotProps.input.className}
-                  startAdornment={params.slotProps.input.startAdornment}
-                  endAdornment={params.slotProps.input.endAdornment}
-                  onMouseDown={params.slotProps.input.onMouseDown}
-                  disabled={params.disabled}
-                  inputRef={htmlInputRef}
-                  inputProps={{ ...htmlInput, "aria-describedby": describedBy }}
-                  placeholder={copy.pickerPlaceholder}
-                  autoFocus
-                  fullWidth
-                />
-              );
-            }}
+            renderInput={(params) => (
+              <AutocompleteInput
+                params={params}
+                placeholder={copy.pickerPlaceholder}
+                describedBy={describedBy}
+                autoFocus
+              />
+            )}
           />
         </FormField>
         {hiddenInput}
@@ -179,18 +166,7 @@ export default function ZonePicker({
   }
 
   const isRefusal = phase === "denied" || phase === "unsupported";
-  const title =
-    phase === "denied"
-      ? copy.deniedTitle
-      : phase === "unsupported"
-        ? copy.unsupportedTitle
-        : copy.emptyTitle;
-  const body =
-    phase === "denied"
-      ? copy.deniedBody
-      : phase === "unsupported"
-        ? copy.unsupportedBody
-        : copy.emptyBody;
+  const { title, body } = noticeCopy(copy, phase);
 
   return (
     <ZonePickerRoot className={zonePickerClasses.root}>

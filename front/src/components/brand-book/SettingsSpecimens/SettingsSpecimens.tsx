@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import { useState } from "react";
 import { SKILLS_CATALOG } from "@/data/catalog";
 import type { AvailabilityCell, RevealMoment, Zone } from "@/data/types";

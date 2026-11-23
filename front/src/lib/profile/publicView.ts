@@ -44,12 +44,10 @@ export function toPublicProfile(
   lookupZone: ZoneLookup,
 ): PublicProfile {
   const { reveal, visibleToVisitors } = profile.privacySettings;
-  // A profile closed to visitors treats a visitor like nobody: nothing optional.
-  const effective: RevealMoment =
-    viewer === "visitor" && !visibleToVisitors ? "visitor" : viewer;
+  // A profile closed to visitors shows a visitor nothing optional.
+  const closed = viewer === "visitor" && !visibleToVisitors;
   const show = (field: RevealableField) =>
-    !(viewer === "visitor" && !visibleToVisitors) &&
-    canSee(effective, reveal, field);
+    !closed && canSee(viewer, reveal, field);
   const zone = profile.approximateLocation
     ? lookupZone(profile.approximateLocation)
     : undefined;

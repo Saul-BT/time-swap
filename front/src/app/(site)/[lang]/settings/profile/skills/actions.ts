@@ -3,7 +3,7 @@
 import type { SkillsActionState } from "@/components/settings/SkillsForm";
 import { SKILLS_CATALOG } from "@/data/catalog";
 import type { CatalogEntry } from "@/data/types";
-import { finishSave } from "@/lib/forms/actionState";
+import { finishSave } from "@/lib/api/mock";
 
 function parseIds(
   formData: FormData,

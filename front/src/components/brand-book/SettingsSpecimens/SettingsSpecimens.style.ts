@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 const NAME = "SettingsSpecimens";

@@ -1,6 +1,6 @@
 "use client";
 
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { ChevronLeft, ExternalLink } from "lucide-react";
 import type { ReactNode } from "react";
 import type { AccountNavId } from "@/data/types";

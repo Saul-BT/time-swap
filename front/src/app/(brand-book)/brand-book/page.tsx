@@ -523,31 +523,15 @@ export default function BrandBookPage() {
               ),
             },
             {
-              label: "hideLabel",
+              label: "disabled",
               children: (
-                <>
-                  <Checkbox
-                    id="bb-check-cell"
-                    name="cell"
-                    label="Tuesday · Afternoon"
-                    hideLabel
-                  />
-                  <Checkbox
-                    id="bb-check-cell-on"
-                    name="cell"
-                    label="Tuesday · Evening"
-                    hideLabel
-                    defaultChecked
-                  />
-                  <Checkbox
-                    id="bb-check-cell-off"
-                    name="cell"
-                    label="Fixed"
-                    hideLabel
-                    defaultChecked
-                    disabled
-                  />
-                </>
+                <Checkbox
+                  id="bb-check-off"
+                  name="check-off"
+                  label="Fixed"
+                  defaultChecked
+                  disabled
+                />
               ),
             },
           ]}

@@ -1,5 +1,4 @@
-import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
+import { Skeleton, Typography } from "@mui/material";
 import { SETTINGS_SECTIONS } from "@/data/settings";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { getCompletion } from "@/lib/api/profile";

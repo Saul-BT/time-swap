@@ -1,8 +1,4 @@
-import {
-  REVEAL_ORDER,
-  type RevealableField,
-  type RevealMoment,
-} from "@/data/types";
+import type { RevealableField, RevealMoment } from "@/data/types";
 import { createComponentClasses } from "@/lib/mui/componentClasses";
 
 export type VisibilityMatrixCopy = {
@@ -25,10 +21,6 @@ export type VisibilityMatrixCopy = {
 };
 
 export type RevealMap = Record<RevealableField, RevealMoment>;
-
-export function isVisibleAt(chosen: RevealMoment, moment: RevealMoment) {
-  return REVEAL_ORDER.indexOf(moment) >= REVEAL_ORDER.indexOf(chosen);
-}
 
 export const visibilityMatrixClasses = createComponentClasses(
   "VisibilityMatrix",

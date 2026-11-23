@@ -1,19 +1,14 @@
 "use client";
 
-import Button from "@mui/material/Button";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Typography from "@mui/material/Typography";
-import { useRouter } from "next/navigation";
 import {
-  createContext,
-  type SyntheticEvent,
-  useContext,
-  useEffect,
-  useId,
-  useState,
-} from "react";
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
+import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, useId, useState } from "react";
 import { UnsavedChangesDialog } from "./UnsavedChanges.style";
 import {
   type UnsavedChangesCopy,
@@ -133,7 +128,3 @@ export function useUnsavedChanges(): UnsavedChangesContextValue {
     }
   );
 }
-
-export type GuardedNavigateEvent = SyntheticEvent & {
-  preventDefault: () => void;
-};

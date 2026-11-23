@@ -1,5 +1,6 @@
 "use client";
 
+import { sameItems } from "@/lib/forms/sameItems";
 import PanelForm from "../PanelForm";
 import RevealLadder from "../RevealLadder";
 import { type PanelSectionFormProps, usePanelForm } from "../usePanelForm";
@@ -20,16 +21,12 @@ export type AvailabilityFormProps = PanelSectionFormProps<
   revealId: string;
 };
 
-function sameCells(a: readonly string[], b: readonly string[]): boolean {
-  return a.length === b.length && a.every((cell) => b.includes(cell));
-}
-
 function isDirty(
   values: AvailabilityValues,
   saved: AvailabilityValues,
 ): boolean {
   return (
-    !sameCells(values.availability, saved.availability) ||
+    !sameItems(values.availability, saved.availability) ||
     values.reveal !== saved.reveal
   );
 }

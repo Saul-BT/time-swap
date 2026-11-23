@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import { TabularFigureRoot } from "../TabularFigure/TabularFigure.style";
 
 const NAME = "CharacterCount";

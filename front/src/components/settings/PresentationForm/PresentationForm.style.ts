@@ -1,7 +1,6 @@
 "use client";
 
-import Avatar from "@mui/material/Avatar";
-import { styled } from "@mui/material/styles";
+import { Avatar, styled } from "@mui/material";
 import { space } from "@/theme/tokens";
 
 const NAME = "PresentationForm";

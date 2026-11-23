@@ -1,7 +1,6 @@
 "use client";
 
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import { Avatar, Paper, styled } from "@mui/material";
 import { bareList, softRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
 
@@ -25,6 +24,15 @@ export const PublicProfileHead = styled("header", {
   alignItems: "center",
   gap: theme.spacing(space.sm + 1),
 }));
+
+export const PublicProfileAvatar = styled(Avatar, {
+  name: NAME,
+  slot: "Avatar",
+})({
+  width: 88,
+  height: 88,
+  fontSize: 32,
+});
 
 export const PublicProfileMeta = styled("ul", { name: NAME, slot: "Meta" })(
   ({ theme }) => ({

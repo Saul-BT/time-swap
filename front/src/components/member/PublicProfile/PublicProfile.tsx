@@ -1,6 +1,4 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Button, Typography } from "@mui/material";
 import { MapPin, Users, Wifi } from "lucide-react";
 import {
   findCatalogEntry,
@@ -18,6 +16,7 @@ import Icon from "../../ui/Icon";
 import SkillChipList from "../../ui/SkillChipList";
 import {
   PublicProfileAvailability,
+  PublicProfileAvatar,
   PublicProfileHead,
   PublicProfileHidden,
   PublicProfileMeta,
@@ -87,12 +86,9 @@ export default async function PublicProfile({
       ) : null}
 
       <PublicProfileHead className={publicProfileClasses.head}>
-        <Avatar
-          className={publicProfileClasses.avatar}
-          sx={{ width: 88, height: 88, fontSize: 32 }}
-        >
+        <PublicProfileAvatar className={publicProfileClasses.avatar}>
           {profile.initials}
-        </Avatar>
+        </PublicProfileAvatar>
         <div className={publicProfileClasses.identity}>
           <Eyebrow>{memberProfile.eyebrow}</Eyebrow>
           <Typography

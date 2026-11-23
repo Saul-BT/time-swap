@@ -309,11 +309,6 @@ const theme = createTheme({
           borderRadius: 0,
           color: color.ink,
           backgroundColor: "transparent",
-          fontFamily: fontFamily.body,
-          fontWeight: 700,
-          fontSize: "0.9375rem",
-          letterSpacing: "0.04em",
-          textTransform: "uppercase",
           "&:hover": { backgroundColor: color.line },
           [`&.${toggleButtonClasses.selected}`]: {
             backgroundColor: color.accent,
