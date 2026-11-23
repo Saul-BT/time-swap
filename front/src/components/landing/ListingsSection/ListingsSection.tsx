@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { Suspense } from "react";
 import ListingCard from "@/components/ui/ListingCard";
 import { getListingsPaged } from "@/data/listings";
 import { SECTION_ID } from "@/data/navigation";
@@ -13,10 +14,25 @@ import {
 } from "./ListingsSection.style";
 import { listingsSectionClasses } from "./ListingsSection.util";
 
+async function ListingsGrid() {
+  const listings = await getListingsPaged(1, 6); //todo tweak fetch size by screen size?
+
+  return (
+    <ListingsSectionGrid className={listingsSectionClasses.grid}>
+      {listings.map((listing) => (
+        <ListingsSectionItem
+          className={listingsSectionClasses.item}
+          key={listing.id}
+        >
+          <ListingCard listing={listing} />
+        </ListingsSectionItem>
+      ))}
+    </ListingsSectionGrid>
+  );
+}
+
 export default async function ListingsSection() {
   const { listings, common, placeholder } = await getDictionary();
-
-  const listingsBack = await getListingsPaged(1, 6); //todo tweak fetch size by screen size?
 
   return (
     // The hero above already carries its bottom padding, so the top edge is flushed.
@@ -27,16 +43,9 @@ export default async function ListingsSection() {
         note={common.sampleContent}
       />
 
-      <ListingsSectionGrid className={listingsSectionClasses.grid}>
-        {listingsBack.map((listing) => (
-          <ListingsSectionItem
-            className={listingsSectionClasses.item}
-            key={listing.id}
-          >
-            <ListingCard listing={listing} />
-          </ListingsSectionItem>
-        ))}
-      </ListingsSectionGrid>
+      <Suspense>
+        <ListingsGrid />
+      </Suspense>
 
       <ListingsSectionMore className={listingsSectionClasses.more}>
         <Button variant="outlined" href={`#${SECTION_ID.listings}`}>

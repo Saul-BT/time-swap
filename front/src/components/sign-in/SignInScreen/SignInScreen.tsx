@@ -1,4 +1,5 @@
 import { Link, Typography } from "@mui/material";
+import { Suspense } from "react";
 import { FOOTER_LINKS } from "@/data/navigation";
 import type { SignInErrorId } from "@/data/types";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
@@ -18,8 +19,12 @@ import { signInScreenClasses } from "./SignInScreen.util";
 
 export type SignInScreenProps = {
   action: SignInFormProps["action"];
-  error?: SignInErrorId;
+  error: Promise<SignInErrorId | undefined>;
 };
+
+async function SignInFormWithError({ action, error }: SignInScreenProps) {
+  return <SignInForm action={action} error={await error} />;
+}
 
 export default async function SignInScreen({
   action,
@@ -49,7 +54,9 @@ export default async function SignInScreen({
           </SignInScreenBrand>
 
           <SignInScreenMain className={signInScreenClasses.main}>
-            <SignInForm action={action} error={error} />
+            <Suspense fallback={<SignInForm action={action} />}>
+              <SignInFormWithError action={action} error={error} />
+            </Suspense>
           </SignInScreenMain>
 
           <Typography

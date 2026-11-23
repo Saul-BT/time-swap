@@ -1,63 +1,44 @@
-"use server";
-
 import { Button, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
+import { getCategories } from "@/data/categories";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { Locale } from "@/i18n/config";
-import { getCategories } from "@/data/categories";
+import { createListingAction } from "./actions";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { createAd } = await getDictionary();
   return { title: createAd.title };
 }
 
-export async function createListingAction(
-    locale: Locale,
-    formData: FormData,
-): Promise<void> {
-  //get jwt token from cookies
-  const cookieStore = await cookies();
-  const token = cookieStore.get('accessToken')?.value;
+async function CategoryField({ label }: { label: string }) {
+  const categories = await getCategories();
 
-  const response = await fetch(
-    `${process.env.BACKEND_URL}/listing/create`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        title: formData.get('title'),
-        description: formData.get('description'),
-        kind: formData.get('kind'),
-        mode: formData.get('mode'),
-        categoryId: formData.get('categoryId'),
-        duration: formData.get('hours'),
-        location: formData.get('area'),
-      }),
-    },
+  return (
+    <TextField
+      required
+      select
+      name="categoryId"
+      label={label}
+      defaultValue={categories[0]?.id}
+      fullWidth
+    >
+      {categories.map((category) => (
+        <MenuItem key={category.id} value={category.id}>
+          {category.name}
+        </MenuItem>
+      ))}
+    </TextField>
   );
-
-  if (!response.ok) {
-      throw new Error('Failed to create listing: ' + response.statusText);
-  }
-
-  redirect(localizePath(locale, "loggedHome"));
 }
 
 export default async function CreateAdPage() {
-  const { createAd, listings, categories } = await getDictionary();
+  const { createAd, listings } = await getDictionary();
   const locale = await getLocale();
   const loggedHomeHref = localizePath(locale, "loggedHome");
-
-  const categoryList = await getCategories();
 
   //pass the locale to the action beforehand
   const formAction = createListingAction.bind(null, locale);
@@ -102,20 +83,17 @@ export default async function CreateAdPage() {
                 multiline
                 minRows={4}
               />
-              <TextField
-                required
-                select
-                name="categoryId"
-                label={createAd.categoryLabel}
-                defaultValue={categoryList[0]?.id}
-                fullWidth
+              <Suspense
+                fallback={
+                  <TextField
+                    disabled
+                    label={createAd.categoryLabel}
+                    fullWidth
+                  />
+                }
               >
-                {categoryList.map((category) => (
-                  <MenuItem key={category.id} value={category.id}>
-                    {category.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+                <CategoryField label={createAd.categoryLabel} />
+              </Suspense>
               <TextField
                 required
                 select

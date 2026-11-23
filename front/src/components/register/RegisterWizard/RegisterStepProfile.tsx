@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import { use } from "react";
 import type { Dictionary } from "@/i18n/types";
 import TagToggleGroup from "../TagToggleGroup";
 import {
@@ -15,7 +16,7 @@ import {
 
 export type RegisterStepProfileProps = {
   copy: Dictionary["register"]["profile"];
-  tagOptions: readonly CategoryOption[];
+  tagOptions: Promise<readonly CategoryOption[]>;
   skills: ReadonlySet<number>;
   interests: ReadonlySet<number>;
   onToggleSkill: (id: number) => void;
@@ -37,6 +38,8 @@ export default function RegisterStepProfile({
   onSkip,
   onSave,
 }: RegisterStepProfileProps) {
+  const options = use(tagOptions);
+
   return (
     <div className={registerWizardClasses.form}>
       <RegisterFormTitle variant="h2" component="h1">
@@ -47,7 +50,7 @@ export default function RegisterStepProfile({
       <RegisterProfileGroup>
         <TagToggleGroup
           legend={copy.skillsLegend}
-          options={tagOptions}
+          options={options}
           selected={skills}
           onToggle={onToggleSkill}
         />
@@ -56,7 +59,7 @@ export default function RegisterStepProfile({
       <RegisterProfileGroup>
         <TagToggleGroup
           legend={copy.interestsLegend}
-          options={tagOptions}
+          options={options}
           selected={interests}
           onToggle={onToggleInterest}
         />

@@ -22,13 +22,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function SignInPage({
   searchParams,
 }: PageProps<"/[lang]/sign-in">) {
-  const { error } = await searchParams;
   const locale = await getLocale();
-
-  return (
-    <SignInScreen
-      action={signIn.bind(null, locale)}
-      error={isSignInErrorId(error) ? error : undefined}
-    />
+  const error = searchParams.then(({ error }) =>
+    isSignInErrorId(error) ? error : undefined,
   );
+
+  return <SignInScreen action={signIn.bind(null, locale)} error={error} />;
 }
