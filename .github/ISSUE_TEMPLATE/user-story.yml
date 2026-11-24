@@ -1,0 +1,79 @@
+name: User story
+description: A vertical slice of the product, back end and front end.
+title: "<Verb> <what>"
+labels: ["historia"]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: User story
+      description: Who wants what, and why.
+      value: |
+        > **As** …,
+        > **I want** …,
+        > **so that** ….
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Value
+      description: Why it matters for members or the community. Cite the ADR if one applies.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What exists today, related issues, open questions.
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      value: |
+        **Includes**
+        -
+
+        **Excludes**
+        -
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Given / when / then. Reference the IDs in time-swap-mvp-criterios-aceptacion.md.
+      value: |
+        **XXX-00 Name**
+        - **Case:** given …, when …, then ….
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ] **Back:**
+        - [ ] **Front:**
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      value: |
+        - **Depends on:**
+        - **Completes:**
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Links to docs/interfaces.md, docs/domain-and-implementation.md, ADRs, designs.
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of done
+      value: |
+        - [ ] Every acceptance criterion cited is verified end to end: screen + API with real data, no sample data.
+        - [ ] Back end: tests for the criteria, including authorization cases, and Swagger updated.
+        - [ ] Front end: copy in dictionaries (ADR 0010), Relevo design system and MUI theme (ADR 0008), keyboard-navigable and responsive.
+        - [ ] No private data travels in responses to someone who should not see it, checked on the JSON.
+        - [ ] `lint` and `build` pass for back and front.
