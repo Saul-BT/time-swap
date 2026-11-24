@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import Section from "@/components/layout/Section";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
@@ -37,9 +38,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function MemberProfilePage({
+async function MemberProfile({
   params,
-}: PageProps<"/[lang]/members/[id]">) {
+}: Pick<PageProps<"/[lang]/members/[id]">, "params">) {
   const { id } = await params;
   const [member, viewerId] = await Promise.all([
     getMember(id),
@@ -56,12 +57,22 @@ export default async function MemberProfilePage({
     findZone(location.zoneId),
   );
 
+  return <PublicProfile profile={profile} own={member.userId === viewerId} />;
+}
+
+export default function MemberProfilePage({
+  params,
+}: PageProps<"/[lang]/members/[id]">) {
   return (
     <>
       <SiteHeader />
       <main>
         <Section>
-          <PublicProfile profile={profile} own={member.userId === viewerId} />
+          {/* Once the shell streams, `notFound()` answers 200 + noindex; a
+              real 404 would have to come from `proxy.ts`. */}
+          <Suspense>
+            <MemberProfile params={params} />
+          </Suspense>
         </Section>
       </main>
       <SiteFooter />

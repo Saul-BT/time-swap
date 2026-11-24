@@ -2,11 +2,11 @@
 
 import type { PresentationActionState } from "@/components/settings/PresentationForm";
 import { BIO_MAX_LENGTH, DISPLAY_NAME_MAX_LENGTH } from "@/data/settings";
-import { finishSave } from "@/lib/api/mock";
+import { saveProfile } from "@/lib/api/profile";
 import type { FieldErrors } from "@/lib/forms/actionState";
 import { containsContactData } from "@/lib/profile/validation";
 
-// FIXME(api): validates and pretends to save. Replace `finishSave` with
+// FIXME(api): `saveProfile` will send
 // PATCH /profile/me { displayName, pronouns, bio, privacySettings.reveal.bio }
 // (#5) and map its validation errors onto `PresentationErrorId`.
 export async function savePresentation(
@@ -30,5 +30,5 @@ export async function savePresentation(
     return { status: "invalid", fieldErrors };
   }
 
-  return finishSave(formData);
+  return saveProfile(formData);
 }

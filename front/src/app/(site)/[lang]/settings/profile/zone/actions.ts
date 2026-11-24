@@ -6,11 +6,11 @@ import {
 } from "@/components/settings/ZoneForm";
 import type { Modality } from "@/data/types";
 import { findZone } from "@/data/zones";
-import { finishSave } from "@/lib/api/mock";
+import { saveProfile } from "@/lib/api/profile";
 import type { FieldErrors } from "@/lib/forms/actionState";
 
 // FIXME(api): checks the rule that crosses two fields — in person needs a zone —
-// then pretends to save. Replace `finishSave` with PATCH /profile/me
+// then `saveProfile` will send PATCH /profile/me
 // { modalities, approximateLocation, privacySettings.reveal.neighborhood } (#5).
 // The zone catalogue and the precision scale are the API's to enforce.
 export async function saveZone(
@@ -37,5 +37,5 @@ export async function saveZone(
     return { status: "invalid", fieldErrors };
   }
 
-  return finishSave(formData);
+  return saveProfile(formData);
 }

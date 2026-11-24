@@ -3,7 +3,7 @@
 import type { SkillsActionState } from "@/components/settings/SkillsForm";
 import { SKILLS_CATALOG } from "@/data/catalog";
 import type { CatalogEntry } from "@/data/types";
-import { finishSave } from "@/lib/api/mock";
+import { saveProfile } from "@/lib/api/profile";
 
 function parseIds(
   formData: FormData,
@@ -15,8 +15,8 @@ function parseIds(
     .filter((id) => catalog.some((entry) => entry.id === id));
 }
 
-// FIXME(api): checks that at least one skill was chosen, then pretends to save.
-// Replace `finishSave` with PATCH /profile/me { skills, interests,
+// FIXME(api): checks that at least one skill was chosen, then `saveProfile`
+// will send PATCH /profile/me { skills, interests,
 // privacySettings.reveal.skills, privacySettings.reveal.interests } (#5). The
 // catalogues and the reveal scale are the API's to enforce.
 export async function saveSkills(
@@ -29,5 +29,5 @@ export async function saveSkills(
     return { status: "invalid", fieldErrors: { skills: "skillsRequired" } };
   }
 
-  return finishSave(formData);
+  return saveProfile(formData);
 }
