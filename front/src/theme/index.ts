@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  buttonClasses,
   createTheme,
   inputLabelClasses,
   outlinedInputClasses,
@@ -115,6 +116,18 @@ const theme = createTheme({
           borderRadius: 0,
           boxShadow: "none",
           "&:hover": { boxShadow: "none" },
+          // Any variant, disabled: a line-coloured frame and muted text, never
+          // a faded accent that still reads as the action.
+          [`&.${buttonClasses.disabled}`]: {
+            backgroundColor: "transparent",
+            borderColor: color.line,
+            color: color.inkMuted,
+          },
+        },
+        sizeSmall: {
+          minHeight: structure.compactControlHeight,
+          padding: "11px 16px",
+          fontSize: "0.875rem",
         },
         contained: {
           backgroundColor: color.accent,

@@ -37,3 +37,31 @@ export const bareList = {
   margin: 0,
   padding: 0,
 } as const;
+
+/**
+ * 4 px accent bar on one edge, drawn as a pseudo-element: the current page in
+ * a navigation, today in a calendar. Needs a positioned host.
+ */
+export const currentBar = (theme: Theme, edge: "top" | "bottom") =>
+  ({
+    content: '""',
+    position: "absolute",
+    insetInline: 0,
+    [edge]: 0,
+    height: 4,
+    backgroundColor: theme.palette.primary.main,
+    pointerEvents: "none",
+  }) as const;
+
+/** Hidden on screen, still read aloud. */
+export const visuallyHidden = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  margin: -1,
+  padding: 0,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+} as const;

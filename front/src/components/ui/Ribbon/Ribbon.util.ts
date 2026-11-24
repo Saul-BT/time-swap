@@ -24,6 +24,15 @@ const RIBBON_SPECS = {
       { tone: "brake", weight: 2 },
     ],
   },
+  member: {
+    height: structure.memberRibbonHeight,
+    segments: [
+      { tone: "accent", weight: 3 },
+      { tone: "ink", weight: 1.2 },
+      { tone: "brake", weight: 2 },
+      { tone: "line", weight: 1.8 },
+    ],
+  },
   offer: {
     height: structure.cardRibbonHeight,
     segments: [{ tone: "accent", weight: 1 }],

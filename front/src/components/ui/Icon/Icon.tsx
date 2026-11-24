@@ -1,7 +1,13 @@
 import type { LucideIcon } from "lucide-react";
 import { iconSize } from "@/theme/tokens";
 import { IconRoot } from "./Icon.style";
-import { ICON_STROKE_WIDTH, type IconSize, iconClasses } from "./Icon.util";
+import {
+  ICON_STROKE_LINECAP,
+  ICON_STROKE_LINEJOIN,
+  ICON_STROKE_WIDTH,
+  type IconSize,
+  iconClasses,
+} from "./Icon.util";
 
 export type IconProps = {
   icon: LucideIcon;
@@ -10,7 +16,7 @@ export type IconProps = {
   label?: string;
 };
 
-/** The only way a lucide glyph enters the UI: fixed sizes, stroke 2, never an emoji. */
+/** The only way a lucide glyph enters the UI: fixed sizes, stroke 2 with square ends, never an emoji. */
 export default function Icon({ icon: Glyph, size = "md", label }: IconProps) {
   return (
     <IconRoot
@@ -22,6 +28,8 @@ export default function Icon({ icon: Glyph, size = "md", label }: IconProps) {
       <Glyph
         size={iconSize[size]}
         strokeWidth={ICON_STROKE_WIDTH}
+        strokeLinecap={ICON_STROKE_LINECAP}
+        strokeLinejoin={ICON_STROKE_LINEJOIN}
         absoluteStrokeWidth
         aria-hidden
       />

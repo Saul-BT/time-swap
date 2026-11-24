@@ -21,14 +21,232 @@
     "signIn": "Entrar",
     "signUp": "Crear cuenta"
   },
-  "loggedHome": {
-    "title": "Tu inicio",
-    "lead": "Interfaz temporal: aquí verías lo que pide tu atención. No hay sesión real todavía.",
-    "balanceLabel": "Saldo",
-    "balanceValue": "2 h",
-    "attentionTitle": "Pendiente",
+  "memberNav": {
+    "label": "Principal",
+    "home": "Inicio",
     "discover": "Descubrir",
-    "publish": "Publicar anuncio"
+    "publish": "Publicar",
+    "messages": "Mensajes",
+    "profile": "Perfil",
+    "unread": {
+      "one": "{count} sin leer",
+      "other": "{count} sin leer"
+    },
+    "profileLabel": "Tu perfil y actividad"
+  },
+  "loggedHome": {
+    "metadata": {
+      "title": "Tu inicio · Time Swap"
+    },
+    "greeting": "Hola, {name}",
+    "sync": {
+      "upToDate": "Al día",
+      "live": "En vivo",
+      "offline": "Sin conexión"
+    },
+    "balance": {
+      "label": "Tu saldo",
+      "shortLabel": "Saldo",
+      "hours": "{hours} h",
+      "canReceive": {
+        "before": "Puedes recibir hasta ",
+        "after": " más"
+      },
+      "canReceiveFirstTime": "Puedes recibir hasta {hours} antes de dar ninguna.",
+      "wallet": "Cartera"
+    },
+    "week": {
+      "label": "Tu semana",
+      "pickDay": "Elige día. Semana del {range}",
+      "change": "Cambiar semana",
+      "previous": "Semana anterior",
+      "next": "Semana siguiente",
+      "current": "Esta",
+      "today": "Hoy",
+      "free": "Libre",
+      "marks": {
+        "one": "{count} cosa",
+        "other": "{count} cosas"
+      }
+    },
+    "pending": {
+      "title": "Te toca",
+      "sort": {
+        "label": "Ordenar",
+        "urgency": "Urgencia",
+        "kind": "Tipo"
+      },
+      "today": "Hoy",
+      "undated": "Sin fecha",
+      "dueSoon": {
+        "title": "Vence pronto · {day}",
+        "show": "Ver {day}"
+      },
+      "emptyDay": "Nada para este día. Lo que no tiene fecha sigue aquí en cuanto llegue.",
+      "upToDate": {
+        "title": "Nada te espera",
+        "body": "Te avisamos aquí en cuanto alguien te escriba o responda."
+      },
+      "isNew": "Nuevo · {when}",
+      "waitingYou": "Esperando tu respuesta",
+      "kinds": {
+        "dispute": {
+          "label": "Disputa abierta",
+          "title": "{listing} con {name}",
+          "detail": "Las horas no se mueven hasta que se resuelva. Añade tu versión antes del {day}.",
+          "mark": "Límite disputa",
+          "dueSoon": "disputa con {name}",
+          "primary": "Añadir mi versión"
+        },
+        "contactRequest": {
+          "label": "Solicitud de contacto",
+          "title": "{name} quiere hablar contigo",
+          "detail": "Sobre «{listing}». Caduca el {day}. Rechazar no pide explicaciones.",
+          "mark": "Caduca: {name}",
+          "dueSoon": "solicitud de {name}",
+          "primary": "Aceptar",
+          "secondary": "Rechazar"
+        },
+        "proposal": {
+          "label": "Propuesta de acuerdo · versión {version}",
+          "title": "{listing} con {name}",
+          "detail": "{when} · {mode} · {hours} en créditos.",
+          "mark": "Responder a {name}",
+          "dueSoon": "propuesta de {name}",
+          "primary": "Revisar",
+          "changes": {
+            "time": "Cambió la hora.",
+            "day": "Cambió el día.",
+            "hours": "Cambiaron las horas."
+          },
+          "superseded": {
+            "title": "{name} acaba de cambiar la propuesta",
+            "body": "Ahora: {now} (antes {before}). La versión que ibas a aceptar ya no vale.",
+            "action": "Revisar versión {version}"
+          }
+        },
+        "confirmExchange": {
+          "label": "Confirmar intercambio",
+          "title": "{name} terminó «{listing}»",
+          "detail": {
+            "received": "Recibiste {hours}. Sin tu confirmación no se mueve ninguna hora.",
+            "gave": "Diste {hours}. Sin tu confirmación no se mueve ninguna hora."
+          },
+          "mark": "Confirmar a {name}",
+          "dueSoon": "confirmar a {name}",
+          "primary": "Confirmar",
+          "secondary": "No coincide"
+        },
+        "messages": {
+          "label": {
+            "one": "{count} mensaje sin leer",
+            "other": "{count} mensajes sin leer"
+          },
+          "title": "{name}: «{excerpt}»",
+          "detail": "Conversación sobre «{listing}».",
+          "mark": "Mensaje de {name}",
+          "dueSoon": "mensajes de {name}",
+          "primary": "Responder"
+        },
+        "rating": {
+          "label": "Valoración pendiente",
+          "title": "¿Qué tal con {name}?",
+          "detail": "«{listing}» se cerró {when}. Valorar ayuda a otras personas a decidir.",
+          "mark": "Valorar a {name}",
+          "dueSoon": "valoración de {name}",
+          "primary": "Valorar"
+        }
+      }
+    },
+    "waiting": {
+      "title": "Esperando a otros",
+      "sentRequest": {
+        "title": "Solicitud enviada a {name}",
+        "detail": {
+          "one": "{sent} · caduca en {count} día",
+          "other": "{sent} · caduca en {count} días"
+        },
+        "action": "Retirar"
+      },
+      "proposalReview": {
+        "title": "{name} revisa tu propuesta",
+        "detail": "«{listing}» · versión {version}",
+        "action": "Ver"
+      }
+    },
+    "appointments": {
+      "title": "Próximas citas",
+      "with": "Con {name}",
+      "give": "das {hours}",
+      "receive": "recibes {hours}",
+      "awaitingYou": "falta tu sí"
+    },
+    "ownListings": {
+      "title": "Tus anuncios",
+      "active": {
+        "one": "{count} activo",
+        "other": "{count} activos"
+      },
+      "expiresTitled": "«{title}» caduca el {day}",
+      "pausedTitled": "«{title}» en pausa",
+      "expiresCount": {
+        "one": "{count} caduca el {day}",
+        "other": "{count} caducan el {day}"
+      },
+      "pausedCount": {
+        "one": "{count} en pausa",
+        "other": "{count} en pausa"
+      },
+      "manage": "Gestionar"
+    },
+    "notices": {
+      "unverified": {
+        "title": "Todavía no has verificado el correo",
+        "body": "Busca el enlace que te enviamos a {email}. Hasta entonces puedes mirar, pero no escribir a nadie.",
+        "resend": "Reenviar enlace",
+        "changeEmail": "Cambiar correo",
+        "reason": "Verifica tu correo para responder."
+      },
+      "offline": {
+        "title": "Sin conexión",
+        "body": "Te mostramos lo último que cargamos, {when}. Responder vuelve a funcionar al recuperar la red.",
+        "retry": "Reintentar",
+        "reason": "Sin conexión: podrás responder al recuperar la red."
+      },
+      "live": {
+        "update": "{name} aceptó tu propuesta de «{listing}».",
+        "action": "Ver acuerdo"
+      }
+    },
+    "firstTime": {
+      "lead": "Aún no tienes nada pendiente. Tres pasos y la gente de tu zona podrá encontrarte.",
+      "title": "Para empezar",
+      "progress": "{done} de {total}",
+      "steps": {
+        "area": {
+          "title": "Pon tu zona aproximada",
+          "body": "Sin ella no puedes publicar ni filtrar cerca de ti. Solo se ve el barrio.",
+          "action": "Añadir zona"
+        },
+        "publish": {
+          "title": "Publica qué sabes hacer",
+          "body": "Una oferta basta para que te encuentren. Sin precio: 1 hora es 1 hora.",
+          "action": "Publicar oferta"
+        },
+        "discover": {
+          "title": "Mira qué circula cerca",
+          "body": "Puedes pedir ayuda desde hoy aunque aún no hayas dado ninguna.",
+          "action": "Descubrir"
+        }
+      },
+      "factsTitle": "Cómo funciona tu tiempo",
+      "facts": {
+        "oneHourOneCredit": "= 1 crédito, siempre",
+        "debitLimit": "puedes recibir antes de dar",
+        "noMoney": "nada se compra ni se vende"
+      }
+    },
+    "loading": "Cargando tu inicio"
   },
   "browseListings": {
     "title": "Anuncios",

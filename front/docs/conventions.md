@@ -10,18 +10,20 @@ src/
     (site)/[lang]/        localized site; root layout + pages
     (site)/[lang]/sign-in/  sign-in route; `actions.ts` holds its server action
     (site)/[lang]/recover/  access recovery, placeholder until the flow is designed
-    (site)/[lang]/home/, listings/  temporary member home and listings (browse, new, [id]), UI only
+    (site)/[lang]/home/   member home on sample data; `?state=` switches its data states, `loading.tsx` its skeleton
+    (site)/[lang]/listings/  temporary listings (browse, new, [id]), UI only
     (brand-book)/brand-book/   design-system reference, outside the locale, English only
     globals.css           html/body resets only; everything else is theme
   components/
     ui/        presentational primitives, no data, no domain (Ribbon, Eyebrow, TabularFigure…)
-    layout/    page chrome and providers (SiteHeader, Section, AppProviders…)
+    layout/    page chrome and providers (SiteHeader, MemberShell, Section, AppProviders…)
     landing/   sections of the landing; read data + dictionary
     sign-in/   the sign-in screen: form, editorial panel, split layout
+    logged-home/  the member home: week strip, "Te toca", side column, states
     brand-book/  components used only by /brand-book
   data/      content structure (ids, order) and sample content — see its README
   i18n/      locales, dictionaries, server-only loader
-  lib/       generic helpers by topic: color/, i18n/, mui/
+  lib/       generic helpers by topic: color/, date/, i18n/, mui/
   theme/     tokens.ts (values), rules.ts (style fragments), fonts.ts, index.ts (createTheme)
   proxy.ts   locale redirect (Next 16 name for middleware)
 ```
@@ -51,11 +53,16 @@ Ribbon/
 - **No empty styled slots.** A slot with no styles is a plain tag with `className={xClasses.slot}`; `styled()` is for styles, not for naming.
 - **Links go through `next/link`.** The theme sets `LinkBehavior` (`src/lib/mui/LinkBehavior.tsx`) as `MuiLink`'s component and `MuiButtonBase`'s `LinkComponent`, so `<Link href>` and `<Button href>` already render one. A custom link slot is `styled(NextLink)`, never `styled("a")`.
 - Lists stay real lists (`ul`/`li`, `dl`/`dt`/`dd`, `blockquote`, `figure`) with an accessible name. Decorative elements get `aria-hidden`.
-- **Icons are lucide through `ui/Icon`**: sizes come from `iconSize`, stroke 2, `aria-hidden` unless a `label` is given. No inline `<svg>`, no emoji.
+- **Icons are lucide through `ui/Icon`**: sizes come from `iconSize`, stroke 2 with square caps and mitred joins, `aria-hidden` unless a `label` is given. No inline `<svg>`, no emoji.
+- **Signed-in pages render inside `layout/MemberShell`** (header of cells, tab bar on phones). Pass the current destination; it sets `aria-current="page"`. `SiteHeader` is the public chrome only.
+- **Breakpoint swaps are CSS, not JS.** When phones and desktop need different markup, render both and hide one with `display: none` per breakpoint; never `useMediaQuery` for layout (it flashes on hydration).
+- **A server component can hand rendered nodes to a client one.** Interactive shells (`LoggedHomeBoard`) receive rows as `ReactNode` plus the few fields they filter on, so the dictionary never reaches the browser.
 
 ## Theme and design system
 
 - Five rules that do not bend (`../../docs/sistema-de-diseno.md`): one accent; radius 0; 2 px rule and no shadows; the brake only marks something stopped or under review; tabular figures for any number compared vertically (`TabularFigure`).
+- Dense controls (row actions, segmented controls) use `Button size="small"` / `compactControlHeight` (44 px); everything else keeps `controlHeight` (52 px).
+- Accent bars that mark "current" or "today" are `currentBar()` pseudo-elements from `src/theme/rules.ts`, not `box-shadow`.
 - Read values through the theme: `theme.palette.*`, `theme.spacing(space.md)`, `theme.system.*`, helpers in `src/theme/rules.ts`. A hex literal outside `tokens.ts` is a defect.
 - Spacing multipliers are `space.xs…xl` (1, 2, 4, 7, 12). Half steps like `space.sm + 1` are allowed when the system spec says so.
 - Type scale is data in `tokens.ts` (`typeScale`), consumed by `createTheme` and by the brand book. Headlines use line height 1.06, not the spec's 0.98 (ADR 0008).
@@ -69,6 +76,8 @@ Ribbon/
 - `es.json` is the source of truth; `en.json` must have the same shape or the build fails. Keys are camelCase, nested by screen section (`hero.search.submit`).
 - Server components call `getDictionary()` / `getLocale()` from `src/i18n/dictionary.ts`. Both read the root param with `next/root-params`; no locale prop drilling.
 - Variables inside copy use `{name}` and `interpolate()`. Punctuation and separators (`·`) are code, not copy.
+- Counts use `{ one, other }` objects and `plural()` from `src/lib/i18n/plural.ts`.
+- Dates are `CalendarDay` strings (`YYYY-MM-DD`) and are formatted with `src/lib/date/calendarDay.ts`, which wraps `Intl` in UTC so server and browser agree. Relative times ("hace 20 minutos") are computed on the server, never in a client component.
 - Sample/user-written content (`src/data/listings.ts`, `members.ts`) is **not** translated; ids that map to copy (`categories`, `filters`, `nav`) are typed from the dictionary so an untranslated id fails the build.
 - Client components must not import `src/i18n/dictionary.ts`. Import only the `Dictionary` type from `src/i18n/types.ts` if a shape is needed.
 
@@ -112,5 +121,7 @@ No runner installed. Decision pending: the candidate is Vitest + Testing Library
 - **Uppercase Spanish headlines clip at line height 0.98** (ÁYUDA, PEQUEÑA). 1.06 is the floor.
 - **MUI 9 needs `@emotion/react` and `@emotion/styled` installed** even though they are listed as optional peers: `@mui/styled-engine` requires them at runtime.
 - **Pigment CSS is not an option** while the app builds with Turbopack: its Next plugin is webpack-only and the project is on hold. Emotion + `styled()` is the decision (ADR 0009).
+- **`overflow-x: hidden` on `html`/`body` breaks `position: sticky`**: it makes `body` the scroll container. `globals.css` uses `clip`.
+- **MUI 9 dropped system props on `Typography`** (`fontWeight`, `mt`…). Put them in a styled slot.
 - **`next dev` rewrites the block at the end of `AGENTS.md`.** Leave it; commit it with the rest.
 - **Two root layouts** (`(site)/[lang]` and `(brand-book)`) each load `globals.css` and `AppProviders`. Fonts are declared once in `theme/fonts.ts` for that reason.

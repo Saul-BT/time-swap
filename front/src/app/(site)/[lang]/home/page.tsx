@@ -1,81 +1,55 @@
-import { Button, Stack, Typography } from "@mui/material";
 import type { Metadata } from "next";
-import Section from "@/components/layout/Section";
-import SiteFooter from "@/components/layout/SiteFooter";
-import SiteHeader from "@/components/layout/SiteHeader";
-import { ATTENTION_ITEMS } from "@/data/attention";
+import { redirect } from "next/navigation";
+import { connection } from "next/server";
+import MemberShell from "@/components/layout/MemberShell";
+import LoggedHomeScreen from "@/components/logged-home/LoggedHomeScreen";
+import LoggedHomeSkeleton from "@/components/logged-home/LoggedHomeSkeleton";
+import { getSampleMemberHome, isLoggedHomeState } from "@/data/logged-home";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
-import { localizePath } from "@/i18n/routes";
+import { localizePath, routeAlternates } from "@/i18n/routes";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { loggedHome } = await getDictionary();
-  return { title: loggedHome.title };
+  const locale = await getLocale();
+
+  return {
+    title: loggedHome.metadata.title,
+    alternates: {
+      canonical: localizePath(locale, "loggedHome"),
+      languages: routeAlternates("loggedHome"),
+    },
+  };
 }
 
-// FIXME: Temporary member home: UI only, no session and no backend (revist).
-export default async function LoggedHomePage() {
-  const { loggedHome } = await getDictionary();
+// FIXME(auth): UI only. No session is read: the member comes from sample data
+// and `?state=` switches between its data states (see `LOGGED_HOME_STATES`).
+// Read the session and fetch the member home instead once the API exists.
+export default async function LoggedHomePage({
+  searchParams,
+}: PageProps<"/[lang]/home">) {
+  const { state } = await searchParams;
   const locale = await getLocale();
-  const publishHref = localizePath(locale, "createAd");
-  const listingsHref = localizePath(locale, "listings");
+  const scenario = isLoggedHomeState(state) ? state : "default";
+
+  if (scenario === "sessionExpired") {
+    redirect(`${localizePath(locale, "signIn")}?error=sessionExpired`);
+  }
+
+  await connection();
+  const now = new Date();
+  const home = getSampleMemberHome(now, scenario);
 
   return (
-    <>
-      <SiteHeader />
-      <main>
-        <Section>
-          <Typography variant="h2" gutterBottom>
-            {loggedHome.title}
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 4, maxWidth: 640 }}>
-            {loggedHome.lead}
-          </Typography>
-
-          <Typography variant="overline" component="p" color="textSecondary">
-            {loggedHome.balanceLabel}
-          </Typography>
-          <Typography variant="h3" component="p" sx={{ mb: 4 }}>
-            {loggedHome.balanceValue}
-          </Typography>
-
-          <Typography variant="h3" component="h2" gutterBottom>
-            {loggedHome.attentionTitle}
-          </Typography>
-          <Stack
-            component="ul"
-            spacing={2}
-            sx={{ listStyle: "none", p: 0, m: 0, mb: 4, maxWidth: 640 }}
-          >
-            {ATTENTION_ITEMS.map((item) => (
-              <Stack
-                key={item.id}
-                component="li"
-                spacing={0.5}
-                sx={{
-                  borderBottom: 2,
-                  borderColor: "divider",
-                  pb: 2,
-                }}
-              >
-                <Typography variant="subtitle1">{item.label}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {item.detail}
-                </Typography>
-              </Stack>
-            ))}
-          </Stack>
-
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-            <Button variant="contained" href={publishHref}>
-              {loggedHome.publish}
-            </Button>
-            <Button variant="outlined" href={listingsHref}>
-              {loggedHome.discover}
-            </Button>
-          </Stack>
-        </Section>
-      </main>
-      <SiteFooter />
-    </>
+    <MemberShell
+      current="home"
+      unreadMessages={home.unreadMessages}
+      initials={home.member.initials}
+    >
+      {scenario === "loading" ? (
+        <LoggedHomeSkeleton />
+      ) : (
+        <LoggedHomeScreen home={home} now={now} />
+      )}
+    </MemberShell>
   );
 }
