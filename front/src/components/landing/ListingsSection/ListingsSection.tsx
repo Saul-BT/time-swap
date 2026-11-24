@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { Suspense } from "react";
-import ListingCard from "@/components/ui/ListingCard";
+import ListingCard, { ListingCardSkeleton } from "@/components/ui/ListingCard";
 import { getListingsPaged } from "@/data/listings";
 import { SECTION_ID } from "@/data/navigation";
 import { getDictionary } from "@/i18n/dictionary";
@@ -14,8 +14,26 @@ import {
 } from "./ListingsSection.style";
 import { listingsSectionClasses } from "./ListingsSection.util";
 
+const PAGE_SIZE = 6; //todo tweak fetch size by screen size?
+
+function ListingsGridSkeleton() {
+  return (
+    <ListingsSectionGrid className={listingsSectionClasses.grid}>
+      {Array.from({ length: PAGE_SIZE }, (_, index) => (
+        <ListingsSectionItem
+          className={listingsSectionClasses.item}
+          // biome-ignore lint/suspicious/noArrayIndexKey: placeholders have no identity.
+          key={index}
+        >
+          <ListingCardSkeleton />
+        </ListingsSectionItem>
+      ))}
+    </ListingsSectionGrid>
+  );
+}
+
 async function ListingsGrid() {
-  const listings = await getListingsPaged(1, 6); //todo tweak fetch size by screen size?
+  const listings = await getListingsPaged(1, PAGE_SIZE);
 
   return (
     <ListingsSectionGrid className={listingsSectionClasses.grid}>
@@ -43,7 +61,7 @@ export default async function ListingsSection() {
         note={common.sampleContent}
       />
 
-      <Suspense>
+      <Suspense fallback={<ListingsGridSkeleton />}>
         <ListingsGrid />
       </Suspense>
 
