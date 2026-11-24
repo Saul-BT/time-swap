@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import MemberShell from "@/components/layout/MemberShell";
 import LoggedHomeScreen from "@/components/logged-home/LoggedHomeScreen";
 import LoggedHomeSkeleton from "@/components/logged-home/LoggedHomeSkeleton";
@@ -34,6 +35,7 @@ export default async function LoggedHomePage({
     redirect(`${localizePath(locale, "signIn")}?error=sessionExpired`);
   }
 
+  await connection();
   const now = new Date();
   const home = getSampleMemberHome(now, scenario);
 
