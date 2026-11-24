@@ -35,6 +35,7 @@ Hay una restricción del despliegue: la imagen Docker del front se construye sin
 - **La caché del servidor es en memoria por proceso** (handler por defecto). Con varias réplicas, cada una tiene la suya y `updateTag` solo afecta a la réplica que atiende la acción. Hay que revisarlo si se escala horizontalmente (`'use cache: remote'` o un `cacheHandler` compartido).
 - **Datos desactualizados acotados:** un cambio hecho en el back por otra vía tarda hasta un `cacheLife` en verse (`minutes` para anuncios, `hours` para categorías).
 - **Huecos sin fallback visual:** las rejillas que llegan por streaming no reservan altura todavía, lo que puede provocar desplazamiento de layout. Quedan pendientes skeletons para ellas.
+- **`notFound()` dentro de un hueco responde `200`, no `404`:** el shell ya ha salido cuando se descubre que el recurso no existe (`/anuncios/999`). Next muestra la página de no encontrado y añade `<meta name="robots" content="noindex">`, así que no se indexa, pero el código HTTP no cambia. Ni `instant = false` ni subir la búsqueda por encima del `<Suspense>` lo arreglan sin prerenderizar el dato. Si hace falta un `404` real, la vía es comprobar la existencia en `proxy.ts`.
 - `next dev` reescribe el bloque gestionado de `front/AGENTS.md` en cada versión de Next.
 
 ## Alternativas consideradas
