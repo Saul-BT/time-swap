@@ -5,6 +5,10 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import MemberProfile from "@/components/profile/MemberProfile";
 import { MEMBERS } from "@/data/members";
 
+export function generateStaticParams() {
+  return MEMBERS.map(({ id }) => ({ memberId: id }));
+}
+
 export default async function MemberProfilePage({
   params,
 }: PageProps<"/[lang]/profile/[memberId]">) {

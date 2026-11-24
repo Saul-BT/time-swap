@@ -15,6 +15,7 @@ Los ADRs registran decisiones duraderas, su contexto y sus consecuencias. No son
 | [0009](0009-stack-del-front.md) | front | Next 16 App Router, MUI 9 sobre Emotion, Biome y bun | Aceptado |
 | [0010](0010-i18n-por-ruta-con-diccionarios-en-servidor.md) | front | i18n por segmento de ruta con diccionarios solo en servidor | Aceptado |
 | [0011](0011-slugs-publicos-por-idioma.md) | front | Slugs públicos por idioma sobre carpetas en inglés | Aceptado |
+| [0016](0016-cache-components-y-prerender-parcial.md) | front | Cache Components y prerender parcial; datos del back fuera del build | Aceptado |
 
 ## Cuándo escribir un ADR
 

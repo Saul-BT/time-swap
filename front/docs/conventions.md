@@ -72,6 +72,16 @@ Ribbon/
 - Sample/user-written content (`src/data/listings.ts`, `members.ts`) is **not** translated; ids that map to copy (`categories`, `filters`, `nav`) are typed from the dictionary so an untranslated id fails the build.
 - Client components must not import `src/i18n/dictionary.ts`. Import only the `Dictionary` type from `src/i18n/types.ts` if a shape is needed.
 
+## Rendering and caching
+
+Cache Components and Partial Prefetching are on (ADR 0016). The build has no backend.
+
+- Anything that does not depend on the request is the static shell. Backend data, `cookies()` and `searchParams` live in a child component under `<Suspense>`, as low in the tree as possible.
+- Backend reads live in `src/data/`: an exported `getX()` that awaits `connection()`, then calls a private `fetchX()` with `"use cache"`, `cacheLife` and `cacheTag(CACHE_TAG.*)`. No `cache: "no-store"` or `next.revalidate` on `fetch`.
+- A server action that writes calls `updateTag(CACHE_TAG.*)` for what it changed. Server actions live in `actions.ts`, never in a page with `"use server"` at the top.
+- Data a client component needs only later (a wizard step) goes down as an unawaited promise and is read with `use()` inside `<Suspense>`.
+- `next dev` shows instant-navigation insights for any route that would block; a route is done when it shows none.
+
 ## Comments
 
 - Default: none. The name and the types are the documentation.

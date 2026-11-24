@@ -1,9 +1,11 @@
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import { getCategories } from "@/data/categories";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
 import Ribbon from "../../ui/Ribbon";
 import RegisterWizard, { type RegisterWizardProps } from "../RegisterWizard";
+import type { CategoryOption } from "../RegisterWizard/RegisterWizard.util";
 import {
   RegisterScreenBrand,
   RegisterScreenBrandName,
@@ -12,24 +14,24 @@ import {
   RegisterScreenRoot,
 } from "./RegisterScreen.style";
 import { registerScreenClasses } from "./RegisterScreen.util";
-import { getCategories } from "@/data/categories";
-import { CategoryOption } from "../RegisterWizard/RegisterWizard.util";
 
 export type RegisterScreenProps = {
   registerAction: RegisterWizardProps["registerAction"];
   preferencesAction: RegisterWizardProps["preferencesAction"];
 };
 
-export default async function RegisterScreen({ registerAction, preferencesAction }: RegisterScreenProps) {
+export default async function RegisterScreen({
+  registerAction,
+  preferencesAction,
+}: RegisterScreenProps) {
   const { brand, register } = await getDictionary();
   const locale = await getLocale();
 
-  const categories = await getCategories();
-
-  const tagOptions: CategoryOption[] = categories.map((category) => ({
-    id: category.id,
-    label: category.name,
-  }));
+  const tagOptions = getCategories().then((categories) =>
+    categories.map(
+      (category): CategoryOption => ({ id: category.id, label: category.name }),
+    ),
+  );
 
   return (
     <RegisterScreenRoot className={registerScreenClasses.root}>

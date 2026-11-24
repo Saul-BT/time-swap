@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import type {
   PreferencesInput,
   RegisterErrorId,
@@ -25,7 +25,7 @@ import {
 
 export type RegisterWizardProps = {
   copy: Dictionary["register"];
-  tagOptions: readonly CategoryOption[];
+  tagOptions: Promise<readonly CategoryOption[]>;
   homeHref: string;
   registerAction: (input: RegisterInput) => Promise<RegisterResult>;
   preferencesAction: (input: PreferencesInput) => Promise<RegisterResult>;
@@ -44,7 +44,7 @@ export default function RegisterWizard({
   tagOptions,
   homeHref,
   registerAction,
-  preferencesAction
+  preferencesAction,
 }: RegisterWizardProps) {
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
@@ -111,9 +111,8 @@ export default function RegisterWizard({
   async function handleOptionalSubmit() {
     const result = await preferencesAction({
       interests: [...values.interests],
-      skills: [...values.skills]
+      skills: [...values.skills],
     });
-
 
     if (result.ok) {
       router.push(homeHref);
@@ -176,17 +175,19 @@ export default function RegisterWizard({
       ) : null}
 
       {step === 3 ? (
-        <RegisterStepProfile
-          copy={copy.profile}
-          tagOptions={tagOptions}
-          skills={values.skills}
-          interests={values.interests}
-          onToggleSkill={(id) => toggleTag("skills", id)}
-          onToggleInterest={(id) => toggleTag("interests", id)}
-          onBack={() => setStep(2)}
-          onSkip={finish}
-          onSave={handleOptionalSubmit}
-        />
+        <Suspense>
+          <RegisterStepProfile
+            copy={copy.profile}
+            tagOptions={tagOptions}
+            skills={values.skills}
+            interests={values.interests}
+            onToggleSkill={(id) => toggleTag("skills", id)}
+            onToggleInterest={(id) => toggleTag("interests", id)}
+            onBack={() => setStep(2)}
+            onSkip={finish}
+            onSave={handleOptionalSubmit}
+          />
+        </Suspense>
       ) : null}
     </RegisterWizardRoot>
   );

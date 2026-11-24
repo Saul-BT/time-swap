@@ -1,4 +1,7 @@
+import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
+import { CACHE_TAG } from "./cache-tags";
 import type { Listing } from "./types";
 
 /** Sample content, standing in for author-written text. Not translated. */
@@ -63,12 +66,16 @@ import type { Listing } from "./types";
   },
 ];*/
 
-export async function getListingsPaged(page: number, pageSize: number): Promise<Listing[]> {
+async function fetchListingsPaged(
+  page: number,
+  pageSize: number,
+): Promise<Listing[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(CACHE_TAG.listings);
+
   const response = await fetch(
     `${process.env.BACKEND_URL}/listing/search?page=${page}&pageSize=${pageSize}`,
-    {
-      cache: 'no-store',
-    },
   );
 
   if (!response.ok) {
@@ -79,13 +86,12 @@ export async function getListingsPaged(page: number, pageSize: number): Promise<
   return (await response.json()).list;
 }
 
-export async function getListingById(id: number): Promise<Listing> {
-  const response = await fetch(
-    `${process.env.BACKEND_URL}/listing/${id}`,
-    {
-      cache: 'no-store',
-    },
-  );
+async function fetchListingById(id: number): Promise<Listing> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(CACHE_TAG.listings, CACHE_TAG.listing(id));
+
+  const response = await fetch(`${process.env.BACKEND_URL}/listing/${id}`);
 
   if (!response.ok) {
     console.log("Error while fetching listings: ", response.statusText);
@@ -93,4 +99,18 @@ export async function getListingById(id: number): Promise<Listing> {
   }
 
   return response.json();
+}
+
+/** The front image builds without a backend, so listings never prerender. */
+export async function getListingsPaged(
+  page: number,
+  pageSize: number,
+): Promise<Listing[]> {
+  await connection();
+  return fetchListingsPaged(page, pageSize);
+}
+
+export async function getListingById(id: number): Promise<Listing> {
+  await connection();
+  return fetchListingById(id);
 }

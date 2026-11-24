@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
-import ListingCard from "@/components/ui/ListingCard";
+import { Suspense } from "react";
+import ListingCard, { ListingCardSkeleton } from "@/components/ui/ListingCard";
 import { getListingsPaged } from "@/data/listings";
 import { SECTION_ID } from "@/data/navigation";
 import { getDictionary } from "@/i18n/dictionary";
@@ -13,10 +14,43 @@ import {
 } from "./ListingsSection.style";
 import { listingsSectionClasses } from "./ListingsSection.util";
 
+const PAGE_SIZE = 6; //todo tweak fetch size by screen size?
+
+function ListingsGridSkeleton() {
+  return (
+    <ListingsSectionGrid className={listingsSectionClasses.grid}>
+      {Array.from({ length: PAGE_SIZE }, (_, index) => (
+        <ListingsSectionItem
+          className={listingsSectionClasses.item}
+          // biome-ignore lint/suspicious/noArrayIndexKey: placeholders have no identity.
+          key={index}
+        >
+          <ListingCardSkeleton />
+        </ListingsSectionItem>
+      ))}
+    </ListingsSectionGrid>
+  );
+}
+
+async function ListingsGrid() {
+  const listings = await getListingsPaged(1, PAGE_SIZE);
+
+  return (
+    <ListingsSectionGrid className={listingsSectionClasses.grid}>
+      {listings.map((listing) => (
+        <ListingsSectionItem
+          className={listingsSectionClasses.item}
+          key={listing.id}
+        >
+          <ListingCard listing={listing} />
+        </ListingsSectionItem>
+      ))}
+    </ListingsSectionGrid>
+  );
+}
+
 export default async function ListingsSection() {
   const { listings, common, placeholder } = await getDictionary();
-
-  const listingsBack = await getListingsPaged(1, 6); //todo tweak fetch size by screen size?
 
   return (
     // The hero above already carries its bottom padding, so the top edge is flushed.
@@ -27,16 +61,9 @@ export default async function ListingsSection() {
         note={common.sampleContent}
       />
 
-      <ListingsSectionGrid className={listingsSectionClasses.grid}>
-        {listingsBack.map((listing) => (
-          <ListingsSectionItem
-            className={listingsSectionClasses.item}
-            key={listing.id}
-          >
-            <ListingCard listing={listing} />
-          </ListingsSectionItem>
-        ))}
-      </ListingsSectionGrid>
+      <Suspense fallback={<ListingsGridSkeleton />}>
+        <ListingsGrid />
+      </Suspense>
 
       <ListingsSectionMore className={listingsSectionClasses.more}>
         <Button variant="outlined" href={`#${SECTION_ID.listings}`}>

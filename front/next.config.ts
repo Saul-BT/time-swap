@@ -3,6 +3,8 @@ import { localizedSlugPairs } from "./src/i18n/routes";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  cacheComponents: true,
+  partialPrefetching: true,
 
   /** Translated slugs map onto the English folder without changing the URL. */
   async rewrites() {
