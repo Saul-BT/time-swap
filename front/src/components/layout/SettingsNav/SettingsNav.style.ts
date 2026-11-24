@@ -1,6 +1,6 @@
 "use client";
 
-import { styled, type Theme } from "@mui/material";
+import { styled } from "@mui/material";
 import NextLink from "next/link";
 import { bareList, rule, softRule } from "@/theme/rules";
 import { space } from "@/theme/tokens";
@@ -38,30 +38,18 @@ export const SettingsNavItem = styled("li", { name: NAME, slot: "Item" })(
   }),
 );
 
-/** Geometry shared by a real row and its skeleton, so neither shifts the other. */
-const row = (theme: Theme, variant: SettingsNavVariant) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: theme.spacing(space.sm),
-  minHeight: variant === "tabs" ? 64 : 56,
-  paddingInline: theme.spacing(space.sm + 1),
-  paddingBlock: theme.spacing(space.xs),
-});
-
-export const SettingsNavRowShell = styled("div", {
-  name: NAME,
-  slot: "RowShell",
-})<{ ownerState: { variant: SettingsNavVariant } }>(({ theme, ownerState }) =>
-  row(theme, ownerState.variant),
-);
-
 /** The active tab inverts to ink; the design never uses the accent for "where am I". */
 export const SettingsNavLink = styled(NextLink, {
   name: NAME,
   slot: "Link",
 })<{ ownerState: { active: boolean; variant: SettingsNavVariant } }>(
   ({ theme, ownerState }) => ({
-    ...row(theme, ownerState.variant),
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(space.sm),
+    minHeight: ownerState.variant === "tabs" ? 64 : 56,
+    paddingInline: theme.spacing(space.sm + 1),
+    paddingBlock: theme.spacing(space.xs),
     textDecoration: "none",
     color: ownerState.active
       ? theme.palette.background.default

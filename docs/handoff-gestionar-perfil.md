@@ -120,9 +120,9 @@ Anulaciones de tema pendientes (todas en `theme/index.ts`, con tokens de `tokens
 | Campo de `Profile` | Panel | Forma esperada |
 |---|---|---|
 | `displayName`, `bio`, `pronouns` (opcional) | Presentación | `bio` con límite 600 y validación de datos de contacto en servidor |
-| `skills[]`, `interests[]` | Habilidades | Ids del catálogo |
+| `skills[]`, `interests[]` | Habilidades | Ids del catálogo; al menos uno de cada para publicar |
 | `modalities[]` | Presentación o Zona (ver preguntas) | `in_person`, `remote` |
-| `availability` | Disponibilidad | 7 × 3 booleanos (día × franja) |
+| `availability` | Disponibilidad | Lista de celdas `día.franja` marcadas (`mon.morning`…), 7 × 3 posibles |
 | `approximateLocation` | Zona | Centro de zona + `precision` ∈ `city`, `district`, `neighborhood` |
 | `privacySettings` | Privacidad y escaleras | `visibleToVisitors`, `searchable`, `reveal.{bio,skills,interests,availability,neighborhood}` ∈ `visitor`, `member`, `contact`, `agreement` |
 | `completionStatus` | Medidor | Lista de apartados completos y pendientes, no solo un booleano. Forma pedida en [#5](https://github.com/Saul-BT/time-swap/issues/5#issuecomment-5645488414) |

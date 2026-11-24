@@ -61,17 +61,17 @@ Ribbon/
 
 ## Settings chrome
 
-- The masthead, account row, heading, meter and the rail + panel frame live in `settings/layout.tsx` (ADR 0015). A section page renders only its `PanelHeader` and its form; a `loading.tsx`, only its `PanelSkeleton`.
+- The masthead, account row, heading, meter and the rail + panel frame live in `settings/layout.tsx` (ADR 0015). A section page renders a `SectionPanel`: the `PanelHeader`, which needs only copy, and the form under its own `<Suspense>`, so the heading is in the static shell while the profile streams. A `loading.tsx` renders only its `PanelSkeleton`; both take their rows from `PANEL_SKELETON_ROWS`.
 - **Active state is never a prop.** A nav row compares `usePathname()` with its own `href`. The arrangement — index vs open section — comes from `useSelectedLayoutSegments()` through `lib/settings/segment.ts`, which builds its table from `SECTION_ROUTE` and `ROUTES`.
 - One markup, two arrangements picked by `detail`. The index lists the sections at every width; the rail and the panel only exist with a section open. What is left to the breakpoint is only what changes inside an arrangement, so the server sends the same HTML for every viewport.
 
 ## Data, loading and errors
 
 - Server data goes through `lib/api/`. While the API does not exist (#5) the loaders there are mocked, but they keep the shape, the split and the timing the endpoints will have — integrating means replacing a body with a `fetch`.
-- **A layout renders above its own `loading.tsx`.** Anything awaited directly in a layout blocks every navigation into it and no fallback is shown. Chrome that needs data (`CompletionSummary`, `SettingsNav`) fetches its own and hangs off a `<Suspense>` in the layout; section data is fetched by the page, where `loading.tsx` covers it.
+- **A layout renders above its own `loading.tsx`.** Anything awaited directly in a layout blocks every navigation into it and no fallback is shown. Chrome that needs data (`CompletionSummary`, `SettingsNav`) fetches its own and hangs off a `<Suspense>` in the layout; section data is fetched by the panel component under `SectionPanel`, never by `getPanelContext`.
 - Cache tags live in `data/cache-tags.ts` (`CACHE_TAG`); a mutation expires them with `updateTag`, never with a path.
 - A mocked loader calls `connection()` before returning. Without it the route prerenders at build time, turns static and no skeleton is ever reachable.
-- Every skeleton matches the real geometry (`SettingsNavSkeleton` reuses the row style, `CompletionSummarySkeleton` the ribbon height), so nothing shifts when the content arrives.
+- Every fallback matches the real geometry (`CompletionSummarySkeleton` the ribbon height, `PanelSkeleton` the panel). The navigation needs no skeleton: its fallback is the real nav without badges, since only the badges come from the API.
 - Error boundaries, from the inside out: `SlotBoundary` degrades one piece of a layout (a meter without its ribbon, a navigation without its badges); `settings/error.tsx` replaces the panel and leaves the chrome usable; `[lang]/error.tsx` catches what escapes a layout; `app/global-error.tsx` is the last resort. A file-based `error.tsx` renders *below* its segment's layout, so it can never cover that layout's own failure — that is what `SlotBoundary` is for.
 - A degraded slot keeps whatever needs no data. The navigation only asks the API for badges, so without it the links still render and the open section is still marked (that comes from the router, not the API). `error.tsx` is a Client Component by definition, so its copy arrives from `ErrorCopyProvider`, mounted by the server layout. The recovery prop is `retry()` in Next 16, not `reset()`.
 - **`not-found.tsx` only works at `app/`** in this app: the root layout lives under `[lang]`, and an unmatched URL has no locale to match, so a nested one is never reached. That file is therefore self-contained and untranslated.

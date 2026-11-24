@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import AvailabilityForm from "@/components/settings/AvailabilityForm";
-import PanelHeader from "@/components/settings/PanelHeader";
+import SectionPanel from "@/components/settings/SectionPanel";
 import { revealAnchor } from "@/data/settings";
+import { getProfile } from "@/lib/api/profile";
 import { panelMetadata } from "@/lib/settings/metadata";
-import { getPanelContext, getRevealCopy } from "@/lib/settings/panel";
+import {
+  getPanelContext,
+  getRevealCopy,
+  type PanelContext,
+} from "@/lib/settings/panel";
 import { saveAvailability } from "./actions";
 
 const SECTION = "availability";
@@ -13,40 +18,42 @@ export function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AvailabilityPage() {
-  const { settings, profile, chrome, titleId } = await getPanelContext(SECTION);
+  const context = await getPanelContext(SECTION);
+
+  return (
+    <SectionPanel context={context} lead={context.settings.availability.lead}>
+      <AvailabilityPanel {...context} />
+    </SectionPanel>
+  );
+}
+
+async function AvailabilityPanel({ settings, chrome, titleId }: PanelContext) {
+  const profile = await getProfile();
   const { availability } = settings;
 
   return (
-    <>
-      <PanelHeader
-        titleId={titleId}
-        step={chrome.step}
-        title={chrome.title}
-        lead={availability.lead}
-      />
-      <AvailabilityForm
-        action={saveAvailability}
-        titleId={titleId}
-        revealId={revealAnchor("availability")}
-        initial={{
-          availability: [...profile.availability],
-          reveal: profile.privacySettings.reveal.availability,
-        }}
-        nextHref={chrome.nextHref}
-        copy={{
-          hint: availability.hint,
-          grid: {
-            label: availability.gridLabel,
-            days: availability.days,
-            daysLong: availability.daysLong,
-            slots: availability.slots,
-            cellLabel: availability.cellLabel,
-          },
-          reveal: getRevealCopy(settings, availability.field),
-          footer: chrome.footer,
-          serverError: chrome.serverError,
-        }}
-      />
-    </>
+    <AvailabilityForm
+      action={saveAvailability}
+      titleId={titleId}
+      revealId={revealAnchor("availability")}
+      initial={{
+        availability: [...profile.availability],
+        reveal: profile.privacySettings.reveal.availability,
+      }}
+      nextHref={chrome.nextHref}
+      copy={{
+        hint: availability.hint,
+        grid: {
+          label: availability.gridLabel,
+          days: availability.days,
+          daysLong: availability.daysLong,
+          slots: availability.slots,
+          cellLabel: availability.cellLabel,
+        },
+        reveal: getRevealCopy(settings, availability.field),
+        footer: chrome.footer,
+        serverError: chrome.serverError,
+      }}
+    />
   );
 }

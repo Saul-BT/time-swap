@@ -1,9 +1,10 @@
 "use server";
 
 import type { SkillsActionState } from "@/components/settings/SkillsForm";
-import { SKILLS_CATALOG } from "@/data/catalog";
+import { INTERESTS_CATALOG, SKILLS_CATALOG } from "@/data/catalog";
 import type { CatalogEntry } from "@/data/types";
 import { saveProfile } from "@/lib/api/profile";
+import type { FieldErrors } from "@/lib/forms/actionState";
 
 function parseIds(
   formData: FormData,
@@ -15,18 +16,25 @@ function parseIds(
     .filter((id) => catalog.some((entry) => entry.id === id));
 }
 
-// FIXME(api): checks that at least one skill was chosen, then `saveProfile`
-// will send PATCH /profile/me { skills, interests,
+// FIXME(api): checks that at least one skill and one interest were chosen, then
+// `saveProfile` will send PATCH /profile/me { skills, interests,
 // privacySettings.reveal.skills, privacySettings.reveal.interests } (#5). The
 // catalogues and the reveal scale are the API's to enforce.
 export async function saveSkills(
   _state: SkillsActionState,
   formData: FormData,
 ): Promise<SkillsActionState> {
-  const skills = parseIds(formData, "skills", SKILLS_CATALOG);
+  const fieldErrors: FieldErrors<SkillsActionState> = {};
 
-  if (skills.length === 0) {
-    return { status: "invalid", fieldErrors: { skills: "skillsRequired" } };
+  if (parseIds(formData, "skills", SKILLS_CATALOG).length === 0) {
+    fieldErrors.skills = "skillsRequired";
+  }
+  if (parseIds(formData, "interests", INTERESTS_CATALOG).length === 0) {
+    fieldErrors.interests = "interestsRequired";
+  }
+
+  if (Object.keys(fieldErrors).length > 0) {
+    return { status: "invalid", fieldErrors };
   }
 
   return saveProfile(formData);

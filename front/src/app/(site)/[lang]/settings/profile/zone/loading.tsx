@@ -1,8 +1,14 @@
 import PanelSkeleton from "@/components/settings/PanelSkeleton";
+import { PANEL_SKELETON_ROWS } from "@/data/settings";
 import { getDictionary } from "@/i18n/dictionary";
 
 export default async function ZoneLoading() {
   const { settings } = await getDictionary();
 
-  return <PanelSkeleton rows={4} label={settings.sections.zone} />;
+  return (
+    <PanelSkeleton
+      rows={PANEL_SKELETON_ROWS.zone}
+      label={settings.sections.zone}
+    />
+  );
 }

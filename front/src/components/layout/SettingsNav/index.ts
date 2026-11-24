@@ -5,7 +5,6 @@ export {
   type SettingsNavVariant,
   settingsNavClasses,
 } from "./SettingsNav.util";
-export { default as SettingsNavSkeleton } from "./SettingsNavSkeleton";
 export {
   default as SettingsNavView,
   type SettingsNavViewProps,

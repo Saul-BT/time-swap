@@ -5,7 +5,6 @@ import {
   SETTINGS_SECTIONS,
 } from "@/data/settings";
 import type {
-  Profile,
   RevealableField,
   RevealMoment,
   SettingsSectionId,
@@ -14,7 +13,7 @@ import type { Locale } from "@/i18n/config";
 import { getDictionary, getLocale } from "@/i18n/dictionary";
 import { localizePath } from "@/i18n/routes";
 import type { Dictionary } from "@/i18n/types";
-import { getProfile } from "@/lib/api/profile";
+import { getSessionMemberId } from "@/lib/api/profile";
 import { interpolate } from "@/lib/i18n/interpolate";
 
 type SettingsCopy = Dictionary["settings"];
@@ -65,29 +64,32 @@ export function getPanelChrome(
 }
 
 export type PanelContext = {
+  section: SettingsSectionId;
   settings: SettingsCopy;
   locale: Locale;
-  profile: Profile;
   chrome: PanelChrome;
   /** Names the panel heading; the form points at it with `aria-labelledby`. */
   titleId: string;
 };
 
-/** Everything the five section pages resolve before rendering their form. */
+/**
+ * Everything a section page resolves before its form. Nothing here waits on
+ * the profile, so the heading renders while the form streams.
+ */
 export async function getPanelContext(
   section: SettingsSectionId,
 ): Promise<PanelContext> {
-  const [{ settings }, locale, profile] = await Promise.all([
+  const [{ settings }, locale, memberId] = await Promise.all([
     getDictionary(),
     getLocale(),
-    getProfile(),
+    getSessionMemberId(),
   ]);
 
   return {
+    section,
     settings,
     locale,
-    profile,
-    chrome: getPanelChrome(settings, locale, section, profile.userId),
+    chrome: getPanelChrome(settings, locale, section, memberId),
     titleId: `${section}-title`,
   };
 }

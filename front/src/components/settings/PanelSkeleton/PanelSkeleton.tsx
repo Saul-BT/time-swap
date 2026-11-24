@@ -12,10 +12,16 @@ export type PanelSkeletonProps = {
   rows: number;
   /** Accessible name announced while the panel loads. */
   label: string;
+  /** `false` when the real heading is already on screen. */
+  head?: boolean;
 };
 
 /** Loading state of a section: the panel's structure in line grey, no spinner. */
-export default function PanelSkeleton({ rows, label }: PanelSkeletonProps) {
+export default function PanelSkeleton({
+  rows,
+  label,
+  head = true,
+}: PanelSkeletonProps) {
   return (
     <PanelSkeletonRoot
       className={panelSkeletonClasses.root}
@@ -23,11 +29,13 @@ export default function PanelSkeleton({ rows, label }: PanelSkeletonProps) {
       aria-label={label}
       aria-busy
     >
-      <PanelSkeletonGroup className={panelSkeletonClasses.head}>
-        <Skeleton variant="text" width={120} sx={{ fontSize: 12 }} />
-        <Skeleton variant="text" width="45%" sx={{ fontSize: 40 }} />
-        <Skeleton variant="text" width="70%" />
-      </PanelSkeletonGroup>
+      {head ? (
+        <PanelSkeletonGroup className={panelSkeletonClasses.head}>
+          <Skeleton variant="text" width={120} sx={{ fontSize: 12 }} />
+          <Skeleton variant="text" width="45%" sx={{ fontSize: 40 }} />
+          <Skeleton variant="text" width="70%" />
+        </PanelSkeletonGroup>
+      ) : null}
       <PanelSkeletonGroup className={panelSkeletonClasses.rows}>
         {Array.from({ length: rows }, (_, index) => `row-${index}`).map(
           (id) => (

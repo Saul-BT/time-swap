@@ -28,7 +28,10 @@ export type SkillsFormProps = PanelSectionFormProps<
   interestsRevealId: string;
 };
 
-const FOCUS_ORDER = [["skills", SKILLS_FIELD.skills]] as const;
+const FOCUS_ORDER = [
+  ["skills", SKILLS_FIELD.skills],
+  ["interests", SKILLS_FIELD.interests],
+] as const;
 
 function isDirty(values: SkillsValues, saved: SkillsValues): boolean {
   return (
@@ -60,6 +63,9 @@ export default function SkillsForm({
 
   const skillsError = fieldErrors.skills
     ? copy.errors[fieldErrors.skills]
+    : undefined;
+  const interestsError = fieldErrors.interests
+    ? copy.errors[fieldErrors.interests]
     : undefined;
   const skillsIds = formFieldIds(SKILLS_FIELD.skills);
   const interestsIds = formFieldIds(SKILLS_FIELD.interests);
@@ -108,6 +114,7 @@ export default function SkillsForm({
         htmlFor={SKILLS_FIELD.interests}
         label={copy.wantLabel}
         hint={copy.wantHint}
+        error={interestsError}
       >
         <CatalogPicker
           id={SKILLS_FIELD.interests}
@@ -117,8 +124,13 @@ export default function SkillsForm({
           onChange={(interests) => setValues({ ...values, interests })}
           copy={copy.picker}
           suggestionCount={SUGGESTION_COUNT}
+          emptyMessage={copy.emptyWant}
           disabled={pending}
-          describedBy={interestsIds.hint}
+          describedBy={
+            interestsError
+              ? `${interestsIds.error} ${interestsIds.hint}`
+              : interestsIds.hint
+          }
         />
       </FormField>
 

@@ -9,7 +9,7 @@ export const SKILLS_FIELD = {
   interests: "skills-want",
 } as const;
 
-export type SkillsFieldId = "skills";
+export type SkillsFieldId = "skills" | "interests";
 
 export type SkillsActionState = PanelActionState<SkillsFieldId, SkillsErrorId>;
 
@@ -26,6 +26,7 @@ export type SkillsCopy = PanelFormCopy & {
   wantLabel: string;
   wantHint: string;
   emptyOffer: string;
+  emptyWant: string;
   picker: CatalogPickerCopy;
   errors: Record<SkillsErrorId, string>;
   skillsReveal: RevealLadderCopy;

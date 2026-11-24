@@ -398,7 +398,7 @@
       "offerLabel": "Puedes ayudar con",
       "offerHint": "Se eligen del catálogo, no se escriben: así te encuentran buscando lo mismo. Hace falta al menos una para publicar.",
       "wantLabel": "Con qué te gustaría que te ayudaran",
-      "wantHint": "Opcional. Sirve para que te propongan trueques.",
+      "wantHint": "Hace falta al menos uno para publicar. Sirve para que te propongan trueques.",
       "search": "Buscar en el catálogo",
       "selectedLabel": "Elegidas",
       "suggestionsLabel": "Sugerencias",
@@ -406,10 +406,12 @@
       "remove": "Quitar {name}",
       "noMatch": "Nada en el catálogo con ese nombre.",
       "emptyOffer": "Todavía no has elegido ninguna. Hace falta al menos una para publicar.",
+      "emptyWant": "Todavía no has elegido ninguno. Hace falta al menos uno para publicar.",
       "skillsField": "tus habilidades",
       "interestsField": "tus intereses",
       "errors": {
-        "skillsRequired": "Elige al menos una habilidad del catálogo."
+        "skillsRequired": "Elige al menos una habilidad del catálogo.",
+        "interestsRequired": "Elige al menos un interés del catálogo."
       }
     },
     "availability": {

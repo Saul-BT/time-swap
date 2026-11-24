@@ -398,7 +398,7 @@
       "offerLabel": "You can help with",
       "offerHint": "They come from the catalogue, not typed: that way people find you searching for the same thing. You need at least one to publish.",
       "wantLabel": "What you would like help with",
-      "wantHint": "Optional. It helps people propose swaps.",
+      "wantHint": "You need at least one to publish. It helps people propose swaps.",
       "search": "Search the catalogue",
       "selectedLabel": "Selected",
       "suggestionsLabel": "Suggestions",
@@ -406,10 +406,12 @@
       "remove": "Remove {name}",
       "noMatch": "Nothing in the catalogue with that name.",
       "emptyOffer": "You have not chosen any yet. You need at least one to publish.",
+      "emptyWant": "You have not chosen any yet. You need at least one to publish.",
       "skillsField": "your skills",
       "interestsField": "your interests",
       "errors": {
-        "skillsRequired": "Choose at least one skill from the catalogue."
+        "skillsRequired": "Choose at least one skill from the catalogue.",
+        "interestsRequired": "Choose at least one interest from the catalogue."
       }
     },
     "availability": {

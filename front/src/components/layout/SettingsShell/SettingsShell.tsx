@@ -12,10 +12,7 @@ import { SettingsPlaceProvider } from "../../settings/SettingsPlace";
 import { UnsavedChangesProvider } from "../../settings/UnsavedChanges";
 import SlotBoundary from "../../ui/SlotBoundary";
 import AccountNav from "../AccountNav";
-import SettingsNav, {
-  SettingsNavSkeleton,
-  SettingsNavView,
-} from "../SettingsNav";
+import SettingsNav, { SettingsNavView } from "../SettingsNav";
 import SiteHeader from "../SiteHeader";
 import { SettingsShellRoot } from "./SettingsShell.style";
 import { settingsShellClasses } from "./SettingsShell.util";
@@ -86,10 +83,7 @@ export default async function SettingsShell({ children }: SettingsShellProps) {
               >
                 <Suspense
                   fallback={
-                    <SettingsNavSkeleton
-                      variant="tabs"
-                      label={settings.shell.navLabel}
-                    />
+                    <SettingsNavView variant="tabs" completion={null} />
                   }
                 >
                   <SettingsNav variant="tabs" />
@@ -102,10 +96,7 @@ export default async function SettingsShell({ children }: SettingsShellProps) {
               >
                 <Suspense
                   fallback={
-                    <SettingsNavSkeleton
-                      variant="index"
-                      label={settings.shell.navLabel}
-                    />
+                    <SettingsNavView variant="index" completion={null} />
                   }
                 >
                   <SettingsNav variant="index" />

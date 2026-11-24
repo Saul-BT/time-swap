@@ -28,6 +28,15 @@ export const SECTION_ROUTE: Record<SettingsSectionId, RouteId> = {
   privacy: "settingsPrivacy",
 };
 
+/** Controls each section shows, so its skeleton keeps the same height. */
+export const PANEL_SKELETON_ROWS: Record<SettingsSectionId, number> = {
+  presentation: 4,
+  skills: 4,
+  availability: 4,
+  zone: 4,
+  privacy: 5,
+};
+
 export const BIO_MAX_LENGTH = 600;
 
 export const DISPLAY_NAME_MAX_LENGTH = 60;
