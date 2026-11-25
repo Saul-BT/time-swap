@@ -9,6 +9,8 @@ import { CreateListingDTO } from "./dto/create-listing.dto";
 import { ListingOutputDto } from "./dto-outputs/listing.output.dto";
 import { UpdateListingDTO } from "./dto/update-listing.dto";
 import { SearchListingDTO } from "./dto/search-listing.dto";
+import { MineListingDTO } from "./dto/mine-listing.dto";
+import { RenewListingDTO } from "./dto/renew-listing.dto";
 import { PaginatedResponse } from "src/common/dtos/paginated-output.dto";
 import { ListingMode } from "./enums/listing-mode.enum";
 import { ErrorManager } from "src/common/error-handling/error.manager";
@@ -38,7 +40,7 @@ export class ListingController {
 
     @Patch(':id')
     @Auth(Role.ADMIN, Role.USER)
-    @ApiOperation({ summary: 'Modificar un anuncio existente' })
+    @ApiOperation({ summary: 'Modificar un anuncio existente (activo o pausado). El tipo no se puede cambiar.' })
     @ApiResponse({ status: 200, description: 'Anuncio modificado', type: ListingOutputDto })
     @ApiBadRequestResponse({ description: 'Valores de modificación no válidos.' })
     async update(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number, @Body() updateDto: UpdateListingDTO):Promise<ListingOutputDto> {
@@ -46,11 +48,20 @@ export class ListingController {
     }
     
     @Get('search')
-    @ApiOperation({ summary: 'Buscar anuncios existentes' })
+    @ApiOperation({ summary: 'Buscar anuncios existentes (por defecto, solo activos)' })
     @ApiResponse({ status: 200, description: 'Anuncios encontrados', type: PaginatedResponse<ListingOutputDto> })
     @ApiBadRequestResponse({ description: 'Campos de búsqueda no válidos.' })
     async search(@Query() searchDto: SearchListingDTO): Promise<PaginatedResponse<ListingOutputDto>> {
         return this.listingService.search(searchDto);
+    }
+
+    // Va antes de ":id" para que Nest no confunda "mine" con un id
+    @Get('mine')
+    @Auth(Role.USER, Role.ADMIN)
+    @ApiOperation({ summary: 'Mis anuncios, con filtro opcional por estado', description: 'ADMIN, USER' })
+    @ApiResponse({ status: 200, description: 'Mis anuncios', type: PaginatedResponse<ListingOutputDto> })
+    async mine(@ActiveUser() user: UserActiveInterface, @Query() dto: MineListingDTO): Promise<PaginatedResponse<ListingOutputDto>> {
+        return this.listingService.mine(user, dto);
     }
 
     @Get(':id')
@@ -63,22 +74,40 @@ export class ListingController {
 
     //todo endpoint for revising exchange
 
-    @Post(':id/complete')
+    @Post(':id/pause')
     @Auth(Role.ADMIN, Role.USER)
-    @ApiOperation({ summary: 'Marcar anuncio como completado', description: 'ADMIN, USER' })
-    @ApiResponse({ status: 200, description: 'Anuncio actualizado' })
+    @ApiOperation({ summary: 'Pausar un anuncio activo', description: 'ADMIN, USER' })
+    @ApiResponse({ status: 201, description: 'Anuncio pausado', type: ListingOutputDto })
     @ApiBadRequestResponse({ description: 'No se pudo encontrar o modificar.' })
-    async complete(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
-        return this.listingService.complete(user, id);
+    async pause(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number): Promise<ListingOutputDto> {
+        return this.listingService.pause(user, id);
     }
 
-    @Post(':id/cancel')
+    @Post(':id/resume')
     @Auth(Role.ADMIN, Role.USER)
-    @ApiOperation({ summary: 'Marcar anuncio como cancelado', description: 'ADMIN, USER' })
-    @ApiResponse({ status: 200, description: 'Anuncio actualizado' })
+    @ApiOperation({ summary: 'Reactivar un anuncio pausado', description: 'ADMIN, USER' })
+    @ApiResponse({ status: 201, description: 'Anuncio activo', type: ListingOutputDto })
     @ApiBadRequestResponse({ description: 'No se pudo encontrar o modificar.' })
-    async cancel(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number) {
-        return this.listingService.cancel(user, id);
+    async resume(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number): Promise<ListingOutputDto> {
+        return this.listingService.resume(user, id);
+    }
+
+    @Post(':id/renew')
+    @Auth(Role.ADMIN, Role.USER)
+    @ApiOperation({ summary: 'Renovar un anuncio caducado con una nueva fecha límite', description: 'ADMIN, USER' })
+    @ApiResponse({ status: 201, description: 'Anuncio renovado', type: ListingOutputDto })
+    @ApiBadRequestResponse({ description: 'Fecha no válida o anuncio no caducado.' })
+    async renew(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number, @Body() dto: RenewListingDTO): Promise<ListingOutputDto> {
+        return this.listingService.renew(user, id, dto);
+    }
+
+    @Post(':id/withdraw')
+    @Auth(Role.ADMIN, Role.USER)
+    @ApiOperation({ summary: 'Retirar un anuncio. No cancela los acuerdos ya formalizados.', description: 'ADMIN, USER' })
+    @ApiResponse({ status: 201, description: 'Anuncio retirado', type: ListingOutputDto })
+    @ApiBadRequestResponse({ description: 'No se pudo encontrar o modificar.' })
+    async withdraw(@ActiveUser() user: UserActiveInterface, @Param('id', ParseIntPipe) id: number): Promise<ListingOutputDto> {
+        return this.listingService.withdraw(user, id);
     }
 
     @Delete(':id')

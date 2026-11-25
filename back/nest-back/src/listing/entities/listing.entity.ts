@@ -43,6 +43,10 @@ export class Listing {
     })
     startDateTime?: Date;
 
+     /** Fecha límite del anuncio. Si pasa, el anuncio caduca (ANU-02). Es opcional. */
+    @Column({ type: 'timestamptz', nullable: true })
+    expiresAt?: Date | null;
+
     /** Texto libre, como en el formulario del front (por ejemplo "1 h + material"). */
     @Column({ type: 'varchar', nullable: false })
     duration!: string;
