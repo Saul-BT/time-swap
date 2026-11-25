@@ -1,6 +1,8 @@
 export enum ListingStatus {
+    DRAFT = 'draft',
     ACTIVE = 'active',
     PAUSED = 'paused',
-    WITHDRAWN = 'withdrawn',
-    COMPLETED = 'completed'
+    EXPIRED = 'expired',
+    REMOVED = 'removed',
+    MODERATION_HOLD = 'moderationHold',
 }

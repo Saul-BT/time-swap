@@ -4,7 +4,7 @@ import { CreateListingDTO } from "../listing/dto/create-listing.dto";
 import { SearchListingDTO } from "../listing/dto/search-listing.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Listing } from "../listing/entities/listing.entity";
-import { Repository } from "typeorm";
+import { LessThan, Repository } from "typeorm";
 import { ErrorManager } from "src/common/error-handling/error.manager";
 import { Role } from "src/common/enums/role.enum";
 import { UserService } from "src/user/user.service";
@@ -13,6 +13,9 @@ import { CategoryService } from "src/category/category.service";
 import { ListingOutputDto } from "./dto-outputs/listing.output.dto";
 import { ListingStatus } from "./enums/listing-status.enum";
 import { PaginatedResponse } from "src/common/dtos/paginated-output.dto";
+import { MineListingDTO } from "./dto/mine-listing.dto";
+import { RenewListingDTO } from "./dto/renew-listing.dto";
+import { canTransition } from "./listing-transitions";
 
 
 @Injectable()
@@ -42,9 +45,63 @@ export class ListingService {
             categoryId: listing.category.id,
             categoryName: listing.category.name,
             status: listing.status,
+            expiresAt: listing.expiresAt ?? null,
             createdAt: listing.createdAt
         }
     }
+
+    // ---------- Ayudantes privados ----------
+
+    // Los anuncios activos cuya fecha límite ya pasó se marcan como caducados.
+    // Se llama justo antes de listar o de cambiar de estado, así no hace falta ningún proceso programado.
+    private async expireOverdue(): Promise<void> {
+        await this.listingRepository.update(
+            { status: ListingStatus.ACTIVE, expiresAt: LessThan(new Date()) },
+            { status: ListingStatus.EXPIRED },
+        );
+    }
+
+    // Convierte el texto de fecha en fecha y comprueba que es futura
+    private parseExpiresAt(value?: string): Date | null {
+        if (!value) return null;
+        const date = new Date(value);
+        if (date <= new Date()) {
+            throw new ErrorManager('BAD_REQUEST', 'expiresAt must be in the future');
+        }
+        return date;
+    }
+
+    // Busca el anuncio y comprueba que quien pregunta es su autor (o superadmin)
+    private async getOwned(user: UserActiveInterface, id: number): Promise<Listing> {
+        const listing = await this.listingRepository.findOne({
+            where: { id },
+            relations: { category: true, author: true }
+        });
+
+        if (!listing) {
+            throw new ErrorManager('NOT_FOUND', 'Listing not found');
+        }
+
+        if (user.role !== Role.SUPER_ADMIN && user.id !== listing.author.id) {
+            throw new ErrorManager('FORBIDDEN', 'Not allowed to modify listing');
+        }
+
+        return listing;
+    }
+
+    // Cambia el estado solo si la tabla de transiciones lo permite
+    private async applyStatus(listing: Listing, to: ListingStatus): Promise<ListingOutputDto> {
+        if (!canTransition(listing.status, to)) {
+            throw new ErrorManager('CONFLICT', `A listing cannot go from ${listing.status} to ${to}`);
+        }
+        listing.status = to;
+        if (to === ListingStatus.REMOVED) {
+            listing.cancelledTime = new Date();
+        }
+        return this.mapListingOutput(await this.listingRepository.save(listing));
+    }
+
+    // ---------- Crear, editar, consultar ----------
 
     async create(user: UserActiveInterface, createDto: CreateListingDTO) {
         const listing = this.listingRepository.create();
@@ -66,12 +123,10 @@ export class ListingService {
             throw new ErrorManager('CONFLICT', 'startTime cannot be in the past');
         }*/
 
-        //the rest can be copied as is
-        Object.assign(listing, {
-            ...createDto,
-            startTime: undefined,
-            categoryId: undefined
-        });
+        //the rest can be copied as is, except the fields that need their own logic
+        const { categoryId: _categoryId, expiresAt, ...rest } = createDto;
+        Object.assign(listing, rest);
+        listing.expiresAt = this.parseExpiresAt(expiresAt);
 
         //todo if location is absent from any type other than remote, reject
 
@@ -84,6 +139,8 @@ export class ListingService {
             throw new ErrorManager('BAD_REQUEST', 'Empty DTO');
         }
 
+        await this.expireOverdue();
+
         const listing = await this.listingRepository.findOne({
             where: { id },
             relations: { category: true, author: true } //todo get revisions as well
@@ -93,12 +150,13 @@ export class ListingService {
             throw new ErrorManager('NOT_FOUND', 'Listing not found');
         }
 
-        if (listing.status !== ListingStatus.ACTIVE) {
-            throw new ErrorManager('FORBIDDEN', 'Listing is not active');
+        // Solo se edita un anuncio activo o pausado
+        if (listing.status !== ListingStatus.ACTIVE && listing.status !== ListingStatus.PAUSED) {
+            throw new ErrorManager('FORBIDDEN', 'Listing cannot be edited in its current status');
         }
 
         if (user.role !== Role.SUPER_ADMIN && user.id !== listing.author.id) {
-            throw new ErrorManager('FORBIDDEN', 'Not allowed to delete listing');
+            throw new ErrorManager('FORBIDDEN', 'Not allowed to modify listing');
         }
 
         //entity relation needs separate logic
@@ -117,12 +175,12 @@ export class ListingService {
             }
         }*/
 
-        //the rest can be copied as is
-        Object.assign(listing, {
-            ...updateDto,
-            startTime: undefined,
-            categoryId: undefined
-        });
+        //the rest can be copied as is, except the fields that need their own logic
+        const { categoryId: _categoryId, expiresAt, ...rest } = updateDto;
+        Object.assign(listing, rest);
+        if (expiresAt) {
+            listing.expiresAt = this.parseExpiresAt(expiresAt);
+        }
 
         return this.mapListingOutput(await this.listingRepository.save(listing));
     }
@@ -140,7 +198,36 @@ export class ListingService {
         return this.mapListingOutput(listing);
     }
 
+    // Mis anuncios: solo los del usuario, con filtro opcional por estado
+    async mine(user: UserActiveInterface, dto: MineListingDTO): Promise<PaginatedResponse<ListingOutputDto>> {
+        await this.expireOverdue();
+
+        const page = dto.page ?? 1;
+        const pageSize = dto.pageSize ?? 20;
+
+        const [list, total] = await this.listingRepository.findAndCount({
+            where: {
+                author: { id: user.id },
+                ...(dto.status ? { status: dto.status } : {}),
+            },
+            relations: { category: true, author: true },
+            order: { createdAt: 'DESC' },
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+        });
+
+        return {
+            list: list.map(listing => this.mapListingOutput(listing)),
+            page,
+            pageSize,
+            total,
+            totalPages: Math.ceil(total / pageSize),
+        };
+    }
+
     async search(searchDto: SearchListingDTO): Promise<PaginatedResponse<ListingOutputDto>> {
+        await this.expireOverdue();
+
         const query = this.listingRepository.createQueryBuilder('listing');
 
         if (searchDto.title) {
@@ -160,7 +247,7 @@ export class ListingService {
         if (searchDto.kind) {
             query.andWhere(
                 'listing.kind = :kind',
-                { type: searchDto.kind },
+                { kind: searchDto.kind },
             );
         }
 
@@ -171,9 +258,11 @@ export class ListingService {
             );
         }
 
-        if (searchDto.status) {
-            //todo search by status
-        }
+        // Si no se pide otro estado, el listado público solo enseña anuncios activos
+        query.andWhere(
+            'listing.status = :status',
+            { status: searchDto.status ?? ListingStatus.ACTIVE },
+        );
 
         if (searchDto.duration) {
             query.andWhere(
@@ -229,52 +318,40 @@ export class ListingService {
         };
     }
 
-    async complete(user:UserActiveInterface, id: number) {
-        const listing = await this.listingRepository.findOne({
-            where: { id },
-            relations: { author: true }
-        })
+    // ---------- Cambios de estado ----------
 
-        if (!listing) {
-            throw new ErrorManager('NOT_FOUND', 'Listing not found');
-        }
-
-        if (user.role !== Role.SUPER_ADMIN && user.id !== listing.author.id) {
-            throw new ErrorManager('FORBIDDEN', 'Not allowed to modify listing');
-        }
-
-        if (listing.status !== ListingStatus.ACTIVE) {
-            throw new ErrorManager('FORBIDDEN', 'Listing is not active');
-        }
-
-        listing.status = ListingStatus.COMPLETED;
-        listing.completedTime = new Date();
-
-        return this.listingRepository.save(listing);
+    // active -> paused
+    async pause(user: UserActiveInterface, id: number): Promise<ListingOutputDto> {
+        await this.expireOverdue();
+        const listing = await this.getOwned(user, id);
+        return this.applyStatus(listing, ListingStatus.PAUSED);
     }
 
-    async cancel(user:UserActiveInterface, id: number) {
-        const listing = await this.listingRepository.findOne({
-            where: { id },
-            relations: { author: true }
-        })
-
-        if (!listing) {
-            throw new ErrorManager('NOT_FOUND', 'Listing not found');
+    // paused -> active (si ya venció la fecha, hay que renovar)
+    async resume(user: UserActiveInterface, id: number): Promise<ListingOutputDto> {
+        await this.expireOverdue();
+        const listing = await this.getOwned(user, id);
+        if (listing.expiresAt && listing.expiresAt < new Date()) {
+            throw new ErrorManager('CONFLICT', 'Listing has expired, renew it instead');
         }
+        return this.applyStatus(listing, ListingStatus.ACTIVE);
+    }
 
-        if (user.role !== Role.SUPER_ADMIN && user.id !== listing.author.id) {
-            throw new ErrorManager('FORBIDDEN', 'Not allowed to modify listing');
+    // expired -> active, con una nueva fecha límite
+    async renew(user: UserActiveInterface, id: number, dto: RenewListingDTO): Promise<ListingOutputDto> {
+        await this.expireOverdue();
+        const listing = await this.getOwned(user, id);
+        if (listing.status !== ListingStatus.EXPIRED) {
+            throw new ErrorManager('CONFLICT', 'Only expired listings can be renewed');
         }
+        listing.expiresAt = this.parseExpiresAt(dto.expiresAt);
+        return this.applyStatus(listing, ListingStatus.ACTIVE);
+    }
 
-        if (listing.status !== ListingStatus.ACTIVE) {
-            throw new ErrorManager('FORBIDDEN', 'Listing is not active');
-        }
-
-        listing.status = ListingStatus.WITHDRAWN;
-        listing.cancelledTime = new Date();
-
-        return this.listingRepository.save(listing);
+    // cualquier estado permitido -> removed. No cancela acuerdos ya formalizados.
+    async withdraw(user: UserActiveInterface, id: number): Promise<ListingOutputDto> {
+        const listing = await this.getOwned(user, id);
+        return this.applyStatus(listing, ListingStatus.REMOVED);
     }
 
     async remove(user:UserActiveInterface, id: number) {
@@ -289,11 +366,6 @@ export class ListingService {
 
         if (user.role !== Role.SUPER_ADMIN && user.id !== listing.author.id) {
             throw new ErrorManager('FORBIDDEN', 'Not allowed to delete listing');
-        }
-
-        //only allow superadmin to delete logs
-        if (user.role !== Role.SUPER_ADMIN && listing.status === ListingStatus.COMPLETED) {
-            throw new ErrorManager('FORBIDDEN', 'Completed listings cannot be deleted');
         }
 
         return this.listingRepository.remove(listing);

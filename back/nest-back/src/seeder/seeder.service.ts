@@ -302,38 +302,33 @@ export class SeederService {
             listingData.duration = '1h';
             listingData.location = 'Seeded location';
             listingData.author = user;
-
+            
             //create one for each status
             const listingActive = this.listingRepository.create({
                 ...listingData,
                 status: ListingStatus.ACTIVE,
             });
-
             await this.listingRepository.save(listingActive);
 
             const listingPaused = this.listingRepository.create({
                 ...listingData,
                 status: ListingStatus.PAUSED,
-                cancelledTime: new Date(),
             });
-
             await this.listingRepository.save(listingPaused);
 
-            const listingWithdrawn = this.listingRepository.create({
+            const listingExpired = this.listingRepository.create({
                 ...listingData,
-                status: ListingStatus.WITHDRAWN,
-                completedTime: new Date(),
+                status: ListingStatus.EXPIRED,
+                expiresAt: new Date('2020-01-01'),
             });
+            await this.listingRepository.save(listingExpired);
 
-            await this.listingRepository.save(listingWithdrawn);
-
-            const listingCompleted = this.listingRepository.create({
+            const listingRemoved = this.listingRepository.create({
                 ...listingData,
-                status: ListingStatus.COMPLETED,
-                completedTime: new Date(),
+                status: ListingStatus.REMOVED,
+                cancelledTime: new Date(),
             });
-
-            await this.listingRepository.save(listingWithdrawn);
+            await this.listingRepository.save(listingRemoved);
         } catch (error) {
             this.logger.error(error);
         }

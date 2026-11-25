@@ -21,5 +21,6 @@ export class ListingOutputDto {
     @ApiProperty() authorName!: string;
     @ApiProperty({ nullable: true, type: String }) area?: string;
     @ApiProperty({ enum: ListingStatus }) status!: ListingStatus;
+    @ApiProperty({ nullable: true, type: Date }) expiresAt!: Date | null;
     @ApiProperty() createdAt!: Date;
 }

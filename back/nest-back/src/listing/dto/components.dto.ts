@@ -87,3 +87,10 @@ export class ListingLocationDto {
     @Length(1, 350)
     location?: string;
 }
+
+export class ListingExpiresAtDto {
+    @ApiProperty({ example: '2030-01-01T00:00:00.000Z', required: false })
+    @IsOptional()
+    @IsDateString()
+    expiresAt?: string;
+}
